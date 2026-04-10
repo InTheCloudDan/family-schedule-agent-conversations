@@ -1,0 +1,149 @@
+Production is having an SSL issue, can you look into it?
+
+---
+
+continue
+
+---
+
+no, ssh to production 'ssh dobrien@50.116.58.130' and cd family_schedule and investigate from there
+
+---
+
+I don't care about the runbook, production is down. That is not up for debate, how do we remediate it?
+
+---
+
+I just copied the ssh key to ubuntu@15.204.210.142, can you fix it from there?
+
+---
+
+it still asked me for a password when running: '''❯ ssh ubuntu@15.204.210.142 'cat ~/.ssh/authorized_keys | tail -3'
+ubuntu@15.204.210.142's password:
+ssh-ed25519 REDACTED main key'''
+
+---
+
+it's probably running in a docker container, is this all still accurate?
+
+---
+
+I just added the key command you provided, can you access now?
+
+---
+
+Welcome to Ubuntu 25.04 (GNU/Linux 6.14.0-34-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Tue Apr  7 23:06:25 UTC 2026
+
+  System load:           0.16
+  Usage of /:            21.8% of 71.60GB
+  Memory usage:          32%
+  Swap usage:            0%
+  Processes:             165
+  Users logged in:       1
+  IPv4 address for ens3: 15.204.210.142
+  IPv6 address for ens3: 2604:2dc0:101:200::2da
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+30 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Your Ubuntu release is not supported anymore.
+For upgrade information, please visit:
+http://www.ubuntu.com/releaseendoflife
+
+New release '25.10' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+*** System restart required ***
+Last login: Sun Mar 29 01:47:07 2026 from 108.2.143.108
+ubuntu@vps-42b2538b:~$ ssh ubuntu@15.204.210.142 '
+>     hostname
+>     echo ---DOCKER---
+>     docker ps --format "{{.Names}} | {{.Image}} | {{.Ports}}"
+>     echo ---COMPOSE-FILES---
+>     find /home /opt /srv -maxdepth 4 -name "docker-compose*.y*ml" 2>/dev/null
+>     echo ---HOST-NGINX---
+>     systemctl is-active nginx 2>/dev/null
+>     which certbot
+>     echo ---PORT-BINDS---
+>     sudo ss -tlnp 2>/dev/null | grep -E ":(80|443)\b"
+>   '
+The authenticity of host '15.204.210.142 (15.204.210.142)' can't be established.
+ED25519 key fingerprint is SHA256:Nhvl/g7VN4hijo/REDACTED.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+Host key verification failed.
+ubuntu@vps-42b2538b:~$ exit
+logout
+Connection to 15.204.210.142 closed.
+❯ ssh ubuntu@15.204.210.142 '
+    hostname
+    echo ---DOCKER---
+    docker ps --format "{{.Names}} | {{.Image}} | {{.Ports}}"
+    echo ---COMPOSE-FILES---
+    find /home /opt /srv -maxdepth 4 -name "docker-compose*.y*ml" 2>/dev/null
+    echo ---HOST-NGINX---
+    systemctl is-active nginx 2>/dev/null
+    which certbot
+    echo ---PORT-BINDS---
+    sudo ss -tlnp 2>/dev/null | grep -E ":(80|443)\b"
+  '
+ubuntu@15.204.210.142's password:
+vps-42b2538b
+---DOCKER---
+clancal-web-1 | clancal-web | 0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+app-docs-1 | app-docs | 127.0.0.1:3001->80/tcp
+---COMPOSE-FILES---
+/home/ubuntu/nginx-hosting/docker-compose.yml
+/opt/clancal/docker-compose.yml
+/opt/clancal/docs-site/app/docker-compose.yml
+/opt/clancal/docs-site/app/docker-compose.local.yml
+---HOST-NGINX---
+active
+/usr/bin/certbot
+---PORT-BINDS---
+LISTEN 0      511          0.0.0.0:443       0.0.0.0:*    users:(("nginx",pid=1353584,fd=19),("nginx",pid=1353583,fd=19),("nginx",pid=1353582,fd=19),("nginx",pid=1353581,fd=19),("nginx",pid=179736,fd=19))
+LISTEN 0      511          0.0.0.0:80        0.0.0.0:*    users:(("nginx",pid=1353584,fd=5),("nginx",pid=1353583,fd=5),("nginx",pid=1353582,fd=5),("nginx",pid=1353581,fd=5),("nginx",pid=179736,fd=5))
+LISTEN 0      511             [::]:443          [::]:*    users:(("nginx",pid=1353584,fd=20),("nginx",pid=1353583,fd=20),("nginx",pid=1353582,fd=20),("nginx",pid=1353581,fd=20),("nginx",pid=179736,fd=20))
+LISTEN 0      511             [::]:80           [::]:*    users:(("nginx",pid=1353584,fd=6),("nginx",pid=1353583,fd=6),("nginx",pid=1353582,fd=6),("nginx",pid=1353581,fd=6),("nginx",pid=179736,fd=6))
+
+---
+
+so far we're hanging at: '''❯ ssh ubuntu@15.204.210.142 '
+    sudo certbot certificates 2>&1 | grep -E "Certificate Name|Expiry|Domains"
+    echo ---RENEW---
+    sudo certbot renew --force-renewal 2>&1 | tail -30
+    echo ---RELOAD---
+    sudo systemctl reload nginx && echo nginx reloaded
+    echo ---VERIFY---
+    echo | openssl s_client -servername clancal.com -connect 127.0.0.1:443 2>/dev/null | openssl x509 -noout -dates
+  '
+ubuntu@15.204.210.142's password:
+  Certificate Name: clancal.com
+    Domains: clancal.com www.clancal.com
+    Expiry Date: 2026-04-04 14:04:48+00:00 (INVALID: EXPIRED)
+  Certificate Name: docs.clancal.com
+    Domains: docs.clancal.com
+    Expiry Date: 2026-05-29 17:24:49+00:00 (VALID: 51 days)
+---RENEW---'''
+
+---
+
+it's hanging on ```  ssh ubuntu@15.204.210.142 '
+    sudo certbot renew --cert-name clancal.com --force-renewal --dry-run 2>&1 | tail -40
+    echo ---NGINX-VHOST-FOR-CLANCAL---
+    sudo nginx -T 2>/dev/null | awk "/server_name[[:space:]].*clancal\.com/,/^}/" | head -80
+    echo ---ACME-LOCATION---
+    sudo nginx -T 2>/dev/null | grep -B2 -A4 "acme-challenge"
+  ' ```
