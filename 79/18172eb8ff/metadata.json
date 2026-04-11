@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "7918172eb8ff",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "events/api.py",
+    "events/serializers.py",
+    "events/tests/test_event_serializer_ownership.py",
+    "users/event_ownership.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/79/18172eb8ff/0/metadata.json",
+      "transcript": "/79/18172eb8ff/0/full.jsonl",
+      "content_hash": "/79/18172eb8ff/0/content_hash.txt",
+      "prompt": "/79/18172eb8ff/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 231,
+    "cache_creation_tokens": 512493,
+    "cache_read_tokens": 15312540,
+    "output_tokens": 57954,
+    "api_call_count": 91
+  }
+}

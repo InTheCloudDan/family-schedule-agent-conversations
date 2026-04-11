@@ -1,0 +1,223 @@
+A production trace of GET /api/events/?start_date=2026-03-23&end_date=2026-05-05&page_size=100&fields=compact shows the wall-clock hotspot is on the backend, not in mobile render. Two
+ root causes, both verified against primary source and a parallel deep-review pass (code-explorer audit + Plan agent + oracle second opinion):
+
+ 1. Avatar resolution fans out across the request. _resolve_profile_picture_avatar (events/serializers.py:96-121) and _get_profile_picture_avatar (users/event_ownership.py:75-97) both
+ read profile_picture.name and profile_picture.url eagerly, then call MediaStorageService.generate_presigned_url(name, request_host=...). On FileField, .url can trigger backend-side URL
+ generation even when the value is unused. A 100-event compact page with ~2 calendars and ~3 pictured children per calendar can reach 200+ presign invocations plus 200+ eager .url reads
+ because the two helpers run via separate code paths (_serialize_calendar_associated_users vs _resolve_from_calendar) and the existing per-serializer-instance cache
+ (_associated_users_cache, events/serializers.py:864-870) only dedupes within a single child serializer instance — DRF spins up one per event.
+ 2. The read-optimizer runs on the full range, before pagination. EventViewSet.get_queryset calls optimize_event_queryset_for_read(queryset, user, include_media=not is_compact) at
+ events/api.py:361-365 on the entire filtered date range, then pagination runs in list at line 711. For a 6-week window with hundreds of events, the optimizer materializes 10-deep
+ select_related joins and 6 prefetch_related collections (events/read_optimization.py:85-103) for every row Postgres returns, even though 100 rows of that will ever be serialized.
+
+ Separately, the audit surfaced an independent, unrelated free win in current code: arrive_by_mode and arrive_by_minutes_before_start are in EventListSerializer.Meta.fields (compact
+ payload) but not in the .only(...) projection at events/api.py:386-408. Every compact list serialization triggers up to 200 deferred-field SELECT queries (2 fields × 100 events). This is
+  in the same file, same code path, same concern, and should ship with the perf fix.
+
+ The goal: make this endpoint substantially faster with zero observable contract change (same query params, same pagination metadata, same ordering, same field set, same JSON shape, same
+ field values). Bundle the .only() fix because it belongs to the same hot path.
+
+ Sequencing
+
+ Ship in two PRs against main, both behind the same perf concern:
+
+ - PR 1 (smaller, lower-risk): Avatar cache (Change 1) + .only() fix (Change 3). Self-contained. Oracle expects this captures the dominant wall-clock win for a 100-event page. Land first,
+  re-trace in staging.
+ - PR 2: Deferred read hydration (Change 2). Touches get_queryset and list, the load-bearing methods on the ViewSet. Ship only if PR 1 does not hit the SLO on its own — the trade-off is
+ real: simpler code vs additional margin. The oracle was explicit that landing them separately makes bisection trivial.
+
+ The plan covers all three changes end-to-end so PR 2's groundwork is clear from the outset.
+
+ Change 1 — Request-scoped avatar cache, lazy .url read
+
+ Goal: resolve each unique (file_key, request_host) exactly once per request, and resolve each (user_id, request_host) exactly once per request via the social fallback chain.
+
+ Mechanism: a single dict threaded through the serializer and ownership resolution paths as an explicit parameter. Stash on request._event_avatar_cache so it composes across the ownership
+  helpers (which take request_host, not serializer.context). Initialize eagerly in EventViewSet.list before get_serializer(...) is called, plus a lazy-initialize fallback in the helpers
+ so unit tests that exercise the helpers directly still work without plumbing the request.
+
+ Keys:
+ - ("file", file_key, request_host) — result of resolving a FileField-backed profile picture.
+ - ("user", user_id, request_host) — result of the full _get_user_avatar priority chain (child picture → social account).
+
+ Helper changes:
+
+ 1. events/serializers.py:96-121 _resolve_profile_picture_avatar:
+   - Stop reading profile_picture.url eagerly. Read .name first. If presign succeeds, return. Only touch .url (wrapped in except (ValueError, SuspiciousFileOperation, Exception)) as a
+ fallback.
+   - Accept optional cache: dict | None parameter. On hit, return cached value. On miss, resolve then store.
+ 2. users/event_ownership.py:75-97 _get_profile_picture_avatar — same two treatments (lazy .url, cache parameter).
+ 3. users/event_ownership.py:100-147 _get_user_avatar:
+   - Accept the same cache parameter. Check cache[("user", user.id, request_host)] first.
+   - Delete the existing setattr(user, "_resolved_event_avatar_url", ...) attribute cache (lines 102-104, 143-145). The unanimous review finding: running both the per-user-object cache
+ and the new request-scoped cache is a future staleness bug because the old attr cache does not include request_host in its key.
+ 4. events/serializers.py:218-287 _serialize_calendar_associated_users — accept and forward cache to _resolve_profile_picture_avatar.
+ 5. users/event_ownership.py:252-325 _resolve_from_calendar and users/event_ownership.py:328-486 resolve_event_ownership — accept and forward cache to both _get_user_avatar and
+ _get_profile_picture_avatar.
+ 6. events/serializers.py:848-898 EventDetailSerializer.get_associated_users and events/serializers.py:330-348 EventOwnershipMixin._get_resolved_ownership — pull cache =
+ getattr(self.context.get("request"), "_event_avatar_cache", None) and thread it into the helpers.
+
+ Initialization: in EventViewSet.list (events/api.py:598), set request._event_avatar_cache = {} before self.get_serializer(...) is called. For paths outside the ViewSet (e.g., direct
+ helper tests), the helpers accept cache=None and silently skip caching.
+
+ No public contract change. Avatar URLs remain presigned URLs from MediaStorageService.generate_presigned_url with the same request_host handling and signature.
+
+ Change 2 — Deferred read hydration for compact paginated list
+
+ Goal: apply the full optimize_event_queryset_for_read graph only to the ~100 rows that will actually be serialized, not the full date-range queryset.
+
+ Shape:
+
+ 1. Refactor get_queryset into a base + optimizer step. Extract a new helper _build_base_event_queryset(self) -> QuerySet[Event] that performs access scope, member filter, family_id
+ filter, date filter, search, internal_calendar filter, and validation-error side-effects — but does NOT call optimize_event_queryset_for_read and does NOT apply .only(...). It returns a
+ queryset ordered by (start_time, id) (the id tiebreaker is an independent correctness fix; see Change 4 below).
+ 2. get_queryset composition. The existing get_queryset calls _build_base_event_queryset, then:
+   - For the compact path (is_compact=True AND self.action == "list"): returns the base queryset with .only(...) applied (for the COUNT+page-id slice step). This queryset does NOT have
+ the optimizer applied.
+   - For every other path (fields=full, retrieve, today, fields=id, fields=id,title, no_page=true): applies optimize_event_queryset_for_read and (if compact) .only(...) exactly as today.
+ Behavior for these paths is unchanged.
+ 3. list hydration step. In events/api.py:707-730, for the compact + paginated + page is not None branch only:
+ with child_span("api.events.list.paginate_response", **trace_attrs) as paginate_span:
+     page = self.paginate_queryset(queryset)  # queryset = .only("id", start_time, ...) base
+     ...
+ if page is not None:
+     page_ids = [e.id for e in page]
+     with child_span("api.events.list.hydrate_page", **trace_attrs) as hydrate_span:
+         base_for_hydration = self._build_base_event_queryset()  # fresh, no .only(), no optimizer
+         hydrated_qs = optimize_event_queryset_for_read(
+             base_for_hydration.filter(id__in=page_ids),
+             user=request.user,
+             include_media=False,  # compact never hydrates media
+         )
+         hydrated_by_id = {event.id: event for event in hydrated_qs}
+         # Preserve page order from the paginator; drop any id that disappeared
+         # between pagination and hydration (race with delete) and log at DEBUG.
+         events = [hydrated_by_id[pk] for pk in page_ids if pk in hydrated_by_id]
+         missing = len(page_ids) - len(events)
+         if missing:
+             logger.debug("Dropped %s events missing from hydration page", missing)
+         set_span_attributes(
+             hydrate_span,
+             page_id_count=len(page_ids),
+             hydrated_event_count=len(events),
+             dropped_event_count=missing,
+         )
+     self._context_events = events
+     with child_span("api.events.list.serialize_response", **trace_attrs):
+         serializer = self.get_serializer(events, many=True)
+         return self.get_paginated_response(serializer.data)
+
+ Critical invariants (every one verified in the review pass):
+
+ - .only() must NOT leak into the hydration queryset. This was the single biggest risk flagged by every reviewer. Django inherits deferred_loading through .filter(...) clones. The
+ hydration query must start from _build_base_event_queryset() which has never had .only() applied, then chain .filter(id__in=page_ids). Do not reach base_queryset.filter(id__in=...) where
+  base_queryset is the already-.only()'d compact queryset.
+ - Access control preservation. _build_base_event_queryset still calls get_accessible_events (core/mixins.py:149-266). The hydration queryset re-applies the same access scope via the
+ filter composition, so the id__in=page_ids filter only narrows, never widens. Do NOT start hydration from Event.objects, Event.secure, or any manager that bypasses the view's access
+ scope. The re-run cost is modest because get_accessible_events caches user_family_ids on the request at core/mixins.py:170-182.
+ - .distinct() behavior. get_accessible_events returns a .distinct() queryset. paginate_queryset uses the built-in Paginator, which calls .count() on the distinct queryset — correct.
+ id__in=page_ids on the distinct base is still distinct and returns at most len(page_ids) rows. Eyeball the generated SQL in dev once to confirm Postgres plans it cleanly.
+ - Pagination metadata. DRF's PageNumberPagination.get_paginated_response(data) reads self.page.paginator.count and self.request to build count, next, previous, and embeds data under
+ "results". It does not re-inspect data. Reordering and hydrating the row list passed to the serializer does not affect count/next/previous. Verified against
+ rest_framework/pagination.py:197-236.
+ - Context events. Set self._context_events = events (hydrated, ordered) BEFORE get_serializer(events, many=True) is called. get_serializer_context reads _context_events during
+ construction and hands the hydrated rows (with prefetched collections attached) to build_event_read_serializer_context.
+ - Action gate: the optimizer-skip branch fires only on self.action == "list" and is_compact. today (events/api.py:1456-1505) does not call get_queryset at all, so it's untouched.
+ retrieve goes through get_queryset but self.action == "retrieve" keeps it on the original path. no_page=true keeps the existing behavior (it evaluates the full queryset once, so a split
+ would hurt rather than help).
+ - Tracing: keep the existing api.events.list.paginate_response, api.events.list.evaluate_queryset, api.events.list.serialize_response spans. Add the new api.events.list.hydrate_page span
+  with page_id_count, hydrated_event_count, dropped_event_count. Add avatar_cache_hits / avatar_cache_misses attributes on the api.events.list.serialize_response span from Change 1 so
+ both wins are visible in the follow-up trace.
+
+ Change 3 — Fill the .only() projection (free win, bundled with Change 1)
+
+ At events/api.py:386-408, add "arrive_by_mode" and "arrive_by_minutes_before_start" to the compact .only(...) list. Both fields are in EventListSerializer.Meta.fields
+ (events/serializers.py:1041-1077) and both are read during get_arrive_by_mode / get_arrive_by_minutes_before_start in the serializer. Without them in .only(), every compact-list row
+ triggers up to two deferred-field SELECT statements. Audit verdict: up to 200 extra queries per 100-event page. One-line fix, same code path.
+
+ Verify by running the compact list against local with django.db.connection.queries before and after.
+
+ Change 4 — Stable ordering tiebreaker (correctness, bundled into PR 2)
+
+ At events/api.py:383, change .order_by("start_time") to .order_by("start_time", "id"). Pre-existing latent bug: two events with identical start_time have undefined Postgres row ordering,
+  which can cause pagination to skip or duplicate rows on page boundaries. Amplified by Change 2 because the split must match ordering between the paginator pass and the hydration set.
+ Cheap insurance. Bundle with PR 2 since that's the PR touching this file.
+
+ Public / Interface Changes
+
+ None. All changes are internal:
+ - Helper signatures gain an optional cache: dict | None parameter.
+ - _serialize_calendar_associated_users, resolve_event_ownership, _resolve_from_calendar, _get_user_avatar, both _*_profile_picture_avatar helpers thread the cache.
+ - A new _build_base_event_queryset method on EventViewSet.
+ - A new api.events.list.hydrate_page span and two new cache attributes on api.events.list.serialize_response.
+
+ No API schema changes. No JSON output changes. No client changes required.
+
+ Critical files
+
+ - events/api.py — get_queryset (180-422), list (598-745), _build_base_event_queryset (new).
+ - events/read_optimization.py — optimize_event_queryset_for_read (79-126) and build_event_read_serializer_context (129-269). Reused unchanged.
+ - events/serializers.py — _resolve_profile_picture_avatar (96-121), _serialize_calendar_associated_users (218-287), EventOwnershipMixin._get_resolved_ownership (330-348),
+ EventDetailSerializer.get_associated_users (~848-898), EventListSerializer (1032-1078).
+ - users/event_ownership.py — _get_profile_picture_avatar (75-97), _get_user_avatar (100-147), _resolve_from_calendar (252-325), resolve_event_ownership (328-486).
+ - events/media_services.py — MediaStorageService.generate_presigned_url (402-442). Read-only reuse.
+ - core/mixins.py — get_accessible_events (149-266) and _event_access_family_ids cache (170-182). Read-only reuse.
+
+ Existing functions to reuse (no reinvention)
+
+ - MediaStorageService.generate_presigned_url — already caches boto3 clients per (endpoint, creds).
+ - optimize_event_queryset_for_read — reused verbatim for the page-hydration step.
+ - build_event_read_serializer_context — reused verbatim; operates on whatever list is in self._context_events.
+ - _associated_user_cache_key — remains valid as a second-level cache inside the serializer. The request cache sits above it.
+ - DRF PageNumberPagination — unchanged. get_paginated_response reads from self.page.paginator.count, not from the row list.
+ - get_accessible_events on EventAccessMixin — reused for both the base queryset and the hydration refetch, preserving access semantics.
+
+ Verification
+
+ 1. Contract preservation (byte-level):
+   - Capture a compact-list JSON response from local before the change.
+   - Run docker compose -f docker-compose.local.yml exec web ./run_tests.sh events/.
+   - Re-capture after each PR. Diff the JSON response. Expect identical shape and field set; only the presigned URL signature segments should differ (they rotate every request by design).
+ 2. Query count regression:
+   - Use django.db.connection.queries around a compact list call in a test to pin the query count. Expect the count to decrease after Change 3 (no more deferred arrive_by loads) and again
+  after Change 2 (no more read-optimized joins on non-page rows). Do NOT accept any per-event query increase.
+ 3. Access control:
+   - Add a test: user A with access to 2 calendars hits the compact list; user B with access to 1 calendar hits the compact list. Verify the response row sets are disjoint where expected
+ and that the hydration queryset respects the same access scope as the base queryset.
+   - Semgrep rule clancal.security.event-objects-bypass-secure-manager must continue to pass. The hydration filter chain starts from _build_base_event_queryset(), which already goes
+ through get_accessible_events.
+ 4. Ordering stability (PR 2):
+   - Seed two events with identical start_time. Page through with page_size=1. Verify every event appears exactly once across pages (pre-existing bug fix per Change 4).
+ 5. Trace diff:
+   - PR 1: look for avatar_cache_hits > 0 on api.events.list.serialize_response.
+   - PR 2: look for api.events.list.hydrate_page with hydrated_event_count == page_size and api.events.query.configure_prefetches duration shorter than today when compact.
+ 6. Unchanged shapes:
+   - Hit fields=id, fields=id,title, no_page=true, fields=full retrieve, and today once each against local. All must return byte-identical output to pre-change.
+ 7. CI:
+   - make format-fix && make lint-fix then the ci-pipeline skill (Dagger + semgrep) must be clean before review.
+
+ Follow-ups surfaced in the review pass (NOT in this plan)
+
+ The wider audit surfaced these independently; each deserves its own issue/PR rather than being bundled here. They are listed so nothing is lost:
+
+ - EventDetailSerializer._geocode_if_needed runs inside get_latitude/get_longitude (events/serializers.py:955-1008) — calls an external geocoding service and does
+ Event.objects.filter(pk=...).update(...) inside a serializer method field during a GET list. latitude and longitude are in the compact field list, so this is reachable from the hot path
+ for any event with a location but no persisted coordinates. Should move to an async backfill or signal on write.
+ - get_member_color double-walks calendar.associated_users relative to _get_resolved_ownership (events/serializers.py:828-846 vs 330-348). Both are on the compact field list; member_color
+  iterates associated users independently instead of reading resolved_colors.member from the already-cached ownership result.
+ - build_event_read_serializer_context issues two family_memberships queries in one call (events/read_optimization.py:152-156 and 246-251) when request._event_access_family_ids is unset.
+ Straightforward dedup.
+ - _associated_users_cache is only per-serializer-instance, not per-request. DRF creates a new child serializer per event in many=True, so the cache never shares across events. Moving
+ this cache to the request (or tying it to the new avatar cache) is a bigger follow-up win.
+ - participating_families constructs a fresh EventParticipationSerializer(many=True) per event. For 100 events × 3 families = 300 serializer instantiations. Not a query problem, but a
+ Python-overhead hot spot.
+ - EventSerializer.get_associated_users (the write serializer variant) has no instance cache. Cold path but worth tidying.
+ - FamilyGroupSerializerLite could use RequestCacheMixin (users/serializers.py:160-189) to dedupe cross-event family serialization.
+
+---
+
+proceed in main is fine
+
+---
+
+continue
