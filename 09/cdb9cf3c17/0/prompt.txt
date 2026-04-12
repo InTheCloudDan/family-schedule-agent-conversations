@@ -1,0 +1,1 @@
+Connext to production ssh dobrien@50.116.58.130 cd family_schedule , why is the production web container in docker-compose failing?
