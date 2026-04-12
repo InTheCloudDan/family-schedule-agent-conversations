@@ -1,0 +1,1 @@
+I committed it but our restart script is not properly disconnecting on production now './scripts/deploy-production.sh full'
