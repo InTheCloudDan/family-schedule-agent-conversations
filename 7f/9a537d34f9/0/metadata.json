@@ -1,0 +1,59 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "7f9a537d34f9",
+  "session_id": "765fb685-64b8-41b2-ac9d-979dfe8a2a37",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-12T10:19:20.96738Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".secrets.baseline",
+    "organize/api.py",
+    "organize/migrations/0004_familytask_recurrence.py",
+    "organize/models.py",
+    "organize/serializers.py",
+    "organize/services.py",
+    "organize/tests.py",
+    "regions/presentation.py",
+    "regions/templates/regions/event_detail.html",
+    "regions/tests/test_event_detail_view.py",
+    "regions/tests/test_event_presentation.py",
+    "regions/tests/test_occurrence_pagination.py",
+    "regions/views.py",
+    "trips/management/commands/backfill_outer_banks_event_details.py",
+    "trips/migrations/0025_regionevent_contact_email_and_more.py",
+    "trips/models.py",
+    "trips/serializers.py",
+    "trips/services/outer_banks_event_detail_hydration.py",
+    "trips/services/region_event_occurrence_query.py",
+    "trips/services/rss_feed_service.py",
+    "trips/tasks.py",
+    "trips/tests/test_outer_banks_event_detail_hydration.py",
+    "trips/tests/test_region_api_views.py",
+    "trips/tests/test_rss_feed_service.py",
+    "trips/tests/test_tasks.py",
+    "trips/views/region_api_views.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-6[1m]",
+  "turn_id": "965842f00091",
+  "token_usage": {
+    "input_tokens": 102,
+    "cache_creation_tokens": 191594,
+    "cache_read_tokens": 7160944,
+    "output_tokens": 21989,
+    "api_call_count": 79
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-12T10:19:20.681706Z",
+    "agent_lines": 0,
+    "human_added": 1918,
+    "human_modified": 51,
+    "human_removed": 0,
+    "total_committed": 1929,
+    "agent_percentage": 0
+  }
+}
