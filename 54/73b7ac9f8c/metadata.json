@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "5473b7ac9f8c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".secrets.baseline",
+    "templates/users/family_invites_monitoring.html",
+    "templates/users/family_management.html",
+    "templates/users/invitations_dashboard.html",
+    "users/tests/test_family_management_workspace.py",
+    "users/views/family_invite_monitoring_views.py",
+    "users/views/family_management_views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/54/73b7ac9f8c/0/metadata.json",
+      "transcript": "/54/73b7ac9f8c/0/full.jsonl",
+      "content_hash": "/54/73b7ac9f8c/0/content_hash.txt",
+      "prompt": "/54/73b7ac9f8c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 21,
+    "cache_creation_tokens": 67929,
+    "cache_read_tokens": 954182,
+    "output_tokens": 3017,
+    "api_call_count": 16
+  }
+}
