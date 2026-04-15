@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "f458e8cd0abd",
+  "session_id": "13b8a7d4-fef0-41f5-9d40-9475b8ca0dd2",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-15T13:15:20.617541Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "events/participation.py",
+    "events/serializers.py",
+    "events/services/participation_resolver.py",
+    "events/tests/test_event_serializer_ownership.py",
+    "events/tests/test_finalized_event_participation.py",
+    "static/css/regions.css",
+    "users/event_ownership.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-6[1m]",
+  "turn_id": "96b9a2a1f3f8",
+  "token_usage": {
+    "input_tokens": 22,
+    "cache_creation_tokens": 151053,
+    "cache_read_tokens": 732676,
+    "output_tokens": 6797,
+    "api_call_count": 12
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-15T13:15:20.421365Z",
+    "agent_lines": 0,
+    "human_added": 414,
+    "human_modified": 293,
+    "human_removed": 0,
+    "total_committed": 425,
+    "agent_percentage": 0
+  }
+}
