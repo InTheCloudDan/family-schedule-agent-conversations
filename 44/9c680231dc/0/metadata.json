@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "449c680231dc",
+  "session_id": "fbe712c9-e230-40f6-961d-c8745d069f3d",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-16T23:14:23.106487Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "events/management/commands/seed_dense_events.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "eb565b8b459d",
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 71529,
+    "cache_read_tokens": 650219,
+    "output_tokens": 2377,
+    "api_call_count": 11
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-16T23:14:22.961444Z",
+    "agent_lines": 0,
+    "human_added": 369,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 369,
+    "agent_percentage": 0
+  }
+}
