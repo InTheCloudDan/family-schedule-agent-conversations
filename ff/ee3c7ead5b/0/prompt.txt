@@ -1,0 +1,5 @@
+align the design of https://app.clancal.com/explore/outer-banks-nc/ and https://app.clancal.com/explore/outer-banks-nc/specials/ I like the filtering of top level page and the header and design of the specials page
+
+---
+
+padding loks off on https://app.clancal.com/explore/outer-banks-nc/ with the pill
