@@ -1,0 +1,7 @@
+--- ruff-format failed (exit 1) ---
+Would reformat: family_agent/tests/test_api.py
+1 file would be reformatted, 1020 files already formatted
+
+that's from dagger CI
+
+Review all of the feedback both inline comments and summary comments and create a plan to address what is accurate and applicable https://github.com/InTheCloudDan/family_schedule/pull/362
