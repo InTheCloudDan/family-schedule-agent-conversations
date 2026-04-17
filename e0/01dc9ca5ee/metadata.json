@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "e001dc9ca5ee",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 16,
+  "files_touched": [
+    ".dagger/.gitattributes",
+    ".dagger/.gitignore",
+    ".dagger/README.md",
+    ".dagger/ci.py",
+    ".dagger/pyproject.toml",
+    ".dagger/requirements.txt",
+    ".dagger/src/family_schedule_ci/__init__.py",
+    ".dagger/src/family_schedule_ci/main.py",
+    "Dockerfile.local",
+    "Makefile",
+    "calendars/tests/test_member_filter_events.py",
+    "calendars/views/month_view.py",
+    "dagger.json",
+    "events/api_views/search.py",
+    "events/services/media_service.py",
+    "events/views.py",
+    "family_scheduler/api.py",
+    "family_scheduler/tests/test_runtime_instrumentation.py",
+    "households/vehicle_vision_service.py",
+    "notifications/services/notification_service.py",
+    "scripts/run-dagger-ci.sh",
+    "static/css/regions.css",
+    "templates/users/network_pending_invites.html",
+    "users/api.py",
+    "users/tests/test_adapters_coverage.py",
+    "users/tests/test_api_coverage.py",
+    "users/tests/test_family_invite_views_coverage.py",
+    "users/tests/test_family_network_views_coverage.py",
+    "users/utils.py",
+    "users/views/family_invite_views.py",
+    "users/views/family_join_request_views.py",
+    "users/views/family_network_views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e0/01dc9ca5ee/0/metadata.json",
+      "transcript": "/e0/01dc9ca5ee/0/full.jsonl",
+      "content_hash": "/e0/01dc9ca5ee/0/content_hash.txt",
+      "prompt": "/e0/01dc9ca5ee/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 210,
+    "cache_creation_tokens": 467760,
+    "cache_read_tokens": 18916878,
+    "output_tokens": 47653,
+    "api_call_count": 117
+  }
+}
