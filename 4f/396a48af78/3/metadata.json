@@ -1,11 +1,12 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "4f396a48af78",
+  "session_id": "85dbe2ec-27ec-43d7-aab9-e2f34c0695c0",
   "strategy": "manual-commit",
+  "created_at": "2026-04-17T14:28:01.989119Z",
   "branch": "dob/agents",
-  "checkpoints_count": 4,
+  "checkpoints_count": 2,
   "files_touched": [
-    ".secrets.baseline",
     "LOCAL_SETUP.md",
     "README.md",
     "ansible/templates/app-conf.env.j2",
@@ -15,9 +16,7 @@
     "core/private_media.py",
     "events/audio_services.py",
     "events/media_services.py",
-    "events/serializers.py",
     "events/tests/test_audio_services.py",
-    "events/tests/test_group_plans_api.py",
     "family_agent/__init__.py",
     "family_agent/api.py",
     "family_agent/apps.py",
@@ -60,37 +59,26 @@
     "users/serializers.py",
     "users/tests/test_feature_settings.py"
   ],
-  "sessions": [
-    {
-      "metadata": "/4f/396a48af78/0/metadata.json",
-      "transcript": "/4f/396a48af78/0/full.jsonl",
-      "content_hash": "/4f/396a48af78/0/content_hash.txt",
-      "prompt": "/4f/396a48af78/0/prompt.txt"
-    },
-    {
-      "metadata": "/4f/396a48af78/1/metadata.json",
-      "transcript": "/4f/396a48af78/1/full.jsonl",
-      "content_hash": "/4f/396a48af78/1/content_hash.txt",
-      "prompt": "/4f/396a48af78/1/prompt.txt"
-    },
-    {
-      "metadata": "/4f/396a48af78/2/metadata.json",
-      "transcript": "/4f/396a48af78/2/full.jsonl",
-      "content_hash": "/4f/396a48af78/2/content_hash.txt",
-      "prompt": "/4f/396a48af78/2/prompt.txt"
-    },
-    {
-      "metadata": "/4f/396a48af78/3/metadata.json",
-      "transcript": "/4f/396a48af78/3/full.jsonl",
-      "content_hash": "/4f/396a48af78/3/content_hash.txt",
-      "prompt": "/4f/396a48af78/3/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "f21f621c38d1",
   "token_usage": {
-    "input_tokens": 187,
-    "cache_creation_tokens": 587378,
-    "cache_read_tokens": 12237755,
-    "output_tokens": 53655,
-    "api_call_count": 133
+    "input_tokens": 67,
+    "cache_creation_tokens": 202693,
+    "cache_read_tokens": 5277733,
+    "output_tokens": 32596,
+    "api_call_count": 47
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-17T14:28:01.677293Z",
+    "agent_lines": 3220,
+    "human_added": 4767,
+    "human_modified": 400,
+    "human_removed": 0,
+    "total_committed": 8179,
+    "agent_percentage": 39.369116028854386
   }
 }

@@ -1,0 +1,5 @@
+There's a race condition on the Groups -> Meta page for Planner, when  you first load the page even if the flag should be on for the family it doesn't correctly show, but if you jump from that Tab to another one and back then it correctly renders
+
+---
+
+what are you doing now?
