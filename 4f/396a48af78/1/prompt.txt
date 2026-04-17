@@ -1,0 +1,1 @@
+if I run 'docker compose -f docker-compose.local.yml down && docker compose -f docker-compose.local.yml up -d' with env vars in .env.local get successfully updated?
