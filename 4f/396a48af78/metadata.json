@@ -5,18 +5,29 @@
   "branch": "dob/agents",
   "checkpoints_count": 2,
   "files_touched": [
+    ".secrets.baseline",
+    "LOCAL_SETUP.md",
     "README.md",
+    "ansible/templates/app-conf.env.j2",
     "calendars/api.py",
     "config/flagd/config.json",
+    "core/fields.py",
+    "core/private_media.py",
     "events/audio_services.py",
     "events/media_services.py",
+    "events/serializers.py",
     "events/tests/test_audio_services.py",
+    "events/tests/test_group_plans_api.py",
     "family_agent/__init__.py",
     "family_agent/api.py",
     "family_agent/apps.py",
+    "family_agent/attachment_vision.py",
     "family_agent/feature_flags.py",
+    "family_agent/json_utils.py",
     "family_agent/migrations/0001_initial.py",
     "family_agent/migrations/0002_remove_familyagentthread_unique_active_family_agent_thread_per_family_and_more.py",
+    "family_agent/migrations/0003_familyagentmessageattachment_and_more.py",
+    "family_agent/migrations/0004_alter_familyagentproposal_proposal_type.py",
     "family_agent/migrations/__init__.py",
     "family_agent/models.py",
     "family_agent/runtime.py",
@@ -42,6 +53,7 @@
     "organize/tests.py",
     "recipes/services.py",
     "requirements.txt",
+    "scripts/import-app-env-to-ansible.py",
     "trips/views/api_views.py",
     "users/feature_settings.py",
     "users/migrations/0040_familyfeaturesettings_agent_enabled.py",
@@ -60,13 +72,19 @@
       "transcript": "/4f/396a48af78/1/full.jsonl",
       "content_hash": "/4f/396a48af78/1/content_hash.txt",
       "prompt": "/4f/396a48af78/1/prompt.txt"
+    },
+    {
+      "metadata": "/4f/396a48af78/2/metadata.json",
+      "transcript": "/4f/396a48af78/2/full.jsonl",
+      "content_hash": "/4f/396a48af78/2/content_hash.txt",
+      "prompt": "/4f/396a48af78/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 46,
-    "cache_creation_tokens": 184566,
-    "cache_read_tokens": 1274848,
-    "output_tokens": 5889,
-    "api_call_count": 22
+    "input_tokens": 120,
+    "cache_creation_tokens": 384685,
+    "cache_read_tokens": 6960022,
+    "output_tokens": 21059,
+    "api_call_count": 86
   }
 }
