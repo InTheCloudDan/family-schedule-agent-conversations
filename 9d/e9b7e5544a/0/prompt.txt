@@ -1,0 +1,5 @@
+Connect to production 'ssh -J root@ns1000377.tail2142fe.ts.net -o StrictHostKeyChecking=no ubuntu@10.10.20.10' and get the family IDs for Daniel O'Brien family dobrien.nj@gmail.com and Kevin O'Brien Family and add them to the production ai-agent feature flag
+
+---
+
+yes that is the correct flag family-planner-agent-enabled
