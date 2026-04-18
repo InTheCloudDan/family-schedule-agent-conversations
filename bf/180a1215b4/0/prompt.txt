@@ -1,0 +1,5 @@
+fix 
+events/screenshot_api.py:201: error: Incompatible type for lookup 'family_id': (got "str", expected "FamilyGroup | UUID | None")  [misc]
+events/screenshot_api.py:201: note: Error code "misc" not covered by "type: ignore" comment
+events/screenshot_api.py:311: error: Incompatible type for lookup 'family_id': (got "str", expected "FamilyGroup | UUID | None")  [misc]
+Found 2 errors in 1 file (checked 2 source files)
