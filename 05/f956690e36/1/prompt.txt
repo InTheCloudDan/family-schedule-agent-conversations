@@ -1,0 +1,10 @@
+Spin up multiple subagents with deep Principal level experience to review the uncommitted code from multiple directions. There's also this additional info: """One gap to keep in mind: I didn’t find a dedicated appliance-vision test, and I didn’t run a notifications-specific test file beyond the shared suites above, so those paths are covered by the abstraction swap and indirect verification rather than a direct service test. The changes are currently uncommitted in the existing main worktree.
+
+
+
+
+"""
+
+---
+
+fix the found issues. The config in Ansible secrets is fine, that is the existing pattern

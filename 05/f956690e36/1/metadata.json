@@ -1,24 +1,20 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "05f956690e36",
+  "session_id": "5972a7b3-a069-484b-87c8-383da147b8c8",
   "strategy": "manual-commit",
+  "created_at": "2026-04-18T00:11:45.00383Z",
   "branch": "main",
   "checkpoints_count": 4,
   "files_touched": [
     ".env.example",
-    "Dockerfile.litellm-proxy",
     "README.md",
     "ansible/templates/app-conf.env.j2",
-    "ansible/vars/secrets.yml",
-    "config/litellm.proxy.local.yaml",
-    "docker-compose.local.yml",
-    "events/api.py",
     "events/audio_services.py",
     "events/media_services.py",
     "events/tests/test_audio_services.py",
     "family_agent/attachment_vision.py",
     "family_agent/runtime.py",
-    "family_agent/tests/test_attachment_vision.py",
     "family_agent/tests/test_runtime.py",
     "family_scheduler/ai_client.py",
     "family_scheduler/apps.py",
@@ -29,13 +25,8 @@
     "households/appliance_vision_service.py",
     "households/tests/test_appliance_vision_service.py",
     "households/vehicle_vision_service.py",
-    "notifications/migrations/0013_alter_notification_notification_type_and_more.py",
-    "notifications/models.py",
-    "notifications/routing.py",
-    "notifications/services/notification_service.py",
     "notifications/tasks.py",
     "notifications/test_weekly_digest_task.py",
-    "notifications/tests.py",
     "notifications/urls.py",
     "organize/services.py",
     "organize/tests.py",
@@ -44,25 +35,26 @@
     "scripts/import-app-env-to-ansible.py",
     "scripts/import-app-env-to-ansible.test.sh"
   ],
-  "sessions": [
-    {
-      "metadata": "/05/f956690e36/0/metadata.json",
-      "transcript": "/05/f956690e36/0/full.jsonl",
-      "content_hash": "/05/f956690e36/0/content_hash.txt",
-      "prompt": "/05/f956690e36/0/prompt.txt"
-    },
-    {
-      "metadata": "/05/f956690e36/1/metadata.json",
-      "transcript": "/05/f956690e36/1/full.jsonl",
-      "content_hash": "/05/f956690e36/1/content_hash.txt",
-      "prompt": "/05/f956690e36/1/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "794a74427037",
   "token_usage": {
-    "input_tokens": 15341,
-    "cache_creation_tokens": 377681,
-    "cache_read_tokens": 11953129,
-    "output_tokens": 49477,
-    "api_call_count": 118
+    "input_tokens": 15247,
+    "cache_creation_tokens": 236253,
+    "cache_read_tokens": 3278469,
+    "output_tokens": 28668,
+    "api_call_count": 29
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-18T00:11:44.760132Z",
+    "agent_lines": 590,
+    "human_added": 1163,
+    "human_modified": 204,
+    "human_removed": 0,
+    "total_committed": 1865,
+    "agent_percentage": 31.63538873994638
   }
 }
