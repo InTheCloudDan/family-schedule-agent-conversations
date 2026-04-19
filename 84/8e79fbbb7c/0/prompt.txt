@@ -2,3 +2,16 @@ fix ERROR: Potential secrets about to be committed to git repo!
 
 Secret Type: Secret Keyword
 Location:    events/tests/test_nearby_restaurants_view.py:97
+
+---
+
+ERROR: Potential secrets about to be committed to git repo!
+
+Secret Type: Secret Keyword
+Location:    events/tests/test_nearby_restaurants_view.py:98
+
+Possible mitigations:
+  - For information about putting your secrets in a safer place, please ask in
+    #security
+  - Mark false positives with an inline `pragma: allowlist secret`
+    comment
