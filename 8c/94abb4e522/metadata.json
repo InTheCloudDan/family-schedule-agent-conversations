@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "8c94abb4e522",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "family_agent/runtime.py",
+    "family_agent/tests/test_runtime.py",
+    "family_agent/tests/test_tool_adapter.py",
+    "family_agent/tool_adapter.py",
+    "family_scheduler/client_app.py",
+    "family_scheduler/tests/test_client_app_labels.py",
+    "mobile/migrations/0004_alter_mobiledevice_client_app_and_more.py",
+    "mobile/models.py",
+    "mobile/serializers.py",
+    "mobile/tests/test_desktop_login.py",
+    "notifications/migrations/0014_alter_devicetoken_client_app.py",
+    "organize/api.py",
+    "organize/serializers.py",
+    "organize/services.py",
+    "organize/tests.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8c/94abb4e522/0/metadata.json",
+      "transcript": "/8c/94abb4e522/0/full.jsonl",
+      "content_hash": "/8c/94abb4e522/0/content_hash.txt",
+      "prompt": "/8c/94abb4e522/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 24,
+    "cache_creation_tokens": 134325,
+    "cache_read_tokens": 524469,
+    "output_tokens": 2152,
+    "api_call_count": 10
+  }
+}

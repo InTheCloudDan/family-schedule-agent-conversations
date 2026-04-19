@@ -1,0 +1,6 @@
+fix         HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.UserProfile: (clancal.W001) Model 'UserProfile' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+Migrations for 'notifications':
+  notifications/migrations/0014_alter_devicetoken_client_app.py
+    ~ Alter field client_app on devicetoken
