@@ -1,0 +1,4 @@
+fix ERROR: Potential secrets about to be committed to git repo!
+
+Secret Type: Secret Keyword
+Location:    events/tests/test_nearby_restaurants_view.py:97

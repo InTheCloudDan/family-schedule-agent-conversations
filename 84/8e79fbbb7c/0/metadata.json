@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "848e79fbbb7c",
+  "session_id": "e6843f21-88e9-464f-afd9-c07e878432df",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-19T03:38:22.974233Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".secrets.baseline",
+    "events/api.py",
+    "events/places.py",
+    "events/tests/test_nearby_restaurants_view.py",
+    "family_agent/api.py",
+    "family_agent/migrations/0005_familyagentmessage_action_suggestions_json.py",
+    "family_agent/models.py",
+    "family_agent/proposal_types.py",
+    "family_agent/runtime.py",
+    "family_agent/serializers.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_agent_location_tools.py",
+    "family_agent/tests/test_api.py",
+    "family_agent/tests/test_runtime.py",
+    "family_agent/tests/test_tasks.py",
+    "family_agent/tool_adapter.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "a6d8a33ed676",
+  "token_usage": {
+    "input_tokens": 28,
+    "cache_creation_tokens": 100837,
+    "cache_read_tokens": 701306,
+    "output_tokens": 2247,
+    "api_call_count": 13
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-19T03:38:22.863536Z",
+    "agent_lines": 0,
+    "human_added": 646,
+    "human_modified": 41,
+    "human_removed": 0,
+    "total_committed": 648,
+    "agent_percentage": 0
+  }
+}
