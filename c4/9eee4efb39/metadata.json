@@ -3,13 +3,18 @@
   "checkpoint_id": "c49eee4efb39",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 4,
   "files_touched": [
     ".secrets.baseline",
     "FRAME_RUNBOOK.md",
     "config/flagd/config.production.json",
+    "family_agent/api.py",
+    "family_agent/tests/test_api.py",
+    "family_scheduler/desktop_response_cache.py",
     "mobile/tests/test_desktop_google_auth_flow.py",
     "mobile/views.py",
+    "organize/api.py",
+    "organize/tests.py",
     "recipes/api.py",
     "recipes/serializers.py"
   ],
@@ -19,13 +24,19 @@
       "transcript": "/c4/9eee4efb39/0/full.jsonl",
       "content_hash": "/c4/9eee4efb39/0/content_hash.txt",
       "prompt": "/c4/9eee4efb39/0/prompt.txt"
+    },
+    {
+      "metadata": "/c4/9eee4efb39/1/metadata.json",
+      "transcript": "/c4/9eee4efb39/1/full.jsonl",
+      "content_hash": "/c4/9eee4efb39/1/content_hash.txt",
+      "prompt": "/c4/9eee4efb39/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 33,
-    "cache_creation_tokens": 128197,
-    "cache_read_tokens": 1012239,
-    "output_tokens": 2642,
-    "api_call_count": 18
+    "input_tokens": 60,
+    "cache_creation_tokens": 198051,
+    "cache_read_tokens": 2037909,
+    "output_tokens": 6097,
+    "api_call_count": 35
   }
 }
