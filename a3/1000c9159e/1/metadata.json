@@ -1,9 +1,11 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "a31000c9159e",
+  "session_id": "5ff440ad-479c-4957-80c8-f91c6de65151",
   "strategy": "manual-commit",
+  "created_at": "2026-04-26T21:36:17.944066Z",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 2,
   "files_touched": [
     "calendars/api.py",
     "calendars/migrations/0018_calendar_connections_and_safe_imports.py",
@@ -23,25 +25,26 @@
     "family_scheduler/celery.py",
     "famstream/tasks.py"
   ],
-  "sessions": [
-    {
-      "metadata": "/a3/1000c9159e/0/metadata.json",
-      "transcript": "/a3/1000c9159e/0/full.jsonl",
-      "content_hash": "/a3/1000c9159e/0/content_hash.txt",
-      "prompt": "/a3/1000c9159e/0/prompt.txt"
-    },
-    {
-      "metadata": "/a3/1000c9159e/1/metadata.json",
-      "transcript": "/a3/1000c9159e/1/full.jsonl",
-      "content_hash": "/a3/1000c9159e/1/content_hash.txt",
-      "prompt": "/a3/1000c9159e/1/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "138b1b1c4aad",
   "token_usage": {
-    "input_tokens": 5389,
-    "cache_creation_tokens": 226491,
-    "cache_read_tokens": 9064061,
-    "output_tokens": 31503,
-    "api_call_count": 81
+    "input_tokens": 5359,
+    "cache_creation_tokens": 178732,
+    "cache_read_tokens": 7796832,
+    "output_tokens": 27549,
+    "api_call_count": 61
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-26T21:36:17.03783Z",
+    "agent_lines": 0,
+    "human_added": 2436,
+    "human_modified": 28,
+    "human_removed": 0,
+    "total_committed": 2436,
+    "agent_percentage": 0
   }
 }
