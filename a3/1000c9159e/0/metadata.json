@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "a31000c9159e",
+  "session_id": "1c4396aa-93e0-4dfc-919b-e7bc8d0a84d8",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-26T21:36:17.004101Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "calendars/api.py",
+    "calendars/migrations/0018_calendar_connections_and_safe_imports.py",
+    "calendars/models.py",
+    "calendars/serializers.py",
+    "calendars/services/apple_caldav.py",
+    "calendars/tasks.py",
+    "calendars/tests/test_calendar_safety_and_connections.py",
+    "calendars/tests/test_import_settings.py",
+    "calendars/tests/test_provider_sync_completion.py",
+    "calendars/views/import_settings_views.py",
+    "events/models.py",
+    "events/search.py",
+    "events/signals.py",
+    "events/test_event_search_api.py",
+    "family_scheduler/api.py",
+    "family_scheduler/celery.py",
+    "famstream/tasks.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "652aa0a14202",
+  "token_usage": {
+    "input_tokens": 30,
+    "cache_creation_tokens": 47759,
+    "cache_read_tokens": 1267229,
+    "output_tokens": 3954,
+    "api_call_count": 20
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-26T21:36:16.731923Z",
+    "agent_lines": 2455,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2455,
+    "agent_percentage": 100
+  }
+}
