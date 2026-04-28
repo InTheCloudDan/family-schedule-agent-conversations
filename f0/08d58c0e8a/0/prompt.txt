@@ -1,0 +1,13 @@
+/simplify and /review
+
+---
+
+fix and rewire so we have consistency
+
+---
+
+are there other spots that should be audited for the UTC TZ issues or did the semgrep run catch any possible issues?
+
+---
+
+fix all of the issues and add more semgrep if it'll help
