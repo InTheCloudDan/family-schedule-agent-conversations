@@ -3,7 +3,7 @@
   "checkpoint_id": "24dc2bdef55e",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 6,
   "files_touched": [
     ".semgrep/clancal-rules.yml",
     "CLAUDE.md",
@@ -35,13 +35,19 @@
       "transcript": "/24/dc2bdef55e/1/full.jsonl",
       "content_hash": "/24/dc2bdef55e/1/content_hash.txt",
       "prompt": "/24/dc2bdef55e/1/prompt.txt"
+    },
+    {
+      "metadata": "/24/dc2bdef55e/2/metadata.json",
+      "transcript": "/24/dc2bdef55e/2/full.jsonl",
+      "content_hash": "/24/dc2bdef55e/2/content_hash.txt",
+      "prompt": "/24/dc2bdef55e/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 63,
-    "cache_creation_tokens": 134823,
-    "cache_read_tokens": 2687606,
-    "output_tokens": 12517,
-    "api_call_count": 40
+    "input_tokens": 261,
+    "cache_creation_tokens": 218288,
+    "cache_read_tokens": 5472336,
+    "output_tokens": 28197,
+    "api_call_count": 73
   }
 }
