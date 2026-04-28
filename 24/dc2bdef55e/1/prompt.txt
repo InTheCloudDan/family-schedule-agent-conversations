@@ -1,0 +1,52 @@
+fix the blocking issues 
+    frames/services.py
+   ❯❯❱ semgrep.clancal.timezone.fromtimestamp-without-tz
+          ❰❰ Blocking ❱❱
+          datetime.fromtimestamp() without tz uses the process local timezone. Pass tz=timezone.utc or the
+          explicit provider/user/region timezone.
+
+           77┆ expiry = timezone.make_aware(datetime.fromtimestamp(int(refresh_token["exp"])))
+
+    mobile/api.py
+   ❯❯❱ semgrep.clancal.timezone.fromtimestamp-without-tz
+          ❰❰ Blocking ❱❱
+          datetime.fromtimestamp() without tz uses the process local timezone. Pass tz=timezone.utc or the
+          explicit provider/user/region timezone.
+
+          732┆ datetime.fromtimestamp(int(refresh["exp"]))
+
+    notifications/management/commands/monitor_email_rate.py
+   ❯❯❱ semgrep.clancal.timezone.naive-datetime-constructor
+          ❰❰ Blocking ❱❱
+          Naive datetime/date constructor used in backend code. Use django.utils.timezone.now(),
+          datetime.now(timezone.utc), or an explicit local date/timezone helper depending on whether this
+          value is an instant or a local calendar day.
+
+           67┆ self.stdout.write(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]")
+
+    payments/services/stripe_service.py
+   ❯❯❱ semgrep.clancal.timezone.fromtimestamp-without-tz
+          ❰❰ Blocking ❱❱
+          datetime.fromtimestamp() without tz uses the process local timezone. Pass tz=timezone.utc or the
+          explicit provider/user/region timezone.
+
+           33┆ period_start = datetime.fromtimestamp(item["current_period_start"])
+            ⋮┆----------------------------------------
+           34┆ period_end = datetime.fromtimestamp(item["current_period_end"])
+            ⋮┆----------------------------------------
+          146┆ datetime.fromtimestamp(stripe_subscription.trial_end)
+            ⋮┆----------------------------------------
+          444┆ datetime.fromtimestamp(stripe_invoice["period_start"])
+            ⋮┆----------------------------------------
+          447┆ datetime.fromtimestamp(stripe_invoice["period_end"])
+
+    users/forms/service_forms.py
+   ❯❯❱ semgrep.clancal.timezone.naive-datetime-constructor
+          ❰❰ Blocking ❱❱
+          Naive datetime/date constructor used in backend code. Use django.utils.timezone.now(),
+          datetime.now(timezone.utc), or an explicit local date/timezone helper depending on whether this
+          value is an instant or a local calendar day.
+
+          166┆ start_datetime = datetime.combine(datetime.today(), start_time)
+            ⋮┆----------------------------------------
+          167┆ end_datetime = datetime.combine(datetime.today(), end_time)
