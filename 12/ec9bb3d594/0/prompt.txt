@@ -403,3 +403,7 @@ continue
 ---
 
 continue
+
+---
+
+implement number 2, and 3, then merge in all of the worktrees to the main directory
