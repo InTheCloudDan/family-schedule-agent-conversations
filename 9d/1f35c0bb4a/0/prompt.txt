@@ -1,0 +1,219 @@
+does our deployment script no longer work as expected because I'm not seeing the logs, It's hanging on === Pulling application images ===
+[+] pull 6/6
+ ✔ Image intheclouddan/family_schedule:d853a684d5bd Pulled                              1.2s
+
+=== Capturing current web container ===
+Old web containers: efbf5006380200ab091c9dce68a0f08d352d021f7a10a8fd5d9edadba0ba173a
+
+=== Starting replacement web container ===
+[+] up 2/2
+ ✔ Container family_schedule-web-1 Running                                              0.0s
+ ✔ Container family_schedule-web-2 Started
+
+---
+
+ok it's still sitting there, so does that mean it's not healthy? I have no knowledge of what's happening
+
+---
+
+=== Pulling application images ===
+[+] pull 6/6
+ ✔ Image intheclouddan/family_schedule:d853a684d5bd Pulled                              1.2s
+
+=== Capturing current web container ===
+Old web containers: efbf5006380200ab091c9dce68a0f08d352d021f7a10a8fd5d9edadba0ba173a
+
+=== Starting replacement web container ===
+[+] up 2/2
+ ✔ Container family_schedule-web-1 Running                                              0.0s
+ ✔ Container family_schedule-web-2 Started                                              0.4s
+
+---
+
+Seeing this now  Container family_schedule-web-1 Running                                              0.0s
+ ✔ Container family_schedule-web-2 Started                                              0.4s
+
+Timed out waiting for 2 healthy web container(s).
+NAME                    IMAGE                                        COMMAND                  SERVICE   CREATED         STATUS                         PORTS
+family_schedule-web-1   intheclouddan/family_schedule:fafc33acac2d   "/bin/bash /app/dock…"   web       22 hours ago    Up 22 hours (healthy)          8000/tcp
+family_schedule-web-2   intheclouddan/family_schedule:d853a684d5bd   "/bin/bash /app/dock…"   web       3 minutes ago   Restarting (1) 3 seconds ago
+web-1  | WARNING 2026-04-30 13:29:55,419 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,440 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,448 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,470 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,502 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,520 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,527 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | INFO 2026-04-30 13:29:55,541 event_ingest request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 Updating same-source near-duplicate 'Bingo' using existing event 509
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 111, in wrapper
+web-2  |     res = handle_func(*args, **kwargs)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/commands/migrate.py", line 114, in handle
+web-2  |     executor = MigrationExecutor(connection, self.migration_progress_callback)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/executor.py", line 18, in __init__
+web-2  |     self.loader = MigrationLoader(self.connection)
+web-2  |                   ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/loader.py", line 59, in __init__
+web-2  |     self.build_graph()
+web-2  |     ~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/loader.py", line 288, in build_graph
+web-2  |     self.applied_migrations = recorder.applied_migrations()
+web-2  |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/recorder.py", line 89, in applied_migrations
+web-2  |     if self.has_table():
+web-2  |        ~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/recorder.py", line 63, in has_table
+web-2  |     with self.connection.cursor() as cursor:
+web-1  | WARNING 2026-04-30 13:29:55,542 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,549 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | INFO 2026-04-30 13:29:55,562 event_ingest request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 Updating same-source near-duplicate 'Live Music with Morgan Hudson' using existing event 510
+web-1  | WARNING 2026-04-30 13:29:55,564 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,570 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | INFO 2026-04-30 13:29:55,583 event_ingest request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 Updating same-source near-duplicate 'Live Music with Morgan Hudson' using existing event 510
+web-1  | WARNING 2026-04-30 13:29:55,585 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,591 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | INFO 2026-04-30 13:29:55,605 event_ingest request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 Updating same-source near-duplicate 'Live Music with Morgan Hudson' using existing event 510
+web-1  | WARNING 2026-04-30 13:29:55,606 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,613 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,631 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,639 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,659 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,666 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | INFO 2026-04-30 13:29:55,679 event_ingest request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 Updating same-source near-duplicate 'Live Music with Morgan Hudson' using existing event 517
+web-1  | WARNING 2026-04-30 13:29:55,681 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | WARNING 2026-04-30 13:29:55,688 region_calendar_service request_id=68732dc6-1b9b-467d-a7de-d1aadf7e8e40 RegionCalendar 1 has no internal_calendar, skipping sync
+web-1  | 2026-04-30 13:31:18,523 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 13:31:18,523 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 13:43:44,857 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 13:43:44,857 log request_id=- Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 14:30:02,608 log request_id=- Not Found: /robots.txt
+web-2  |          ~~~~~~~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/utils/asyncio.py", line 26, in inner
+web-2  |     return func(*args, **kwargs)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/base/base.py", line 320, in cursor
+web-2  |     return self._cursor()
+web-2  |            ~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/dummy/base.py", line 21, in complain
+web-2  |     raise ImproperlyConfigured(
+web-2  |     ...<3 lines>...
+web-2  |     )
+web-2  | django.core.exceptions.ImproperlyConfigured: settings.DATABASES is improperly configured. Please supply the ENGINE value. Check settings documentation for more details.
+web-2  | Migration failed. Exiting.
+web-2  | Starting Django application...
+web-2  | Running database migrations...
+web-2  | Traceback (most recent call last):
+web-2  |   File "/app/manage.py", line 51, in <module>
+web-2  |     main()
+web-2  |     ~~~~^^
+web-2  |   File "/app/manage.py", line 47, in main
+web-2  |     execute_from_command_line(sys.argv)
+web-2  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/__init__.py", line 443, in execute_from_command_line
+web-2  |     utility.execute()
+web-2  |     ~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/__init__.py", line 437, in execute
+web-2  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+web-2  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 420, in run_from_argv
+web-2  |     self.execute(*args, **cmd_options)
+web-2  |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+web-1  | 2026-04-30 14:30:02,608 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 14:31:26,502 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 14:31:26,502 - django.request - WARNING - Not Found: /robots.txt
+web-1  | 2026-04-30 14:32:12,863 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 14:32:12,863 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 15:07:29,620 - django.request - WARNING - Unauthorized: /api/famstream/
+web-1  | WARNING 2026-04-30 15:07:29,620 log request_id=- Unauthorized: /api/famstream/
+web-1  | WARNING 2026-04-30 15:07:29,623 log request_id=- Unauthorized: /api/notifications/unread_count/
+web-1  | 2026-04-30 15:07:29,623 - django.request - WARNING - Unauthorized: /api/notifications/unread_count/
+web-1  | WARNING 2026-04-30 15:07:29,623 log request_id=- Unauthorized: /api/notifications/unread_count/
+web-1  | 2026-04-30 15:07:29,623 - django.request - WARNING - Unauthorized: /api/notifications/unread_count/
+web-1  | 2026-04-30 15:07:29,626 - django.request - WARNING - Unauthorized: /api/famstream/
+web-1  | WARNING 2026-04-30 15:07:29,626 log request_id=- Unauthorized: /api/famstream/
+web-1  | 2026-04-30 15:07:29,755 - django.request - WARNING - Unauthorized: /api/events/
+web-1  | WARNING 2026-04-30 15:07:29,755 log request_id=- Unauthorized: /api/events/
+web-1  | 2026-04-30 15:07:30,144 - events.geocoding - INFO - Skipping geocoding for known failing address: AWAY...
+web-1  | 2026-04-30 15:07:30,158 - events.geocoding - INFO - Skipping geocoding for known failing address: AWAY...
+web-1  | WARNING 2026-04-30 15:07:30,415 log request_id=- Not Found: /null
+web-1  | 2026-04-30 15:07:30,415 - django.request - WARNING - Not Found: /null
+web-1  | 2026-04-30 15:07:30,992 - django.request - WARNING - Not Found: /null
+web-1  | WARNING 2026-04-30 15:07:30,992 log request_id=- Not Found: /null
+web-1  | WARNING 2026-04-30 15:19:56,880 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 15:19:56,880 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 15:31:57,012 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 15:31:57,012 - django.request - WARNING - Not Found: /robots.txt
+web-1  | 2026-04-30 16:08:39,953 - django.request - WARNING - Not Found: /robots.txt
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 464, in execute
+web-2  |     output = self.handle(*args, **options)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 111, in wrapper
+web-2  |     res = handle_func(*args, **kwargs)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/commands/migrate.py", line 114, in handle
+web-1  | WARNING 2026-04-30 16:08:39,953 log request_id=- Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 16:33:27,101 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 16:33:27,101 - django.request - WARNING - Not Found: /robots.txt
+web-1  | 2026-04-30 16:34:40,799 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 16:34:40,799 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 16:57:35,770 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 16:57:35,770 log request_id=- Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 17:33:37,800 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 17:33:37,800 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 17:46:01,638 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 17:46:01,638 - django.request - WARNING - Not Found: /robots.txt
+web-1  | 2026-04-30 17:55:18,348 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 17:55:18,348 log request_id=- Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 18:18:35,567 log request_id=- Unauthorized: /api/families/
+web-1  | 2026-04-30 18:18:35,567 - django.request - WARNING - Unauthorized: /api/families/
+web-1  | WARNING 2026-04-30 18:18:35,692 log request_id=- Unauthorized: /api/users/me/
+web-1  | 2026-04-30 18:18:35,692 - django.request - WARNING - Unauthorized: /api/users/me/
+web-1  | WARNING 2026-04-30 18:32:56,781 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 18:32:56,781 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 18:33:46,207 log request_id=- Not Found: /robots.txt
+web-1  | 2026-04-30 18:33:46,207 - django.request - WARNING - Not Found: /robots.txt
+web-1  | WARNING 2026-04-30 18:41:10,906 log request_id=- Not Found: /@fs/proc/self/environ
+web-2  |     executor = MigrationExecutor(connection, self.migration_progress_callback)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/executor.py", line 18, in __init__
+web-2  |     self.loader = MigrationLoader(self.connection)
+web-2  |                   ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/loader.py", line 59, in __init__
+web-2  |     self.build_graph()
+web-2  |     ~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/loader.py", line 288, in build_graph
+web-2  |     self.applied_migrations = recorder.applied_migrations()
+web-2  |                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/recorder.py", line 89, in applied_migrations
+web-2  |     if self.has_table():
+web-2  |        ~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/recorder.py", line 63, in has_table
+web-2  |     with self.connection.cursor() as cursor:
+web-2  |          ~~~~~~~~~~~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/utils/asyncio.py", line 26, in inner
+web-2  |     return func(*args, **kwargs)
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/base/base.py", line 320, in cursor
+web-2  |     return self._cursor()
+web-2  |            ~~~~~~~~~~~~^^
+web-2  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/dummy/base.py", line 21, in complain
+web-2  |     raise ImproperlyConfigured(
+web-2  |     ...<3 lines>...
+web-2  |     )
+web-2  | django.core.exceptions.ImproperlyConfigured: settings.DATABASES is improperly configured. Please supply the ENGINE value. Check settings documentation for more details.
+web-2  | Migration failed. Exiting.
+web-1  | 2026-04-30 18:41:10,906 - django.request - WARNING - Not Found: /@fs/proc/self/environ
+Connection to 10.10.20.10 closed.
+
+---
+
+connect to production for read only and you can determine it: ssh -J root@ns1000377.tail2142fe.ts.net -o StrictHostKeyChecking=no ubuntu@10.10.20.10 && cd family_schedule
+
+---
+
+did you make the changes locally? When I do a full deployment it will git clone the latest repo
+
+---
+
+✔ Container family-scheduler-redis-exporter Started                                    6.2s
+ ✘ Container family-scheduler-celery-worker  Error dependency celery_worker faile...   30.1s
+ ✔ Container family-scheduler-nginx          Started                                    5.7s
+ ✔ Container family-scheduler-celery-beat    Created                                    0.0s
+ ✔ Container family-scheduler-certbot        Started                                    5.9s
+ ✔ Container family-scheduler-nginx-exporter Started                                    5.9s
+dependency failed to start: container family-scheduler-celery-worker is unhealthy
+Connection to 10.10.20.10 closed.
