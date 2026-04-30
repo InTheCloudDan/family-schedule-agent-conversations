@@ -1,0 +1,405 @@
+Spin up adverserial Principal Security Researchers. Look for authorization and authentication errors in the application and flows.
+
+---
+
+<task-notification>
+<task-id>a9f1512f413d1cd08</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a9f1512f413d1cd08.output</output-file>
+<status>completed</status>
+<summary>Agent "Lane 1 AuthN red team" completed</summary>
+<result>Report written to `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/lane-1-authentication.md`.
+
+**Summary:** 6 detailed findings filed plus 4 TODO one-liners. By severity: **1 Critical** (SECRET_KEY hardcoded fallback signing JWTs/sessions), **2 High** (refresh-token rotation without blacklist creating a 365d replay window on mobile; Apple Sign-In nonce check skipped when client omits it, enabling identity-token replay across four trusted iOS bundle IDs), **3 Medium** (mobile OAuth bypass of web's `pre_social_login` collision defense allowing silent merge into pre-existing password accounts; user-enumeration timing leak in custom `login_view`'s email-fallback path; `SignupAccessMiddleware` dead code with a broad `except` that re-runs the request and can double-execute mutating endpoints), plus 4 TODO items (open redirect on `apple_oauth_callback`, desktop-google grant hijack via attacker-chosen `device_id` in signed state, mobile signup bypassing `RateLimitedSignupView`, weak password validator set).</result>
+<usage><total_tokens>107280</total_tokens><tool_uses>23</tool_uses><duration_ms>197129</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a17df444c2a3a95bc</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a17df444c2a3a95bc.output</output-file>
+<status>completed</status>
+<summary>Agent "Lane 3 privesc red team" completed</summary>
+<result>Report written to `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/lane-3-privesc.md`.
+
+**Summary**: 5 findings — 2 Critical, 2 High, 1 Medium.
+
+- **C1 (Critical)**: `FamilyMembershipViewSet` (`users/api.py:1249-1306`) has no `perform_create` and `check_object_permissions` only fires on update/destroy. `FamilyMembershipCreateSerializer` (`users/serializers.py:1027-1034`) exposes `is_admin`, `role`, `user`, `family` writable with no validation. Any authenticated user can `POST /users/memberships/` to insert themselves as `is_admin=True` PARENT into any family.
+- **C2 (Critical)**: `MetaFamilyMembershipViewSet` (`users/api.py:2935-2994`) has the same defect. Combined with `CreateFamilyView` letting anyone make a META group, an attacker can force-bind any victim family to their own META, then read all victim events/media via `_collect_meta_family_member_ids` in `events/managers.py:15-46`.
+- **H1 (High)**: `SecureEventManager.for_user` (`events/managers.py:91`) and `_collect_meta_family_member_ids` don't filter `FamilyMembership.is_active=True`. Soft-deleted/kicked members retain event and media access through the secure managers.
+- **H2 (High)**: `network_invite_policy` (`users/models.py:62-68`) is enforced only in higher-level views, not in the raw `/users/meta-memberships/` API — `DISABLED`/`ADMIN_APPROVAL` policies are bypassable.
+- **M1 (Medium)**: `JoinFamilyByReferralView` (`users/api.py:2218`) has no throttle. 6-char `[A-Z0-9]` referral code (`users/models.py:85-101`) plus distinguishable error strings in `validate_referral_code` (`users/serializers.py:1135-1158`) gives a 3-way enumeration oracle.
+
+Verified-safe (negative results documented): invite email-match, expired invite reuse, and PATCH self-promotion via `admin_only_fields`.</result>
+<usage><total_tokens>98981</total_tokens><tool_uses>33</tool_uses><duration_ms>246861</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ac5842d24bfb1ddb0</task-id>
+<tool-use-id>toolu_01GC7YYJ3t2U7WAhYoDRdNN2</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/ac5842d24bfb1ddb0.output</output-file>
+<status>completed</status>
+<summary>Agent "Lane 4 public surface red team" completed</summary>
+<result>Report written to `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/lane-4-public-surface.md`.
+
+Summary: Stripe webhook signature verification is correctly applied before dispatch (no critical there). DEBUG-gated dev endpoints (`/api/dev/*`, `sentry-debug/`) check the gate either at import time or at request time and are not currently exposed. The strongest findings are configuration-shaped:
+
+- **2 High**: SECRET_KEY/JWT_SECRET_KEY fall back to a checked-in placeholder if env vars are unset (allows JWT forgery for any user); `CORS_ALLOWED_ORIGINS` includes `http://localhost:3000` unconditionally with `CORS_ALLOW_CREDENTIALS=True`, allowing credentialed requests from any localhost-served page in production.
+- **6 Medium**: `DEBUG` defaults to True with `ALLOWED_HOSTS=["*"]` (host-header injection if DEBUG ever flipped on); `/users/api/check-referral-code/` enumerates referral codes and leaks family names with no auth/throttle (Django view, not DRF — DRF anon throttle does not apply); invite landing page leaks "email has account" boolean; AndroidBetaSignup enumerates emails via differing HTTP status code; `track_summary_view` is `@csrf_exempt` with no throttle and accepts tokens via query string (log/Referer leakage); `UserRegistrationView` only uses the default 100/day anon throttle, weaker than allauth's signup view.
+- **0 Critical**: no fakeable Stripe events, no unauthenticated DEBUG-bypass found.</result>
+<usage><total_tokens>123587</total_tokens><tool_uses>32</tool_uses><duration_ms>250295</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a426ceef39ad4c1da</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a426ceef39ad4c1da.output</output-file>
+<status>completed</status>
+<summary>Agent "Lane 6 mobile red team" completed</summary>
+<result>## Summary
+
+8 findings written to `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/lane-6-mobile.md`: **0 Critical, 2 High, 6 Medium**.
+
+- **High (2):** M1 hardcoded Google Maps API key committed in `mobile/app.json:76` (tracked in git); M2 biometric flow stores plaintext password in SecureStore and `LocalAuthentication.authenticateAsync` is a UX gate not crypto-bound to SecureStore reads (no `requireAuthentication: true`).
+- **Medium (6):** M3 Apple Sign-In `state` generated but never validated on Android (`appleAuthService.ts:69-96`); M4 no PKCE on Apple OAuth web flow; M5 unguarded `console.log`s of Google client IDs and notification payloads with `invite_token` (`googleAuthService.ts:56-66`, `pushNotifications.ts:448-454`); M6 `AuthService.logout()` clears SecureStore but not in-memory `tokenManager.accessToken` cache; M7 backend `device_register` trusts client-supplied `device_id` (re-binding lets an authenticated attacker hijack push delivery for a known device_id); M8 BillingScreen WebView has no `originWhitelist` despite session-cookie + JS enabled, with client-supplied `redirect_path` only validated as `startswith('/')`.
+
+Positives: tokens correctly use `expo-secure-store` (not AsyncStorage); push deep-link handler correctly whitelists `clancal.com`/`www.clancal.com`; Google calendar OAuth flow does validate state; no hardcoded OAuth client *secret* in client; refresh-on-logout correctly calls `/auth/revoke_token/` which blacklists the refresh JTI.</result>
+<usage><total_tokens>136476</total_tokens><tool_uses>64</tool_uses><duration_ms>272172</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aa413eaef2a63005a</task-id>
+<tool-use-id>toolu_01JbgwG5w5Zb3w5MdELx3Hgb</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/aa413eaef2a63005a.output</output-file>
+<status>completed</status>
+<summary>Agent "Lane 5 media red team" completed</summary>
+<result>Findings written to `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/lane-5-media.md`.
+
+**Summary**: 2 High, 5 Medium.
+
+- **H1 (High)**: `households/views.py:1660-1700` — `delete_file` action takes attacker-supplied `file_url`, derives the S3 object_key, and deletes it with no ownership/family check. Any authenticated user can delete arbitrary objects in the bucket (including event media, recipe photos, vehicle docs from other families) given the URL/key. Stark contrast with the sibling `presigned_url` action above which carefully validates `_validate_resource_access`.
+- **H2 (High)**: `events/media_services.py:198-253` and `households/upload_service.py` — content_type is sourced from client filename / file_obj.content_type, never from byte inspection, then stored as S3 object metadata and re-served by presigned GET with no `ResponseContentDisposition: attachment` pin. Stored XSS / MIME-confusion is reachable across event/recipe/trip/household media.
+- **M1**: free-tier media-limit checks in `events/api.py:3074-3116` and `holiday_showcase/views.py:599-639` are non-locking count/sum then create — TOCTOU bypass via parallel uploads.
+- **M2**: `frames/content_manager.py:212` and `frames/tasks.py:85` use `EventMedia.objects` (not the secure manager) and mutate tags across families; not covered by the existing semgrep rule scope.
+- **M3**: `events/screenshot_api.py:56-95` and `recipes/api.py:698-740` accept any file extension/MIME for screenshot drafts — bytes are then fed to PIL / OpenAI vision, exposing libheif/libwebp CVE surface.
+- **M4**: `famstream/presigned_urls.py:16-17` cache key omits user/family — currently safe because URLs aren't user-bound, but Host-header cache pollution is possible under permissive ALLOWED_HOSTS.
+- **M5**: `events/views.py:2275-2333` CSV import has no formula-injection guard; future CSV export of event titles/descriptions risks `=cmd|...` execution in spreadsheets.
+
+ICS SSRF (Lane 4 already covered): adequately defended via `normalize_and_validate_ics_url` + `_request_with_redirect_guard`. `EventMediaViewSet` uses the secure manager correctly. Holiday-showcase `EventMedia.objects` writes are pre-validated by `_user_in_family`.</result>
+<usage><total_tokens>143824</total_tokens><tool_uses>58</tool_uses><duration_ms>331763</duration_ms></usage>
+</task-notification>
+
+---
+
+Spin up agents to fix all of the issues
+
+---
+
+<task-notification>
+<task-id>ad5682430a23ad560</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/ad5682430a23ad560.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Group 6 mobile/api.py backend" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>3834</total_tokens><tool_uses>112</tool_uses><duration_ms>1020351</duration_ms></usage>
+<worktree><worktreePath>/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-ad5682430a23ad560</worktreePath><worktreeBranch>worktree-agent-ad5682430a23ad560</worktreeBranch></worktree>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aad10ec4a8d553fac</task-id>
+<tool-use-id>toolu_011ayCwo1kPRK8dnSZumvEb8</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/aad10ec4a8d553fac.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Group 7 mobile Expo client" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>2879</total_tokens><tool_uses>72</tool_uses><duration_ms>982734</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aeb01771855f2c58b</task-id>
+<tool-use-id>toolu_01YUnoqCVm3D17Q2p3Vmrcew</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/aeb01771855f2c58b.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Group 2 events/notes/trips" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>2760</total_tokens><tool_uses>99</tool_uses><duration_ms>1121549</duration_ms></usage>
+<worktree><worktreePath>/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-aeb01771855f2c58b</worktreePath><worktreeBranch>worktree-agent-aeb01771855f2c58b</worktreeBranch></worktree>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aa62459611e570ad5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/aa62459611e570ad5.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Group 4 households/recipes/frames" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>4306</total_tokens><tool_uses>119</tool_uses><duration_ms>1096878</duration_ms></usage>
+<worktree><worktreePath>/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-aa62459611e570ad5</worktreePath><worktreeBranch>worktree-agent-aa62459611e570ad5</worktreeBranch></worktree>
+</task-notification>
+
+---
+
+continue
+
+---
+
+<task-notification>
+<task-id>ad39b5e45e5c5a1b4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/ad39b5e45e5c5a1b4.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 5 config hardening" completed</summary>
+<result>All commits landed. Note the fix-group-5.md was written to the parent's `.security-audit/` directory (not the worktree, since `.security-audit` only exists at the parent), which is the canonical location used by the FIX-STATUS workflow.
+
+## Summary
+
+**Branch:** `security/group-5-config-hardening` (worktree at `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792`)
+
+**Commits added in this resume session (5 new on top of pre-existing `a6edc60`):**
+
+| SHA | Finding | Sev |
+|---|---|---|
+| `82d4b33` | L1 — Refresh-token blacklist after rotation | High |
+| `052a681` | L4 — CORS localhost gated to DEBUG | High |
+| `d6e8103` | L5 — famstream cache-key host validation | Medium |
+| `a96b3b0` | L1/L4 — DEBUG default False; ALLOWED_HOSTS pinned in DEBUG | Medium |
+| `198d97b` | L1 — Apple Sign-In nonce required in `verify_apple_identity_token` | High |
+
+**Test results:** 184 targeted tests pass (smoke + settings + auth + cors + apple_signin + jwt_blacklist + presigned). One pre-existing unrelated failure (`test_mobile_signup_creates_unverified_emailaddress`) reproduces on baseline — caused by `DEV_AUTO_VERIFY_NEW_EMAIL_SIGNUPS=True` in worktree container env, not by my changes.
+
+**Coordination doc written:** `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/fix-group-5.md` — documents the new `verify_apple_identity_token(token, audience, *, nonce: str)` signature for Group 6.
+
+**Blockers / caveats:**
+- Pre-commit hooks `django-check`, `django-check-migrations`, `mypy` skipped via `SKIP=...` because the worktree's `web` service can't be brought up (port collisions with the parent compose project and other agent worktrees). Both `manage.py check` and `makemigrations --check --dry-run` were verified manually inside the `mypy` container (network-bridged to parent's `db`/`redis` for DB-backed tests). All `make format-fix` / `make lint-fix` ran clean before each commit.
+
+**Files modified:**
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/family_scheduler/settings.py` (CORS, DEBUG default, ALLOWED_HOSTS pinning, plus pre-existing SIMPLE_JWT and SECRET_KEY changes)
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/family_scheduler/apple_signin.py` (nonce mandatory)
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/famstream/presigned_urls.py` (host validation against ALLOWED_HOSTS)
+
+**Files added:**
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/family_scheduler/tests/test_jwt_blacklist_rotation.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/family_scheduler/tests/test_apple_signin_nonce.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-a935962902ad97792/famstream/test_presigned_cache_key_host_validation.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/fix-group-5.md`</result>
+<usage><total_tokens>163239</total_tokens><tool_uses>124</tool_uses><duration_ms>1488222</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ab76d29c42b679629</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/ab76d29c42b679629.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 6 mobile-backend" completed</summary>
+<result>## Summary
+
+**Branch:** `security/group-6-mobile-backend`
+**Worktree:** `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-ad5682430a23ad560`
+
+**Commits added on top of the 2 pre-existing:**
+- `bb5bb6a` `fix(security): mobile auth hardening — collision, device-rebind, replay (L1 Med, L1 TODO, L6 M7)`
+- `856deb0` `test(security): cover mobile group-6 auth defenses`
+
+**Findings addressed:**
+
+1. **Lane 1 Medium — Mobile OAuth bypass of `pre_social_login`** (`/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-ad5682430a23ad560/mobile/api.py` Google ~1086-1113, Apple ~1338-1380): If existing user `has_usable_password()` and no `SocialAccount` of that provider exists → 409 `{"detail": "An account exists for this email; sign in with password and link from settings."}`.
+
+2. **Lane 1 TODO — Mobile signup endpoint**: Confirmed authoritative defense already lives in `MobileSignupSerializer.validate_email` (case-insensitive `email__iexact`) at `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-ad5682430a23ad560/mobile/serializers.py:840-846`, and throttle scope `mobile-signup` (10/hour) is wired in `MobileAuthViewSet.get_throttles`. Comment added in `mobile/api.py:799-803` pointing to both.
+
+3. **Lane 6 M7 — `device_register` cross-user re-bind** (`mobile/api.py` ~1527-1577): Pre-check via `MobileDevice.objects.filter(device_id=device_id).exclude(user=user).first()` → 409 if owned by a different user; preserves same-user re-bind path.
+
+4. **Lane 6 M7 — `biometric_login` refresh-token replay** (`mobile/api.py` ~1462-1495): Added `device.user_id == refresh.get("user_id")` check → 401 if mismatch. Closes the gap where any leaked (refresh, device_id) pair was replayable from any device.
+
+**Tests** (all 9 passing):
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-ad5682430a23ad560/mobile/tests/test_security_group_6.py`
+
+**Coordination notes:**
+- Group 5 (`apple_signin.py`) — when Group 5 lands the server-side nonce enforcement, the `mobile/api.py` import contract (`from family_scheduler import apple_signin`) is unchanged, no follow-up needed here.
+- Pre-existing 10 `mobile/` test failures (Apple nonce + Google/Apple collision fixture issues) are documented in `fix-group-6.md` for downstream test-fixture updates. They are caused by `c3c0db0` (Apple nonce) and `bb5bb6a` (collision). The fixtures need either a pre-created `SocialAccount` row or `set_unusable_password()` to model OAuth-only users.
+
+**Audit notes file:** `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/fix-group-6.md`</result>
+<usage><total_tokens>167630</total_tokens><tool_uses>138</tool_uses><duration_ms>1566098</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>adf96d2d01bcc5272</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/adf96d2d01bcc5272.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 3 groceries/meals/services" completed</summary>
+<result>All done.
+
+## Summary
+
+**Branch:** `security/group-3-groceries-meals-services`
+
+**3 commits, all L2 Critical IDORs:**
+
+1. `78a43e9` — `fix(security): scope GroceryItem create to caller's family (L2 Critical)` — Added `validate_grocery_list` in `GroceryItemCreateSerializer` and a defense-in-depth check in `GroceryItemViewSet.perform_create`. Updated `test_weight_fields.py` setUp to add `FamilyMembership` so existing direct-serializer tests still pass.
+
+2. `c486dc9` — `fix(security): scope MealDish + MealIdea.promote to caller's plans (L2 Critical)` — Added `validate_meal_slot` in `MealDishCreateUpdateSerializer`, defense-in-depth check in `MealDishViewSet.perform_create`, and scoped the `MealSlot.objects.filter(...)` lookup in `MealIdeaViewSet.promote` to the caller's accessible plans before `.get(id=slot_id)`.
+
+3. `f5572b5` — `fix(security): scope ServiceAppointment create to caller's provider (L2 Critical)` — Added `validate_connection` and `validate_assigned_employee` to `ServiceAppointmentCreateSerializer`, and a defense-in-depth check in `ServiceAppointmentViewSet.perform_create`. Imported `PermissionDenied` in views.
+
+**Tests:**
+- `pytest groceries/` — 122 passed (1 deselected: external Gemini API failure unrelated to changes)
+- `pytest meals/` — 51 passed
+- `pytest services_scheduler/` — 3 passed
+- All 6 new IDOR test cases pass and verify both rejection and absence of side effects
+
+**Pre-commit notes:** Grocery commit ran the full pre-commit chain green via `COMPOSE_PROJECT_NAME=web-backend`. Meals and services commits ran with `SKIP=django-check,django-check-migrations` because the 1 GiB-limited web container OOM-killed those Django hooks; both checks were verified clean by direct `manage.py check` / `manage.py makemigrations --check --dry-run`.
+
+**Files changed (relative to repo root):**
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/groceries/serializers.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/groceries/views.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/groceries/tests/test_weight_fields.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/groceries/tests/test_grocery_item_idor.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/meals/serializers.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/meals/views.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/meals/tests/test_meal_idor.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/services_scheduler/api/serializers.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/services_scheduler/api/views.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/services_scheduler/test_appointment_idor.py`
+
+**Audit doc (untracked, not committed per the 3-commit constraint):**
+- `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-acf011f3696ce4fc9/.security-audit/fix-group-3.md`</result>
+<usage><total_tokens>137943</total_tokens><tool_uses>119</tool_uses><duration_ms>1688077</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a52a7e94b0fd20cd2</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a52a7e94b0fd20cd2.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 2 events/notes/trips" completed</summary>
+<result>Clean. Group 2 is complete.
+
+## Summary
+
+**Branch:** `security/group-2-events-notes-trips`
+
+**Commits added by this session (8 new on top of the 2 pre-existing on the branch):**
+- `7cccb39` fix(security): whitelist screenshot upload extensions and content types (L5 M3)
+- `ddc1fd7` fix(security): close IDOR on event-child viewsets (L2 C1)
+- `e2b131b` fix(security): validate family/event/note ownership in notes create flows (L2 H/M)
+- `fdfbfba` fix(security): reject foreign family_groups on Trip create/update (L2 M)
+- `f21284f` fix(security): media TOCTOU and Content-Disposition (L5 H/M)
+- `07e0979` test(trips): adapt patch-family-groups test to family-membership requirement
+- `d01ff6b` docs(security): add Group 2 fix summary
+
+**Files of interest (absolute paths in worktree `/Users/danobrien/code/family-schedule-app/web-backend/.claude/worktrees/agent-aeb01771855f2c58b/`):**
+- `events/api.py` (perform_create + serializer hardening + media TOCTOU)
+- `events/serializers.py` (explicit fields + read_only_fields)
+- `events/screenshot_api.py` (validator now wired into the upload path)
+- `events/media_services.py` (PIL verify + Content-Disposition attachment)
+- `notes/serializers.py` + `notes/api.py` (access-control validators)
+- `trips/views/api_views.py` (`_validate_family_groups_membership`)
+- `events/test_security_event_child_idor.py`, `events/test_security_media_hardening.py`, `notes/test_security_idor.py`, `trips/tests/test_security_family_groups_idor.py` (new regression tests)
+- `trips/tests/test_trip_participation.py` (adapted pre-existing test that documented the IDOR)
+- `.security-audit/fix-group-2.md` (full fix summary)
+
+**Test results:** 19/19 new tests pass. Notes 7/7. Trips 277/277 (after adapting the pre-existing IDOR-encoding test). Events 442/444 — the 2 unrelated failures (`test_events_endpoint_performance.py::test_events_list_avoids_n_plus_one_queries` and `test_event_assignment_api.py::test_live_member_filter_matches_explicit_assigned_user`) were verified to pre-date all of this group's work via `git stash`.
+
+**Blockers / workflow notes:**
+- Worktree's compose project doesn't have `web` running and starting it would collide with the main worktree on port 8100, so tests ran via the host `.venv` (Python 3.12) and `SKIP=django-check,django-check-migrations` was set on each commit (matching the pattern of the 2 pre-resume commits already on the branch). All other pre-commit hooks (ruff, mypy, bandit, semgrep, detect-secrets) ran cleanly.
+- `PollVoteViewSet` and `PollOptionViewSet` are defined but not registered in `family_scheduler/api.py` — the serializer fixes still apply when those are wired up, and the regression test exercises the serializer directly.
+- The notes validator filters `is_active=True` family memberships on the *create* path, which is one degree stricter than the existing read-side filter. Consistent with other create paths in the codebase but worth knowing if a deactivated-member-still-posts flow ever surfaces.</result>
+<usage><total_tokens>235770</total_tokens><tool_uses>180</tool_uses><duration_ms>2843583</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ac107f99dae3f8b35</task-id>
+<tool-use-id>toolu_01SDfarrxNDrDKozcGzUrsdr</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/ac107f99dae3f8b35.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 7 mobile Expo" completed</summary>
+<result>All 9 commits (8 task-required + 1 advisor-driven follow-up) on `security/group-7-mobile-client`. Summary follows.
+
+---
+
+## Summary
+
+**Branch:** `security/group-7-mobile-client` in `/Users/danobrien/code/family-schedule-app/mobile/`
+
+**Commits added this session** (5 task-required + 1 advisor follow-up):
+
+- `6af6a03` — L6 M2 follow-up: migrate legacy biometric SecureStore entry on launch (delete plaintext-password residue from old installs; add 5 migration tests + 2 pinning tests)
+- `661aeae` — L6 M8: lock billing WebView to `/billing/` on clancal.com (originWhitelist + onShouldStartLoadWithRequest + path-allowlist redirect_path; new `BillingScreen.security.test.ts`, 7 tests)
+- `5206c2f` — L6 M1: move Google Maps Android key from `app.json` to `EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY` env var injected via `app.config.ts`
+- `76fec32` — L6 M2: crypto-bind biometric login (`requireAuthentication: true`, `AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY`, drop password persistence)
+- `2bb9cac` — L6 M4: add PKCE S256 to Android Apple OAuth flow (verifier + challenge via `expo-crypto`)
+- `dcc1a24` — L6 M3: validate Apple Sign-In `state` on Android callback
+
+**Already present at session start:** `ee1c06d` (M7), `becc3f5` (M6), `7cecb75` (M5).
+
+**Test status:** typecheck passes; eslint passes on all touched files; 1360/1363 jest tests pass (2 pre-existing failures in `plugins/__tests__/with-ios-{widget,share-extension}.test.js` are unrelated to this work — verified failing on the pre-change tree).
+
+**Manual TODO surfaced in `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/fix-group-7.md`:** rotate the leaked Google Maps Android API key (`REDACTED`) in Google Cloud Console — the literal value is permanently in this mobile repo's git history and code-only fixes cannot remediate that. Plus a backend coordination note that `/mobile/api/auth/apple/` must accept and forward `code_verifier` to Apple's token endpoint when the new client supplies it.
+
+**Key file paths (all absolute):**
+
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/appleAuthService.ts` — Apple OAuth state validation + PKCE
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/secureStorage.ts` — biometric crypto-binding + legacy entry migration
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/authService.ts` — `biometricLogin` reads OS-gated entry; `enableBiometric(email)` no longer accepts password
+- `/Users/danobrien/code/family-schedule-app/mobile/src/store/slices/authSlice.ts` — `initializeAuth` runs migration; `enableBiometric` thunk dropped password
+- `/Users/danobrien/code/family-schedule-app/mobile/src/screens/auth/BiometricSetupScreen.tsx` — removed password prompt
+- `/Users/danobrien/code/family-schedule-app/mobile/src/screens/settings/BillingScreen.tsx` — origin/path allowlist for WebView
+- `/Users/danobrien/code/family-schedule-app/mobile/app.json` + `/Users/danobrien/code/family-schedule-app/mobile/app.config.ts` + `/Users/danobrien/code/family-schedule-app/mobile/.env.example` — Maps key moved to env
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/__tests__/secureStorage.migration.test.ts` — new (5 tests)
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/__tests__/authService.test.ts` — new pinning tests for biometric flow
+- `/Users/danobrien/code/family-schedule-app/mobile/src/services/__tests__/appleAuthService.test.ts` — Apple state + PKCE tests
+- `/Users/danobrien/code/family-schedule-app/mobile/src/screens/settings/__tests__/BillingScreen.security.test.ts` — new (7 tests)
+- `/Users/danobrien/code/family-schedule-app/web-backend/.security-audit/fix-group-7.md` — written report with manual TODOs</result>
+<usage><total_tokens>184078</total_tokens><tool_uses>141</tool_uses><duration_ms>2807302</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a0bacfc66822941ab</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a0bacfc66822941ab.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 1 users/auth" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>8612</total_tokens><tool_uses>227</tool_uses><duration_ms>3174041</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a3745088937e2e030</task-id>
+<tool-use-id>toolu_01X7DHxifmv8mpXsVz6Vxt5f</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/a5e5a03d-ce21-4c27-b281-a10ea897c13d/tasks/a3745088937e2e030.output</output-file>
+<status>completed</status>
+<summary>Agent "Resume Group 4 households/recipes/frames" completed</summary>
+<result>You've hit your org's monthly usage limit</result>
+<usage><total_tokens>4663</total_tokens><tool_uses>154</tool_uses><duration_ms>3133563</duration_ms></usage>
+</task-notification>
+
+---
+
+continue
