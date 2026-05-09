@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "13bc651dae4e",
+  "session_id": "078bcfb5-0c48-4e4a-bc07-906c0d5b0d50",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-09T01:22:18.731499Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "calendars/models.py",
+    "calendars/tests/test_import_settings.py",
+    "calendars/views/import_settings_views.py",
+    "notifications/admin.py",
+    "notifications/management/commands/report_onboarding_emails.py",
+    "notifications/test_onboarding_emails.py",
+    "templates/calendars/_imported_visibility_alert.html",
+    "templates/calendars/external_detail.html",
+    "templates/calendars/import_ics.html"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "0c5c7451d73c",
+  "token_usage": {
+    "input_tokens": 1228,
+    "cache_creation_tokens": 117689,
+    "cache_read_tokens": 3559322,
+    "output_tokens": 17980,
+    "api_call_count": 38
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-09T01:22:18.459514Z",
+    "agent_lines": 4,
+    "human_added": 424,
+    "human_modified": 28,
+    "human_removed": 0,
+    "total_committed": 445,
+    "agent_percentage": 0.8988764044943821
+  }
+}
