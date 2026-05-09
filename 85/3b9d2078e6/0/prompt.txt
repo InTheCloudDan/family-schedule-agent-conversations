@@ -1,0 +1,1 @@
+Analyze and fix the CI issues on https://github.com/InTheCloudDan/family_schedule/actions/runs/25590933518/job/75128402284?pr=366 and push to the branch
