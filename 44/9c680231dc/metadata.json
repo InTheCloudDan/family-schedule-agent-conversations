@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "449c680231dc",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "events/management/commands/seed_dense_events.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/44/9c680231dc/0/metadata.json",
+      "transcript": "/44/9c680231dc/0/full.jsonl",
+      "content_hash": "/44/9c680231dc/0/content_hash.txt",
+      "prompt": "/44/9c680231dc/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 71529,
+    "cache_read_tokens": 650219,
+    "output_tokens": 2377,
+    "api_call_count": 11
+  }
+}

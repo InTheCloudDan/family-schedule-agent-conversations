@@ -1,0 +1,9 @@
+I'm still having issues with the hero image, take a look at it in the browser https://app.clancal.com/explore/outer-banks-nc/specials/
+
+---
+
+looks like it reloaded now might have been stale but it still looks bad
+
+---
+
+Re logged in to browser, but this is also running on production not local docker which is why you need to use chrome look at the page, if you need to check docker on prod:  ssh -J root@ns1000377.tail2142fe.ts.net -o StrictHostKeyChecking=no ubuntu@10.10.20.10 && cd family_schedule for docker compose

@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "ae6c4c220a26",
+  "session_id": "a5e5a03d-ce21-4c27-b281-a10ea897c13d",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-30T22:29:39.811719Z",
+  "branch": "main",
+  "checkpoints_count": 10,
+  "files_touched": [
+    ".dagger/src/family_schedule_ci/main.py",
+    ".pre-commit-config.yaml",
+    "core/private_media.py",
+    "events/managers.py",
+    "events/media_services.py",
+    "events/templatetags/event_extras.py",
+    "events/tests/test_event_media_suggestion_notifications.py",
+    "family_scheduler/granian.py",
+    "family_scheduler/tests/test_jwt_blacklist_rotation.py",
+    "notes/templatetags/note_extras.py",
+    "notifications/tasks.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "d5c6659146ff",
+  "token_usage": {
+    "input_tokens": 9852,
+    "cache_creation_tokens": 2789746,
+    "cache_read_tokens": 57116854,
+    "output_tokens": 156430,
+    "api_call_count": 214
+  },
+  "session_metrics": {
+    "turn_count": 28
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-30T22:29:38.643698Z",
+    "agent_lines": 182,
+    "human_added": 8,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 191,
+    "agent_percentage": 95.28795811518324
+  }
+}

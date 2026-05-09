@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "24dc2bdef55e",
+  "session_id": "fba013cd-9115-42b2-b60c-5ab52579f14e",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-28T00:55:04.203161Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".semgrep/clancal-rules.yml",
+    "calendars/migrations/0019_calendar_uniform_template.py",
+    "calendars/models.py",
+    "calendars/serializers.py",
+    "calendars/uniforms.py",
+    "core/timezone.py",
+    "events/migrations/0041_event_uniform.py",
+    "events/models.py",
+    "events/serializers.py",
+    "events/tests/test_event_uniforms.py",
+    "organize/serializers.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "8c757c05720e",
+  "token_usage": {
+    "input_tokens": 1472,
+    "cache_creation_tokens": 338414,
+    "cache_read_tokens": 18973809,
+    "output_tokens": 60261,
+    "api_call_count": 133
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-28T00:55:03.179122Z",
+    "agent_lines": 641,
+    "human_added": 27,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 668,
+    "agent_percentage": 95.95808383233533
+  }
+}

@@ -1,0 +1,1 @@
+/semgrep:setup-semgrep-plugin

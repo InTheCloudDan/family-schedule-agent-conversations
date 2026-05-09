@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "a31000c9159e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "calendars/api.py",
+    "calendars/migrations/0018_calendar_connections_and_safe_imports.py",
+    "calendars/models.py",
+    "calendars/serializers.py",
+    "calendars/services/apple_caldav.py",
+    "calendars/tasks.py",
+    "calendars/tests/test_calendar_safety_and_connections.py",
+    "calendars/tests/test_import_settings.py",
+    "calendars/tests/test_provider_sync_completion.py",
+    "calendars/views/import_settings_views.py",
+    "events/models.py",
+    "events/search.py",
+    "events/signals.py",
+    "events/test_event_search_api.py",
+    "family_scheduler/api.py",
+    "family_scheduler/celery.py",
+    "famstream/tasks.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a3/1000c9159e/0/metadata.json",
+      "transcript": "/a3/1000c9159e/0/full.jsonl",
+      "content_hash": "/a3/1000c9159e/0/content_hash.txt",
+      "prompt": "/a3/1000c9159e/0/prompt.txt"
+    },
+    {
+      "metadata": "/a3/1000c9159e/1/metadata.json",
+      "transcript": "/a3/1000c9159e/1/full.jsonl",
+      "content_hash": "/a3/1000c9159e/1/content_hash.txt",
+      "prompt": "/a3/1000c9159e/1/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 5389,
+    "cache_creation_tokens": 226491,
+    "cache_read_tokens": 9064061,
+    "output_tokens": 31503,
+    "api_call_count": 81
+  }
+}

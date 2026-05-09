@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "e001dc9ca5ee",
+  "session_id": "b8fea18d-c76e-4e50-8d14-2382c7774168",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-17T19:56:14.042266Z",
+  "branch": "main",
+  "checkpoints_count": 8,
+  "files_touched": [
+    ".dagger/.gitattributes",
+    ".dagger/README.md",
+    ".dagger/ci.py",
+    ".dagger/pyproject.toml",
+    ".dagger/requirements.txt",
+    "Dockerfile.local",
+    "Makefile",
+    "calendars/tests/test_member_filter_events.py",
+    "dagger.json",
+    "households/vehicle_vision_service.py",
+    "notifications/services/notification_service.py",
+    "scripts/run-dagger-ci.sh",
+    "static/css/regions.css"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "898d703df002",
+  "token_usage": {
+    "input_tokens": 930,
+    "cache_creation_tokens": 266366,
+    "cache_read_tokens": 10195900,
+    "output_tokens": 35471,
+    "api_call_count": 67
+  },
+  "session_metrics": {
+    "turn_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-17T19:56:13.743301Z",
+    "agent_lines": 0,
+    "human_added": 4911,
+    "human_modified": 727,
+    "human_removed": 0,
+    "total_committed": 4911,
+    "agent_percentage": 0
+  }
+}

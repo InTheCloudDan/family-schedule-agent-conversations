@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "28eadfae2b00",
+  "session_id": "bfa22869-3165-4e71-b4d0-b028afb26968",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-30T23:01:45.744717Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docker-compose.yml",
+    "family_scheduler/utils/observability.py",
+    "scripts/deploy-production.sh"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "5fd5f76fa8e9",
+  "token_usage": {
+    "input_tokens": 138,
+    "cache_creation_tokens": 178337,
+    "cache_read_tokens": 11290308,
+    "output_tokens": 54306,
+    "api_call_count": 99
+  },
+  "session_metrics": {
+    "turn_count": 7
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-30T23:01:45.540348Z",
+    "agent_lines": 19,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 19,
+    "agent_percentage": 100
+  }
+}

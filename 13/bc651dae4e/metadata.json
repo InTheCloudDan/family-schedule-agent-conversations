@@ -1,0 +1,58 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "13bc651dae4e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 9,
+  "files_touched": [
+    ".secrets.baseline",
+    "calendars/google_calendar_api.py",
+    "calendars/google_calendar_exceptions.py",
+    "calendars/migrations/0020_bump_ical_url_max_length.py",
+    "calendars/models.py",
+    "calendars/serializers.py",
+    "calendars/tests/test_import_settings.py",
+    "calendars/views/external_calendar_views.py",
+    "calendars/views/import_settings_views.py",
+    "events/tasks.py",
+    "family_scheduler/settings.py",
+    "notifications/admin.py",
+    "notifications/management/commands/report_onboarding_emails.py",
+    "notifications/services/notification_service.py",
+    "notifications/tasks.py",
+    "notifications/test_onboarding_emails.py",
+    "regions/views.py",
+    "templates/calendars/_imported_visibility_alert.html",
+    "templates/calendars/external_detail.html",
+    "templates/calendars/import_ics.html",
+    "trips/services/business_listing_google_enrichment.py",
+    "trips/services/region_event_place_enrichment.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/13/bc651dae4e/0/metadata.json",
+      "transcript": "/13/bc651dae4e/0/full.jsonl",
+      "content_hash": "/13/bc651dae4e/0/content_hash.txt",
+      "prompt": "/13/bc651dae4e/0/prompt.txt"
+    },
+    {
+      "metadata": "/13/bc651dae4e/1/metadata.json",
+      "transcript": "/13/bc651dae4e/1/full.jsonl",
+      "content_hash": "/13/bc651dae4e/1/content_hash.txt",
+      "prompt": "/13/bc651dae4e/1/prompt.txt"
+    },
+    {
+      "metadata": "/13/bc651dae4e/2/metadata.json",
+      "transcript": "/13/bc651dae4e/2/full.jsonl",
+      "content_hash": "/13/bc651dae4e/2/content_hash.txt",
+      "prompt": "/13/bc651dae4e/2/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 1538,
+    "cache_creation_tokens": 644302,
+    "cache_read_tokens": 28176518,
+    "output_tokens": 82668,
+    "api_call_count": 214
+  }
+}

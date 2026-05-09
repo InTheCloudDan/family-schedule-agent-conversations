@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "f74297689edf",
+  "session_id": "edd9f1aa-f385-4e28-aa0d-d6a78c310966",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-21T17:46:45.217757Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".codex/config.toml",
+    ".codex/hooks.json",
+    ".codex/hooks/stop_precommit.py",
+    "events/serializers.py",
+    "events/tests/test_group_plans_api.py",
+    "groceries/migrations/0017_groceryitem_completed_at.py",
+    "groceries/mobile_visibility.py",
+    "groceries/models.py",
+    "groceries/serializers.py",
+    "groceries/tests/test_mobile_visibility_api.py",
+    "groceries/views.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "ecaf6a16e42c",
+  "token_usage": {
+    "input_tokens": 25,
+    "cache_creation_tokens": 75863,
+    "cache_read_tokens": 920245,
+    "output_tokens": 3766,
+    "api_call_count": 15
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-21T17:46:45.082714Z",
+    "agent_lines": 108,
+    "human_added": 916,
+    "human_modified": 21,
+    "human_removed": 0,
+    "total_committed": 1045,
+    "agent_percentage": 10.334928229665072
+  }
+}

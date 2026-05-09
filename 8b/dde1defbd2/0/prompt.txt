@@ -1,0 +1,18 @@
+fix Storage key consistency..............................(no files to check)Skipped
+Detect secrets...........................................................Failed
+- hook id: detect-secrets
+- exit code: 1
+
+ERROR: Potential secrets about to be committed to git repo!
+
+Secret Type: Hex High Entropy String
+Location:    scripts/build-and-push-image.deploy.test.sh:81
+
+Secret Type: Hex High Entropy String
+Location:    scripts/build-and-push-image.test.sh:76
+
+Possible mitigations:
+  - For information about putting your secrets in a safer place, please ask in
+    #security
+  - Mark false positives with an inline `pragma: allowlist secret`
+    comment

@@ -1,0 +1,5 @@
+is the sentry MCP working?
+
+---
+
+Review the web-backend issues. Come up with a plan to address ones that are still a problem, otherwise close out the issue.

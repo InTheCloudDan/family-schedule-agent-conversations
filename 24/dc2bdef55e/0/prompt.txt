@@ -1,0 +1,1 @@
+in production does nginx therre match our local setup? We're having an issue deploying because there's changes on that box nginx/conf/default.conf, ssh -J root@ns1000377.tail2142fe.ts.net -o StrictHostKeyChecking=no ubuntu@10.10.20.10 cd family_schedule running in docker

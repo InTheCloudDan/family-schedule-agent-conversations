@@ -1,0 +1,9 @@
+Can this trace be optimized, it looks like a very slow google signup /Users/danobrien/Downloads/Trace-ec6979-2026-03-28\ 16_47_50.json
+
+---
+
+so was the feature flag evaluated multiple times in that one trace?
+
+---
+
+if the user doesn't need the flag in signup let's skip it

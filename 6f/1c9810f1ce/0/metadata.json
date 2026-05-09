@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "6f1c9810f1ce",
+  "session_id": "28d37588-bffe-4372-9562-ba9c22a680f5",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-10T18:29:01.907041Z",
+  "branch": "main",
+  "checkpoints_count": 8,
+  "files_touched": [
+    "mobile/api.py",
+    "mobile/serializers.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-6[1m]",
+  "turn_id": "0659235c91e0",
+  "token_usage": {
+    "input_tokens": 108,
+    "cache_creation_tokens": 175677,
+    "cache_read_tokens": 3121540,
+    "output_tokens": 25067,
+    "api_call_count": 38
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-10T18:29:01.806981Z",
+    "agent_lines": 0,
+    "human_added": 1345,
+    "human_modified": 4,
+    "human_removed": 0,
+    "total_committed": 1345,
+    "agent_percentage": 0
+  }
+}

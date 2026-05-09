@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "4c08b3c5d762",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".secrets.baseline",
+    "nginx/conf/default.conf",
+    "scripts/build-and-push-image.deploy.test.sh",
+    "scripts/build-and-push-image.sh",
+    "scripts/build-and-push-image.test.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4c/08b3c5d762/0/metadata.json",
+      "transcript": "/4c/08b3c5d762/0/full.jsonl",
+      "content_hash": "/4c/08b3c5d762/0/content_hash.txt",
+      "prompt": "/4c/08b3c5d762/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 41601,
+    "cache_read_tokens": 122788,
+    "output_tokens": 825,
+    "api_call_count": 4
+  }
+}
