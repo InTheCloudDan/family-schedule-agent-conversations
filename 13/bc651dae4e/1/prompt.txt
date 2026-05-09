@@ -1,0 +1,38 @@
+/simplify and /review
+
+---
+
+<task-notification>
+<task-id>a12d84ec1af4bb3be</task-id>
+<tool-use-id>toolu_01ThMCtx2ASmFq1m6hHx63HG</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/37dd8f0a-92b9-4e81-adda-1d43ea6f944f/tasks/a12d84ec1af4bb3be.output</output-file>
+<status>completed</status>
+<summary>Agent "Efficiency review" completed</summary>
+<result>I have enough information. Here's my efficiency review:
+
+## Efficiency Review
+
+**N+1 fix verification (trips/services/business_listing_google_enrichment.py:484-491)** [LOW concern — fix is correct]
+- Candidates materialized once via `_load_region_local_candidates(listing.region)` and passed to each `_match_local_business(event, candidates=...)` call. Confirmed.
+- `_match_local_business` fallback path (region_event_place_enrichment.py:594-597) only triggers when called as `enrich_event` per-Celery-task — not a loop. Safe.
+
+**Memory/unbounded — `_load_region_local_candidates`** (region_event_place_enrichment.py:580-585) [MED]
+- `list(BusinessListing.objects.filter(region=..., is_active=True).prefetch_related("aliases"))` loads ALL active listings for a region into memory. With aliases prefetched. Fine for hundreds; risky for 10k+ listings/region. Not blocking — flag for later if region size grows. Suggested fix if needed: chunked match or DB-side fuzzy candidate filter.
+
+**Redundant queries — report_onboarding_emails.py:61-91** [LOW — manual ops command]
+- 4 separate roundtrips (status_counts, track_email_counts, failed_rows, stale_pending_rows) on a queryset already filtered by `scheduled_for__gte=since` (typically days=7).
+- Collapsing the two `Count` aggregates with conditional aggregation is awkward (different group-bys: `status` vs `(track,email_number)`); not worth it. The detail-row queries are inherently separate. **Verdict: leave as-is** — it's a manual report, 4 queries is fine, single-pass would hurt readability.
+- If you ever want to reduce: pull all rows once into a list and aggregate in Python (since the filter window is bounded). Not recommended.
+
+**_sentry_before_send hot path — settings.py:1181-1203** [LOW]
+- All 4 ops are O(1) dict gets + name comparisons. Negligible per event. No concern.
+
+**transaction.on_commit lambda — notification_service.py:171-173** [LOW — correct]
+- `delivery_id = str(delivery.id)` captured by name; the lambda closes over the local string (immutable), not the ORM object. Safe. `.delay()` inside `on_commit` is the standard Celery+Django pattern — correct.
+
+**`_backfill_matching_region_events` iterator + per-event apply** (business_listing_google_enrichment.py:488-498) [LOW]
+- `_apply_business_match` likely issues an UPDATE per event. For 400+ events this is 400+ UPDATEs. Not addressed by this diff but a follow-up candidate (bulk_update on matched events with same listing). Out of scope here.
+
+No concurrency issues, no recurring no-ops, no overly broad operations spotted.</result>
+<usage><total_tokens>65536</total_tokens><tool_uses>13</tool_uses><duration_ms>60330</duration_ms></usage>
+</task-notification>
