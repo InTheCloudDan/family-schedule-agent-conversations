@@ -1,9 +1,11 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "13bc651dae4e",
+  "session_id": "4384f5bc-4ce1-44df-b11f-bcdf6882e662",
   "strategy": "manual-commit",
+  "created_at": "2026-05-09T01:22:19.904231Z",
   "branch": "main",
-  "checkpoints_count": 9,
+  "checkpoints_count": 4,
   "files_touched": [
     ".secrets.baseline",
     "calendars/google_calendar_api.py",
@@ -28,31 +30,26 @@
     "trips/services/business_listing_google_enrichment.py",
     "trips/services/region_event_place_enrichment.py"
   ],
-  "sessions": [
-    {
-      "metadata": "/13/bc651dae4e/0/metadata.json",
-      "transcript": "/13/bc651dae4e/0/full.jsonl",
-      "content_hash": "/13/bc651dae4e/0/content_hash.txt",
-      "prompt": "/13/bc651dae4e/0/prompt.txt"
-    },
-    {
-      "metadata": "/13/bc651dae4e/1/metadata.json",
-      "transcript": "/13/bc651dae4e/1/full.jsonl",
-      "content_hash": "/13/bc651dae4e/1/content_hash.txt",
-      "prompt": "/13/bc651dae4e/1/prompt.txt"
-    },
-    {
-      "metadata": "/13/bc651dae4e/2/metadata.json",
-      "transcript": "/13/bc651dae4e/2/full.jsonl",
-      "content_hash": "/13/bc651dae4e/2/content_hash.txt",
-      "prompt": "/13/bc651dae4e/2/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "8aae187f7efd",
   "token_usage": {
-    "input_tokens": 1538,
-    "cache_creation_tokens": 644302,
-    "cache_read_tokens": 28176518,
-    "output_tokens": 82668,
-    "api_call_count": 214
+    "input_tokens": 239,
+    "cache_creation_tokens": 390276,
+    "cache_read_tokens": 19161455,
+    "output_tokens": 47125,
+    "api_call_count": 123
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-09T01:22:19.305482Z",
+    "agent_lines": 395,
+    "human_added": 5,
+    "human_modified": 42,
+    "human_removed": 0,
+    "total_committed": 442,
+    "agent_percentage": 89.36651583710407
   }
 }
