@@ -1,0 +1,49 @@
+merge this into fix-weather-alerts-review-feedback and then push to the remote so it runs and we validate
+
+---
+
+yes
+
+---
+
+<task-notification>
+<task-id>bo1wsjd71</task-id>
+<summary>Monitor event: "CI E2E job status on weather branch"</summary>
+<event>Dagger Core Pipeline: in_progress/</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bo1wsjd71</task-id>
+<summary>Monitor event: "CI E2E job status on weather branch"</summary>
+<event>Dagger Core Pipeline: completed/success
+Dagger E2E: in_progress/</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bo1wsjd71</task-id>
+<summary>Monitor event: "CI E2E job status on weather branch"</summary>
+<event>Dagger Build Summary: completed/failure
+Dagger E2E: completed/failure
+RUN COMPLETED: conclusion=failure</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bo1wsjd71</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-symphony-workspaces--90-web-backend/03084541-69bb-4751-87d8-c6949d440cfa/tasks/bo1wsjd71.output</output-file>
+<status>completed</status>
+<summary>Monitor "CI E2E job status on weather branch" stream ended</summary>
+</task-notification>
+
+---
+
+bundle into this branch and push

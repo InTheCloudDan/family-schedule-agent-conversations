@@ -1,0 +1,17 @@
+- ❌ Dagger E2E — fails with unknown command "e2e" for "dagger call". Pre-existing dagger
+  module/CLI mismatch unrelated to this PR; the e2e job has been skipped in every recent CI run (Core
+   failed first, so E2E never ran). My fixes promoted Core to green, which surfaced this latent infra
+   bug.
+  - ❌ Dagger Build Summary — fails only because it gates on e2e.result.
+
+  The E2E breakage is in .dagger/src/family_schedule_ci/main.py:443 (async def e2e) vs dagger v0.20.6
+   CLI rejecting dagger call e2e. The e2e Python function is registered but the engine doesn't expose
+   it as a callable subcommand. Same issue exists on main (it just never ran there because Core was
+  failing on a mypy internal error).
+
+  Want me to investigate the Dagger E2E command issue separately, or leave it for a follow-up since
+  it's outside the original scope?
+
+---
+
+investigate the issue
