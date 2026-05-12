@@ -1,0 +1,37 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "d1af06c8d9b0",
+  "strategy": "manual-commit",
+  "branch": "codex/cooklang-dsl-migration",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "meals/services.py",
+    "meals/tests/test_services.py",
+    "recipes/api.py",
+    "recipes/cooklang.py",
+    "recipes/grocery_mapping.py",
+    "recipes/management/__init__.py",
+    "recipes/management/commands/__init__.py",
+    "recipes/management/commands/backfill_recipe_cooklang.py",
+    "recipes/migrations/0009_recipe_cooklang_source.py",
+    "recipes/models.py",
+    "recipes/serializers.py",
+    "recipes/tests/test_cooklang.py",
+    "requirements.txt"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d1/af06c8d9b0/0/metadata.json",
+      "transcript": "/d1/af06c8d9b0/0/full.jsonl",
+      "content_hash": "/d1/af06c8d9b0/0/content_hash.txt",
+      "prompt": "/d1/af06c8d9b0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 4569,
+    "cache_creation_tokens": 179377,
+    "cache_read_tokens": 13001931,
+    "output_tokens": 48965,
+    "api_call_count": 94
+  }
+}
