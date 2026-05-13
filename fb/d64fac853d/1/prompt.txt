@@ -1,0 +1,166 @@
+/simplify and /review
+
+---
+
+<task-notification>
+<task-id>acf3491f02514e944</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/ef571d18-ac40-48c2-84f2-c41578585363/tasks/acf3491f02514e944.output</output-file>
+<status>completed</status>
+<summary>Agent "Efficiency review" completed</summary>
+<result>Prioritized efficiency findings for `/Users/danobrien/code/family-schedule-app/web-backend/trips/services/region_snapshot.py`:
+
+**High priority**
+
+1. **Repeated `_parse_snapshot_datetime` per event in import** (lines 586, 587, 622, 652)
+   - For each event with no `event_source`+`external_id` and no `slug`, `start_datetime` is parsed twice: once in `_region_event_lookup` (line 652) and again in `defaults` (line 586). Cheap individually, but multiplied by thousands of events it's wasted work. Parse once at the top of `_upsert_region_event`, reuse for both lookup and defaults; same for `end_datetime` and `recurrence_end_date`.
+
+2. **`_first_event_date` re-parses every event datetime** (lines 720-726)
+   - Called per region in `_ensure_verification_trip` after the import loop already parsed every `start_datetime`. With many events this doubles parsing work and is O(n) memory for `parsed_dates`. Two fixes: (a) capture `min_start` while iterating events in `import_region_snapshot`, then pass it down; or (b) use `min(... for ...)` generator instead of building a list. Option (a) is the real win.
+
+3. **`get_system_calendar_user()` called per region inside `_ensure_verification_trip`** (line 691)
+   - Just to derive `user_model = type(...)`. This hits the DB once per region. Resolve `user_model` once at the top of `import_region_snapshot` (or use `django.contrib.auth.get_user_model()` directly — no DB hit at all) and pass it in, or look up `user` once outside the per-region loop since `username` is constant.
+
+**Medium priority**
+
+4. **`BusinessListingAlias.objects.get_or_create` per alias inside per-business loop** (lines 482-488)
+   - N queries per business listing. For regions with many businesses × many aliases this is the worst N+1 in the import path. Could batch: fetch existing aliases for the business in one query, compute the diff, `bulk_create` the new ones with `ignore_conflicts=True`.
+
+5. **`ensure_region_calendar_internal_calendar` called twice when `reset=True`** (lines 98, 100)
+   - Line 98 re-fetches/creates the calendar after reset, then line 100 ensures internal calendar. The reset path does redundant work because line 100 runs unconditionally after the `if reset` block. Move line 100 inside an else branch, or just drop line 98's redundant `get_or_create` (the calendar wasn't deleted by `_reset_region_snapshot_data`, so re-fetching is unnecessary).
+
+**Low / acceptable**
+- Export queryset chains (`region.areas.order_by(...)`, `region.business_listings.prefetch_related(...)`) are fine — one query per region per relation, executed once during serialization (not in an outer loop).
+- `sync_region_calendar_users` per region is necessary (it depends on per-region calendar state) — leave as-is unless profiling shows it dominates.
+- `_reset_region_snapshot_data`'s 5 sequential deletes are correct due to FK ordering; combining isn't worth the complexity.
+- Bash JSON validation re-read is fine — local file, one-shot.
+
+Net: items 1-3 are pure wins (small refactors, no behavior change). Item 4 matters at scale. Item 5 is a tiny correctness/clarity fix.</result>
+<usage><total_tokens>44619</total_tokens><tool_uses>1</tool_uses><duration_ms>26180</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>af36a235973b63027</task-id>
+<tool-use-id>toolu_01PB9sGSUUisVPzfGRAaAo59</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/ef571d18-ac40-48c2-84f2-c41578585363/tasks/af36a235973b63027.output</output-file>
+<status>completed</status>
+<summary>Agent "Code quality review" completed</summary>
+<result>I have enough. The model uses string defaults (not TextChoices) — so the snapshot defaults match the model conventions. Now I have all I need to give a prioritized review.
+
+## Review Findings
+
+### Real issues (prioritized)
+
+**1. `region_snapshot.py:586,587` — duplicate datetime parsing for the same field.**
+`_upsert_region_event` calls `_parse_snapshot_datetime(event_data["start_datetime"])` in both `defaults` and again inside `_region_event_lookup` (line 652) when the lookup falls back to (region_calendar, name, start_datetime). Parse once into a local and reuse.
+
+**2. `region_snapshot.py:691` — fragile way to obtain User model.**
+`user_model = type(get_system_calendar_user())` makes a DB call just to get the class, and only works because `get_system_calendar_user()` returns a saved instance. Use `from django.contrib.auth import get_user_model` at module top.
+
+**3. `region_snapshot.py:97-98` — redundant `get_or_create` after reset.**
+`_reset_region_snapshot_data` deletes `RegionEvent`, `RSSFeedSource`, `EventSource`, `BusinessListing`, `RegionalArea` — it does NOT delete `RegionCalendar`. The line `region_calendar, _ = RegionCalendar.objects.get_or_create(region=region)` immediately after reset is dead/redundant; the variable from line 94 is still valid.
+
+**4. `region_snapshot.py:558` — missing type hint on `import_user`.**
+Every other parameter in this kwarg-only function is typed; `import_user` is untyped. Add `import_user: "User"` (with TYPE_CHECKING) or `AbstractBaseUser` per the project's `django-type-safety` skill.
+
+**5. `region_snapshot.py:715-717` — verification trip "changed" detection is incomplete.**
+The function returns True if `created` OR start/end changed. But `update_or_create` already mutated the row, so this is checking pre-update state? No — `trip` is the post-save instance, so `trip.start_date != effective_start` is always False. The boolean only meaningfully reflects `created`. Either drop the date comparison or compute it before `update_or_create`.
+
+**6. `region_snapshot.py:737-738` — comment is a real WHY, keep but tighten.**
+The timezone-fallback comment is a legitimate "why" comment (explains an intentional non-UTC default). Worth keeping; consider trimming to one line.
+
+**7. `mirror-production-regions.sh:86` — `quote_args` indirection is unnecessary and fragile.**
+The `printf '%q'` is correct, but building a single shell string then passing to `ssh` is the only reason this exists. Simpler: `ssh "${SSH_ARGS[@]}" "$PROD_HOST" bash -s &lt;&lt;EOF ... EOF` or just inline the printf at the call site. Minor — current code works.
+
+**8. `mirror-production-regions.sh:10` — default `PROD_SSH_OPTS` includes `-o StrictHostKeyChecking=no`.**
+This silently disables host-key verification for all users who don't override. That's a real (small) security regression. Either remove the default or document it loudly in the README.
+
+**9. `mirror-production-regions.test.sh:7` — trap doesn't survive `set -e` failures cleanly across `bash -e`.**
+Actually the trap on EXIT is fine. But the test has no failure messages: `grep -q` failures exit silently. Add `|| { echo "missing X"; exit 1; }` or use a small helper.
+
+**10. `test_region_snapshot_commands.py` — third test (`test_import..._reset_removes_stale`) doesn't reuse `_snapshot_payload()` setup.**
+It already does use `_snapshot_payload()` (line 345). Fine. The two import tests, however, both build long `call_command(...)` arg lists — extract a `_run_import(stdin, **overrides)` helper to cut ~30 lines.
+
+**11. `test_region_snapshot_commands.py:30-40` — `_aware` helper hardcodes `America/New_York`.**
+Acceptable for this region's fixtures but worth a docstring noting it.
+
+### Non-issues (rejecting concerns from prompt)
+
+- **Stringly-typed defaults (`"EVENT"`, `"NOT_STARTED"`, `"NONE"`, `"MANUAL"`)** — the models themselves use plain string defaults (no TextChoices), e.g. `default="EVENT"` at `trips/models.py:819`, `default="NOT_STARTED"` at 952/964, `default="NONE"` at 1007, `default="MANUAL"` at 674. The snapshot service mirrors model conventions correctly. Not an issue.
+- **Redundant `region_data.get("description", "")`** — JSON snapshots may omit fields entirely (e.g., from older exports), so `.get(key, model_default)` is correct defensive coding. Keep.
+- **`bool(...)` coercion on `is_featured` etc.** — JSON loads booleans as bool, so `bool(...)` is technically redundant, but it's a one-character harmless safety net for hand-edited fixtures. Taste, not bug.
+- **`_serialize_*` copy-paste** — explicit per-field serialization is the right call for a snapshot format you'll need to version (`SCHEMA_VERSION = 1`). A generic field-list helper would couple the wire format to model field names and break versioning. Keep explicit.
+- **6-kwarg `_upsert_region_event`** — all kwargs are required context for a single operation; collapsing into a dataclass would only add ceremony. Keep.
+- **`_region_event_lookup` returning dict** — clear from the type hint and the `**lookup` usage at the call site. No doc needed.
+- **`set -euo pipefail`, trap** — present and correct.
+- **Imports** — all used, ordered properly.
+
+### Files reviewed
+- `/Users/danobrien/code/family-schedule-app/web-backend/trips/services/region_snapshot.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/trips/management/commands/export_region_snapshot.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/trips/management/commands/import_region_snapshot.py`
+- `/Users/danobrien/code/family-schedule-app/web-backend/scripts/mirror-production-regions.sh`
+- `/Users/danobrien/code/family-schedule-app/web-backend/scripts/mirror-production-regions.test.sh`
+- `/Users/danobrien/code/family-schedule-app/web-backend/trips/tests/test_region_snapshot_commands.py`
+
+Highest-impact fixes: #2 (User model lookup), #5 (broken change detection in `_ensure_verification_trip`), #8 (insecure SSH default), #1 (duplicate parse).</result>
+<usage><total_tokens>78746</total_tokens><tool_uses>12</tool_uses><duration_ms>85993</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ac89e8e3ac814b891</task-id>
+<tool-use-id>toolu_01MxeEgLFKCnuSM5uWuUsgaG</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/ef571d18-ac40-48c2-84f2-c41578585363/tasks/ac89e8e3ac814b891.output</output-file>
+<status>completed</status>
+<summary>Agent "Code reuse review" completed</summary>
+<result>I have enough to provide a focused report.
+
+## Code Reuse Review: `region_snapshot` files
+
+The new code is largely a self-contained snapshot pipeline; it intentionally avoids existing serializers/ingestors so the export schema is stable. That said, several real duplications stand out.
+
+### 1. `_parse_snapshot_datetime` duplicates `events/search_serializers.py:_parse_datetime_value`
+
+- **Existing** `/Users/danobrien/code/family-schedule-app/web-backend/events/search_serializers.py:25-43` — already does `parse_datetime` -&gt; fallback (date-only) -&gt; `is_naive` -&gt; `make_aware`. The new helper at `trips/services/region_snapshot.py:729-740` does the same thing minus the date fallback (which the snapshot wouldn't hit anyway).
+- **Suggested change**: Lift `_parse_datetime_value` into `core/utils.py` (next to `get_system_calendar_user`) as a public `parse_aware_datetime(value, *, fallback_tz=None)` helper, then have both call sites use it. The `CommandError`-vs-`ValidationError` divergence can be handled by the caller. Even without the lift, the snapshot code can drop its own `datetime.fromisoformat` fallback — `parse_datetime` already accepts ISO 8601 with offsets. The current fallback path is essentially dead.
+
+### 2. `_parse_snapshot_date` and `_date_to_iso` are unnecessary wrappers
+
+- `trips/services/region_snapshot.py:743-755` — `parse_snapshot_date` is just `django.utils.dateparse.parse_date` plus an error wrapper, and `_date_to_iso` is `value.isoformat() if value else None`.
+- **Suggested change**: Replace `_parse_snapshot_date` with `django.utils.dateparse.parse_date` (already imported indirectly via `parse_datetime`). `_date_to_iso` is so trivial (one line, called twice) it can be inlined: `event.recurrence_end_date.isoformat() if event.recurrence_end_date else None`.
+
+### 3. `_parse_date_option` in the import command duplicates stdlib
+
+- `trips/management/commands/import_region_snapshot.py:83-89` wraps `date.fromisoformat`. Django provides `parse_date` from `django.utils.dateparse` which returns `None` instead of raising, but otherwise the helper is a 6-line wrapper for two `argparse` options.
+- **Suggested change**: Use `argparse`'s `type=date.fromisoformat` and let `argparse` produce the error: `parser.add_argument("--trip-start", type=date.fromisoformat, default=None)`. Removes both `_parse_date_option` and the `argparse` import.
+
+### 4. No reusable serializers exist
+
+`trips/serializers.py` has `TripRegionSerializer`, `RegionalAreaSerializer`, `RegionEventSerializer` — but their field sets are intentionally different (API-shaped: includes `id`, `created_by_details`, `region_details`, omits `slug`/`hero_image`/most enrichment fields). There is no `BusinessListingSerializer` or `EventSourceSerializer`/`RSSFeedSourceSerializer` at all. The new `_serialize_*` functions are not reusing an existing surface — keeping them as a separate, version-stable shape is correct (snapshots need full fidelity and stability across DRF refactors). **No change recommended.**
+
+### 5. No reusable upsert pipeline exists
+
+Despite `audit_region_event_ingest` being mentioned in CLAUDE.md, that command (`/Users/danobrien/code/family-schedule-app/web-backend/trips/management/commands/audit_region_event_ingest.py`) is read-only reporting. The actual upsert paths — `rss_feed_service.py:343` and `views/event_ingest.py` — both use very different lookup keys (`rss_feed_source+external_id`, request-specific defaults, dedup logic). The snapshot's upsert priority (`event_source+external_id` -&gt; `slug` -&gt; `name+start_datetime` at lines 637-653) is genuinely different. **No reuse opportunity here.**
+
+### 6. No Trip factory/helper exists
+
+`Trip.objects.create` is called directly throughout `trips/services/trip_service.py:122` and tests. `_ensure_verification_trip` (lines 683-717) is unique. **No change recommended.**
+
+### 7. No JSON command-base utility / no Django dumpdata reuse
+
+`json.dump`/`json.load` with `--input -`/`--output -` is hand-rolled in just two commands. There is no shared base in `core/management/`. Django `dumpdata`/`loaddata` don't fit (snapshot uses logical keys like `slug` and `source_key`, not PKs, so it survives DB resets and works across environments — that's the whole point). **No change recommended.**
+
+### Summary of actionable changes
+
+| File:line | Duplication | Action |
+|---|---|---|
+| `trips/services/region_snapshot.py:729-740` | Re-implements `events/search_serializers.py:25-43` | Lift to `core/utils.parse_aware_datetime`; share between both call sites. At minimum, drop the dead `datetime.fromisoformat` fallback. |
+| `trips/services/region_snapshot.py:743-751` | Wraps `django.utils.dateparse.parse_date` | Replace with `parse_date` + a 1-line CommandError check, or inline. |
+| `trips/services/region_snapshot.py:754-755` | One-line wrapper | Inline at the two call sites in `_serialize_region_event`. |
+| `trips/management/commands/import_region_snapshot.py:83-89` | Wraps `date.fromisoformat` for argparse | Use `type=date.fromisoformat` on the argument; delete helper + `argparse` import. |</result>
+<usage><total_tokens>90975</total_tokens><tool_uses>44</tool_uses><duration_ms>162466</duration_ms></usage>
+</task-notification>
