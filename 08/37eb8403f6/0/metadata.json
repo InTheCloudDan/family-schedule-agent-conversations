@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "0837eb8403f6",
+  "session_id": "78e7700e-00fb-442e-b322-988fed02e088",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-14T13:49:33.47291Z",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "mypy.ini",
+    "payments/apps.py",
+    "payments/models.py",
+    "payments/signals.py",
+    "payments/serializers.py",
+    "payments/admin.py",
+    "payments/services/stripe_service.py",
+    "payments/tests/test_billing_views.py",
+    "payments/management/commands/seed_subscription_tiers.py",
+    "payments/management/commands/check_webhook_duplicates.py",
+    "payments/template_views.py",
+    "payments/views.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "a497225520f7",
+  "checkpoint_transcript_start": 2314,
+  "transcript_lines_at_start": 2314,
+  "token_usage": {
+    "input_tokens": 73,
+    "cache_creation_tokens": 64980,
+    "cache_read_tokens": 27266195,
+    "output_tokens": 23888,
+    "api_call_count": 73
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-14T13:49:31.230511Z",
+    "agent_lines": 124,
+    "human_added": 3,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 127,
+    "agent_percentage": 97.63779527559055
+  }
+}
