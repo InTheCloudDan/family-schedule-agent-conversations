@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "e56877681893",
+  "session_id": "78e7700e-00fb-442e-b322-988fed02e088",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-14T13:32:41.315915Z",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "mypy.ini",
+    "core/fields.py",
+    "core/utils.py",
+    "core/mixins.py",
+    "core/private_media.py",
+    "core/checks.py",
+    "core/apps.py",
+    "core/migration_recorder.py",
+    "trips/auth.py",
+    "trips/views/event_ingest.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "a497225520f7",
+  "checkpoint_transcript_start": 1957,
+  "transcript_lines_at_start": 1957,
+  "token_usage": {
+    "input_tokens": 55,
+    "cache_creation_tokens": 45921,
+    "cache_read_tokens": 17644763,
+    "output_tokens": 13672,
+    "api_call_count": 55
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-14T13:32:39.260263Z",
+    "agent_lines": 35,
+    "human_added": 21,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 56,
+    "agent_percentage": 62.5
+  }
+}
