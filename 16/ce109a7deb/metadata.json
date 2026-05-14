@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "16ce109a7deb",
+  "strategy": "manual-commit",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "calendars/api.py",
+    "calendars/signals.py",
+    "core/tests/test_url_validation.py",
+    "events/api.py",
+    "events/services/media_service.py",
+    "events/tests/test_event_serializer_ownership.py",
+    "events/views.py",
+    "family_agent/tool_adapter.py",
+    "family_scheduler/settings_typecheck.py",
+    "groceries/tests/test_grocery_list_store_fields.py",
+    "groceries/views.py",
+    "notifications/urls.py",
+    "payments/management/commands/seed_subscription_tiers.py",
+    "trips/admin/region_admin.py",
+    "trips/management/commands/seed_regional_areas.py",
+    "trips/views/property_views.py",
+    "users/event_ownership.py",
+    "users/management/commands/seed_product_photos.py",
+    "users/management/test_user_utils.py",
+    "users/models.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/16/ce109a7deb/0/metadata.json",
+      "transcript": "/16/ce109a7deb/0/full.jsonl",
+      "content_hash": "/16/ce109a7deb/0/content_hash.txt",
+      "prompt": "/16/ce109a7deb/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 215,
+    "cache_creation_tokens": 277571,
+    "cache_read_tokens": 26368828,
+    "output_tokens": 50240,
+    "api_call_count": 203
+  }
+}
