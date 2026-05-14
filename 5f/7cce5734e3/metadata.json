@@ -1,0 +1,33 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "5f7cce5734e3",
+  "strategy": "manual-commit",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "calendars/views/external_calendar_views.py",
+    "family_agent/tests/test_tasks.py",
+    "mypy.ini",
+    "notifications/tasks.py",
+    "trips/tasks.py",
+    "webhooks/admin.py",
+    "webhooks/signals.py",
+    "webhooks/tasks.py",
+    "webhooks/tests/test_webhooks.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5f/7cce5734e3/0/metadata.json",
+      "transcript": "/5f/7cce5734e3/0/full.jsonl",
+      "content_hash": "/5f/7cce5734e3/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 95,
+    "cache_creation_tokens": 87145,
+    "cache_read_tokens": 23659739,
+    "output_tokens": 30290,
+    "api_call_count": 95
+  }
+}
