@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "6851d80ed418",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".codex/README.md",
+    ".codex/setup.sh",
+    "Makefile",
+    "core/uuid_utils.py",
+    "events/api_views/search.py",
+    "events/search.py",
+    "events/serializers.py",
+    "events/test_event_list_search.py",
+    "events/test_event_search_api.py",
+    "events/views.py",
+    "family_agent/api.py",
+    "family_agent/budget.py",
+    "family_agent/migrations/0008_familyagentusageevent.py",
+    "family_agent/models.py",
+    "family_agent/runtime.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_agent_location_tools.py",
+    "family_agent/tests/test_api.py",
+    "family_agent/tests/test_budget.py",
+    "family_agent/tests/test_runtime.py",
+    "family_agent/tests/test_runtime_today_organize_tools.py",
+    "family_agent/tests/test_tool_adapter_organize.py",
+    "family_agent/tests/test_ucp_client.py",
+    "family_agent/tool_adapter.py",
+    "family_scheduler/settings.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/68/51d80ed418/0/metadata.json",
+      "transcript": "/68/51d80ed418/0/full.jsonl",
+      "content_hash": "/68/51d80ed418/0/content_hash.txt",
+      "prompt": "/68/51d80ed418/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 23,
+    "cache_creation_tokens": 71575,
+    "cache_read_tokens": 1142467,
+    "output_tokens": 4049,
+    "api_call_count": 18
+  }
+}
