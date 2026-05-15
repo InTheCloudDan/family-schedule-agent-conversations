@@ -1,0 +1,3 @@
+family_agent/evals/validators.py:314: error: Item "None" of "Any | dict[Any, Any] | None" has no attribute "get"  [union-attr]
+family_agent/evals/validators.py:315: error: Item "None" of "Any | dict[Any, Any] | None" has no attribute "get"  [union-attr]
+Found 2 errors in 1 file (checked 12 source files)

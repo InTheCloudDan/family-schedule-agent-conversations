@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "9cce38f769c2",
+  "strategy": "manual-commit",
+  "branch": "dob/codex/family-agent-evals",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "config/flagd/config.production.json",
+    "family_agent/evals/__init__.py",
+    "family_agent/evals/contracts.py",
+    "family_agent/evals/fixtures.py",
+    "family_agent/evals/runner.py",
+    "family_agent/evals/scenarios.json",
+    "family_agent/evals/validators.py",
+    "family_agent/management/__init__.py",
+    "family_agent/management/commands/__init__.py",
+    "family_agent/management/commands/eval_family_agent.py",
+    "family_agent/tests/test_evals.py",
+    "family_agent/tests/test_rollout_config.py",
+    "users/feature_settings.py",
+    "users/migrations/0042_enable_family_agent_by_default.py",
+    "users/tests/test_feature_settings.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9c/ce38f769c2/0/metadata.json",
+      "transcript": "/9c/ce38f769c2/0/full.jsonl",
+      "content_hash": "/9c/ce38f769c2/0/content_hash.txt",
+      "prompt": "/9c/ce38f769c2/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 20,
+    "cache_creation_tokens": 64705,
+    "cache_read_tokens": 565958,
+    "output_tokens": 1872,
+    "api_call_count": 10
+  }
+}
