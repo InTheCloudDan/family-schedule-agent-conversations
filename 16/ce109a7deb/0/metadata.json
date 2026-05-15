@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "16ce109a7deb",
+  "session_id": "78e7700e-00fb-442e-b322-988fed02e088",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-14T12:04:58.93095Z",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "users/models.py",
+    "events/tests/test_event_serializer_ownership.py",
+    "trips/admin/region_admin.py",
+    "notifications/urls.py",
+    "groceries/tests/test_grocery_list_store_fields.py",
+    "core/tests/test_url_validation.py",
+    "family_scheduler/settings_typecheck.py",
+    "trips/management/commands/seed_regional_areas.py",
+    "payments/management/commands/seed_subscription_tiers.py",
+    "users/management/commands/seed_product_photos.py",
+    "users/management/test_user_utils.py",
+    "calendars/signals.py",
+    "trips/views/property_views.py",
+    "family_agent/tool_adapter.py",
+    "calendars/api.py",
+    "events/api.py",
+    "events/services/media_service.py",
+    "groceries/views.py",
+    "events/views.py",
+    "users/event_ownership.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "a497225520f7",
+  "token_usage": {
+    "input_tokens": 215,
+    "cache_creation_tokens": 277571,
+    "cache_read_tokens": 26368828,
+    "output_tokens": 50240,
+    "api_call_count": 203
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-14T12:04:57.462447Z",
+    "agent_lines": 123,
+    "human_added": 86,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 209,
+    "agent_percentage": 58.85167464114832
+  }
+}

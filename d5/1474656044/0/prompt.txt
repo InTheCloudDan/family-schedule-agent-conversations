@@ -1,0 +1,1 @@
+is mypy strict now enabled on the repo? There might be a handful of files still failing, fix them

@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "0837eb8403f6",
+  "strategy": "manual-commit",
+  "branch": "dob/strict",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "mypy.ini",
+    "payments/admin.py",
+    "payments/apps.py",
+    "payments/management/commands/check_webhook_duplicates.py",
+    "payments/management/commands/seed_subscription_tiers.py",
+    "payments/models.py",
+    "payments/serializers.py",
+    "payments/services/stripe_service.py",
+    "payments/signals.py",
+    "payments/template_views.py",
+    "payments/tests/test_billing_views.py",
+    "payments/views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/08/37eb8403f6/0/metadata.json",
+      "transcript": "/08/37eb8403f6/0/full.jsonl",
+      "content_hash": "/08/37eb8403f6/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 73,
+    "cache_creation_tokens": 64980,
+    "cache_read_tokens": 27266195,
+    "output_tokens": 23888,
+    "api_call_count": 73
+  }
+}
