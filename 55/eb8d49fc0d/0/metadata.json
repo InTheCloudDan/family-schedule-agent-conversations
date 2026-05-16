@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "55eb8d49fc0d",
+  "session_id": "4b44c461-7477-4bf1-9a92-71bbfde23fa0",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-16T18:02:27.115928Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".secrets.baseline",
+    ".semgrep/clancal-rules.yml",
+    "family_agent/evals/fixtures.py",
+    "family_agent/evals/runner.py",
+    "family_agent/evals/scenarios.json",
+    "family_agent/runtime.py",
+    "family_agent/tests/test_agent_location_tools.py",
+    "family_agent/tests/test_runtime.py",
+    "family_agent/tests/test_tool_request_schemas.py",
+    "family_agent/tests/test_web_assistant.py",
+    "family_agent/tool_adapter.py",
+    "family_agent/tool_request_schemas.py",
+    "family_scheduler/context_processors.py",
+    "static/css/clancy_assistant.css",
+    "static/css/family_agent.css",
+    "static/js/clancy_assistant.js",
+    "static/js/family_agent.js",
+    "static/js/family_assistant_shared.js",
+    "templates/base.html",
+    "templates/events/event_list.html",
+    "templates/family_agent/_assistant_drawer.html",
+    "templates/family_agent/planner.html"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "fd55f80b87ed",
+  "token_usage": {
+    "input_tokens": 3813,
+    "cache_creation_tokens": 143868,
+    "cache_read_tokens": 5822284,
+    "output_tokens": 25188,
+    "api_call_count": 51
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-16T18:02:26.722246Z",
+    "agent_lines": 44,
+    "human_added": 1429,
+    "human_modified": 20,
+    "human_removed": 0,
+    "total_committed": 1493,
+    "agent_percentage": 2.9470864032150033
+  }
+}
