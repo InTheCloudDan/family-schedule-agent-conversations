@@ -1,0 +1,5 @@
+Django Check Migrations..................................................Failed
+- hook id: django-check-migrations
+- exit code: 128
+
+FailedPrecondition: container 3803042b2d9e98d0ac39567a7f6eb1f5d5518a715dcde062a293781998571976 init process is not running: failed precondition
