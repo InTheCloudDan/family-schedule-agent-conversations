@@ -1,0 +1,41 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "6cdf90be9684",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".pre-commit-config.yaml",
+    "calendars/api.py",
+    "calendars/signals.py",
+    "docker-compose.local.yml",
+    "events/api.py",
+    "events/serializers.py",
+    "family_agent/inline_refs.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_inline_refs.py",
+    "family_agent/tests/test_web_assistant.py",
+    "famstream/api.py",
+    "famstream/serializers.py",
+    "mobile/serializers.py",
+    "static/css/clancy_assistant.css",
+    "static/js/clancy_assistant.js",
+    "users/api.py",
+    "users/serializers.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/6c/df90be9684/0/metadata.json",
+      "transcript": "/6c/df90be9684/0/full.jsonl",
+      "content_hash": "/6c/df90be9684/0/content_hash.txt",
+      "prompt": "/6c/df90be9684/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 25,
+    "cache_creation_tokens": 210212,
+    "cache_read_tokens": 624110,
+    "output_tokens": 4743,
+    "api_call_count": 11
+  }
+}

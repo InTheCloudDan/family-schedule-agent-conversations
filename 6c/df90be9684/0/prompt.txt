@@ -1,0 +1,1 @@
+Right now the clancy assistant that is embedded in pages brings up all old conversations which is overwhelming the context window. We should have a more logical way of automatically splitting/creating new conversations and also warn when the conversation is almost full [Image #1]
