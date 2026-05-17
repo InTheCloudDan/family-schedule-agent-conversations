@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "7ebfd0dbf7d0",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "family_agent/entity_links.py",
+    "family_agent/inline_refs.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_agent_location_tools.py",
+    "family_agent/tests/test_entity_links.py",
+    "family_agent/tests/test_inline_refs.py",
+    "family_agent/tool_adapter.py",
+    "static/css/clancy_assistant.css",
+    "static/css/family_agent.css",
+    "static/js/clancy_assistant.js",
+    "static/js/family_agent.js"
+  ],
+  "sessions": [
+    {
+      "metadata": "/7e/bfd0dbf7d0/0/metadata.json",
+      "transcript": "/7e/bfd0dbf7d0/0/full.jsonl",
+      "content_hash": "/7e/bfd0dbf7d0/0/content_hash.txt",
+      "prompt": "/7e/bfd0dbf7d0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 134340,
+    "cache_read_tokens": 312898,
+    "output_tokens": 1093,
+    "api_call_count": 7
+  }
+}

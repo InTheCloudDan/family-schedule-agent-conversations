@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "7ebfd0dbf7d0",
+  "session_id": "c0b40055-a33d-484e-b204-83785839d6fb",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-17T10:56:53.885366Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "family_agent/entity_links.py",
+    "family_agent/inline_refs.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_agent_location_tools.py",
+    "family_agent/tests/test_entity_links.py",
+    "family_agent/tests/test_inline_refs.py",
+    "family_agent/tool_adapter.py",
+    "static/css/clancy_assistant.css",
+    "static/css/family_agent.css",
+    "static/js/clancy_assistant.js",
+    "static/js/family_agent.js"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "8d2d1753e5d1",
+  "token_usage": {
+    "input_tokens": 16,
+    "cache_creation_tokens": 134340,
+    "cache_read_tokens": 312898,
+    "output_tokens": 1093,
+    "api_call_count": 7
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-17T10:56:53.800889Z",
+    "agent_lines": 0,
+    "human_added": 489,
+    "human_modified": 25,
+    "human_removed": 0,
+    "total_committed": 489,
+    "agent_percentage": 0
+  }
+}
