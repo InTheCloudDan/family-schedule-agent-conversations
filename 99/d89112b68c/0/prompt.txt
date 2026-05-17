@@ -1,0 +1,23 @@
+Why didn't the full map widget render in this conversation? [Image #1]
+
+---
+
+it's still not rendering I just set the 2 env vars in production and there's already API keys there, so the restaurant cards render but still not the map widget
+
+---
+
+ubuntu@clancal-app:~/family_schedule$ docker compose exec web env | grep ENABLE_WIDGET
+FAMILY_AGENT_GOOGLE_MAPS_GROUNDING_ENABLE_WIDGET=true
+
+---
+
+[Image #2]
+
+---
+
+it was a new conversation, and the token is there
+
+---
+
+key is returned when I run "document.getElementById('clancy-root')?.dataset.googleMapsClientApiKey
+  || document.getElementById('clancy-assistant-root')?.dataset.googleMapsClientApiKey"

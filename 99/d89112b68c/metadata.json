@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "99d89112b68c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 7,
+  "files_touched": [
+    "ansible/templates/app-conf.env.j2",
+    "static/js/clancy_assistant.js",
+    "templates/family_agent/_assistant_drawer.html"
+  ],
+  "sessions": [
+    {
+      "metadata": "/99/d89112b68c/0/metadata.json",
+      "transcript": "/99/d89112b68c/0/full.jsonl",
+      "content_hash": "/99/d89112b68c/0/content_hash.txt",
+      "prompt": "/99/d89112b68c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 88,
+    "cache_creation_tokens": 250027,
+    "cache_read_tokens": 2900906,
+    "output_tokens": 13166,
+    "api_call_count": 35
+  }
+}
