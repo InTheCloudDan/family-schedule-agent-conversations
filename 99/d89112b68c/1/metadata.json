@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "99d89112b68c",
+  "session_id": "d340f7de-989f-4189-ad74-9da251985bbc",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-17T20:09:38.110429Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "ansible/templates/app-conf.env.j2",
+    "family_agent/tests/test_web_assistant.py",
+    "static/css/clancy_assistant.css",
+    "static/js/clancy_assistant.js",
+    "templates/family_agent/_assistant_drawer.html"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "df2a62eda9fd",
+  "token_usage": {
+    "input_tokens": 77,
+    "cache_creation_tokens": 133111,
+    "cache_read_tokens": 4515994,
+    "output_tokens": 19412,
+    "api_call_count": 48
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-17T20:09:37.852108Z",
+    "agent_lines": 319,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 319,
+    "agent_percentage": 100
+  }
+}

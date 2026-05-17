@@ -3,9 +3,11 @@
   "checkpoint_id": "99d89112b68c",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 7,
+  "checkpoints_count": 10,
   "files_touched": [
     "ansible/templates/app-conf.env.j2",
+    "family_agent/tests/test_web_assistant.py",
+    "static/css/clancy_assistant.css",
     "static/js/clancy_assistant.js",
     "templates/family_agent/_assistant_drawer.html"
   ],
@@ -15,13 +17,19 @@
       "transcript": "/99/d89112b68c/0/full.jsonl",
       "content_hash": "/99/d89112b68c/0/content_hash.txt",
       "prompt": "/99/d89112b68c/0/prompt.txt"
+    },
+    {
+      "metadata": "/99/d89112b68c/1/metadata.json",
+      "transcript": "/99/d89112b68c/1/full.jsonl",
+      "content_hash": "/99/d89112b68c/1/content_hash.txt",
+      "prompt": "/99/d89112b68c/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 88,
-    "cache_creation_tokens": 250027,
-    "cache_read_tokens": 2900906,
-    "output_tokens": 13166,
-    "api_call_count": 35
+    "input_tokens": 165,
+    "cache_creation_tokens": 383138,
+    "cache_read_tokens": 7416900,
+    "output_tokens": 32578,
+    "api_call_count": 83
   }
 }

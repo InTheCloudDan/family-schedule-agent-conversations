@@ -1,0 +1,5 @@
+it looks like Clancy does not give an option to start a clean new thread? I don't always want this summary carried over. In mobile we do a list of threads, how can we do that better on web? [Image #1]
+
+---
+
+yes implement the change
