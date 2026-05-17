@@ -1,0 +1,44 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "47fee289ba74",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "family_agent/api.py",
+    "family_agent/migrations/0009_thread_split_metadata.py",
+    "family_agent/models.py",
+    "family_agent/runtime.py",
+    "family_agent/serializers.py",
+    "family_agent/tasks.py",
+    "family_agent/tests/test_context_budget.py",
+    "family_agent/tests/test_handoff_summary.py",
+    "family_agent/tests/test_thread_router.py",
+    "family_agent/thread_router.py",
+    "family_agent/tool_adapter.py",
+    "family_scheduler/settings.py",
+    "scripts/build-and-push-image.deploy.test.sh",
+    "scripts/build-and-push-image.sh",
+    "scripts/build-and-push-image.test.sh",
+    "scripts/deploy-production.sh",
+    "scripts/deploy-production.test.sh",
+    "static/css/clancy_assistant.css",
+    "static/js/clancy_assistant.js",
+    "templates/family_agent/_assistant_drawer.html"
+  ],
+  "sessions": [
+    {
+      "metadata": "/47/fee289ba74/0/metadata.json",
+      "transcript": "/47/fee289ba74/0/full.jsonl",
+      "content_hash": "/47/fee289ba74/0/content_hash.txt",
+      "prompt": "/47/fee289ba74/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 191,
+    "cache_creation_tokens": 390817,
+    "cache_read_tokens": 27339960,
+    "output_tokens": 64265,
+    "api_call_count": 156
+  }
+}
