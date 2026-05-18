@@ -1,0 +1,1 @@
+For Clancy send, let's follow the slack send method, enter is a new line I think and shift+enter submits the message?
