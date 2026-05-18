@@ -3,7 +3,7 @@
   "checkpoint_id": "84785a28fad2",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 40,
+  "checkpoints_count": 44,
   "files_touched": [
     "family_agent/google_maps_grounding.py",
     "family_agent/runtime.py",
@@ -29,13 +29,19 @@
       "transcript": "/84/785a28fad2/1/full.jsonl",
       "content_hash": "/84/785a28fad2/1/content_hash.txt",
       "prompt": "/84/785a28fad2/1/prompt.txt"
+    },
+    {
+      "metadata": "/84/785a28fad2/2/metadata.json",
+      "transcript": "/84/785a28fad2/2/full.jsonl",
+      "content_hash": "/84/785a28fad2/2/content_hash.txt",
+      "prompt": "/84/785a28fad2/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 747,
-    "cache_creation_tokens": 1023319,
-    "cache_read_tokens": 79649731,
-    "output_tokens": 162928,
-    "api_call_count": 424
+    "input_tokens": 777,
+    "cache_creation_tokens": 1080029,
+    "cache_read_tokens": 80430836,
+    "output_tokens": 166227,
+    "api_call_count": 436
   }
 }

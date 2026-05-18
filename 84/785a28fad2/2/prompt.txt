@@ -1,0 +1,5 @@
+fix the precommit issues
+
+---
+
+is the hook fixed for going forward then? what about codex hook?
