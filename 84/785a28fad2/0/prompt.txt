@@ -1,0 +1,29 @@
+we fixed Clancy send with enter and shift+enter on the assistant but we didn't fix it on the /clancy path, also the same for the placeholder text, we moved it to a clickable card in one spot but not at /clancy
+
+---
+
+what changed? I reloaded /clancy and the placeholder is still there and enter isn't submitting
+
+---
+
+Something is wrong with our markdown still those ### should be a markdown header [Image #1]
+
+---
+
+Is there a way to render the pins on the map clickable, similar to how google maps works? Right now clicking on them does nothing.
+
+---
+
+Can we do anything about the spacing on it? The headers seem tight against the other text [Image #2]
+
+---
+
+is it possible to make the initial response clickable to the cards lower down, similar to how clicking on the pins on the map will jump to them? Right now the experience feels a bit disjointed between the first message and then the richer rendered part below.
+
+---
+
+the site at 8100 is down
+
+---
+
+submitting clicking send or enter is not working
