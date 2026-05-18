@@ -3,7 +3,7 @@
   "checkpoint_id": "ee2e0dd89013",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 8,
   "files_touched": [
     ".secrets.baseline",
     "calendars/api.py",
@@ -62,13 +62,19 @@
       "transcript": "/ee/2e0dd89013/2/full.jsonl",
       "content_hash": "/ee/2e0dd89013/2/content_hash.txt",
       "prompt": "/ee/2e0dd89013/2/prompt.txt"
+    },
+    {
+      "metadata": "/ee/2e0dd89013/3/metadata.json",
+      "transcript": "/ee/2e0dd89013/3/full.jsonl",
+      "content_hash": "/ee/2e0dd89013/3/content_hash.txt",
+      "prompt": "/ee/2e0dd89013/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 162,
-    "cache_creation_tokens": 269357,
-    "cache_read_tokens": 9496995,
-    "output_tokens": 31003,
-    "api_call_count": 95
+    "input_tokens": 243,
+    "cache_creation_tokens": 366690,
+    "cache_read_tokens": 12800955,
+    "output_tokens": 40744,
+    "api_call_count": 137
   }
 }
