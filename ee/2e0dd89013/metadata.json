@@ -1,0 +1,62 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "ee2e0dd89013",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".secrets.baseline",
+    "calendars/api.py",
+    "calendars/tests/test_calendar_safety_and_connections.py",
+    "events/test_event_edit_view.py",
+    "events/tests/test_event_detail_shared_external_calendar.py",
+    "events/views.py",
+    "family_agent/runtime.py",
+    "family_agent/tests/test_runtime.py",
+    "family_agent/tests/test_tool_adapter.py",
+    "family_agent/tool_adapter.py",
+    "family_scheduler/urls.py",
+    "inbound_email/flags.py",
+    "inbound_email/senders.py",
+    "inbound_email/tasks.py",
+    "inbound_email/tests/test_ingest_endpoint.py",
+    "inbound_email/tests/test_parse_message_task.py",
+    "inbound_email/tests/test_user_flow.py",
+    "inbound_email/views.py",
+    "mobile/api.py",
+    "mobile/serializers.py",
+    "mobile/tests/test_connected_accounts_api.py",
+    "notifications/templates/notifications/notification_badge.html",
+    "notifications/templates/notifications/notification_detail.html",
+    "notifications/tests.py",
+    "organize/api.py",
+    "organize/serializers.py",
+    "organize/services.py",
+    "organize/tests.py",
+    "organize/web_urls.py",
+    "organize/web_views.py",
+    "scripts/deploy-production.sh",
+    "scripts/deploy-production.test.sh",
+    "static/css/inbox_review_chat.css",
+    "static/js/inbox_review_chat.js",
+    "templates/events/event_form.html",
+    "templates/users/dashboard.html",
+    "users/tests/test_dashboard_views.py",
+    "users/views/dashboard_views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ee/2e0dd89013/0/metadata.json",
+      "transcript": "/ee/2e0dd89013/0/full.jsonl",
+      "content_hash": "/ee/2e0dd89013/0/content_hash.txt",
+      "prompt": "/ee/2e0dd89013/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 40844,
+    "cache_read_tokens": 538416,
+    "output_tokens": 1725,
+    "api_call_count": 9
+  }
+}
