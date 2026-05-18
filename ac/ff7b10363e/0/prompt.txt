@@ -1,0 +1,87 @@
+Why didn't the full map widget render in this conversation? [Image #1]
+
+---
+
+it's still not rendering I just set the 2 env vars in production and there's already API keys there, so the restaurant cards render but still not the map widget
+
+---
+
+ubuntu@clancal-app:~/family_schedule$ docker compose exec web env | grep ENABLE_WIDGET
+FAMILY_AGENT_GOOGLE_MAPS_GROUNDING_ENABLE_WIDGET=true
+
+---
+
+[Image #2]
+
+---
+
+it was a new conversation, and the token is there
+
+---
+
+key is returned when I run "document.getElementById('clancy-root')?.dataset.googleMapsClientApiKey
+  || document.getElementById('clancy-assistant-root')?.dataset.googleMapsClientApiKey"
+
+---
+
+we did another set of changes you can look at commits and it's still broken [Image #3]
+
+---
+
+I created a new localhost key should this work? [Image #4]
+
+---
+
+ok I updated the key, can you restart the service and try again?
+
+---
+
+just added 8100, and saved it [Image #5]
+
+---
+
+Just added that to the key and enabled, this project should have billing enabled
+
+---
+
+[Image #6]
+
+---
+
+[Image #7] it's been a few minutes, maybe try again and it was cached?
+
+---
+
+I set application restrictions to none, but can't see where to do that for API restrictions
+
+---
+
+so what's the latest status?
+
+---
+
+I created a new key with localhost and needed permissions, restart service and try again
+
+---
+
+try now
+
+---
+
+how can I locally test it?
+
+---
+
+No map rendered [Image #8]
+
+---
+
+ahh great, it loaded, but massively overflowed the popup chat window(in dashboard page) horizontally
+
+---
+
+it's getting better, do we need to show Sources, that seems like a useless list [Image #10] also we list the restaurants info at the top and then the pill/cards towards the bottom so data is duplicated [Image #11] And this is a new conversation why did a summary show up? [Image #12]
+
+---
+
+looks like sources still rendered and the initial message isn't cards? [Image #13]

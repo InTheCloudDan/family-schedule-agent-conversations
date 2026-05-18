@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "acff7b10363e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "ansible/templates/app-conf.env.j2"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ac/ff7b10363e/0/metadata.json",
+      "transcript": "/ac/ff7b10363e/0/full.jsonl",
+      "content_hash": "/ac/ff7b10363e/0/content_hash.txt",
+      "prompt": "/ac/ff7b10363e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 458,
+    "cache_creation_tokens": 717411,
+    "cache_read_tokens": 46833564,
+    "output_tokens": 84379,
+    "api_call_count": 234
+  }
+}
