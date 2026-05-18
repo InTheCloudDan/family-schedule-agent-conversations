@@ -1,0 +1,35 @@
+on 
+
+
+
+
+
+
+ms
++
+
+
+
+
+
+
+2026-05-18 17:47:03.057 error code_file_path=/opt/venv/lib/python3.14/site-packages/django/utils/log.py code_function_name=log_message code_line_number=249 exception_message=get() returned more than one ExternalCalendarAccount -- it returned 14! exception_stacktrace=Traceback (most recent call last):
+  File "/opt/venv/lib/python3.14/site-packages/asgiref/sync.py", line 557, in thread_handler
+    raise exc_info[1]
+  File "/opt/venv/lib/python3.14/site-packages/django/core/handlers/exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.14/site-packages/asgiref/sync.py", line 557, in thread_handler
+    raise exc_info[1]
+  File "/opt/venv/lib/python3.14/site-packages/django/core/handlers/base.py", line 254, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+        request, *callback_args, **callback_kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/venv/lib/python3.14/site-packages/asgiref/sync.py", line 506, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.14/site-packages/asgiref/current_thread_executor.py", line 40, in run
+    result = self.fn(*self.args, **self.kwargs) https://app.clancal.com/events/b478f19d-d990-403e-a0b3-f7b3e3cd73ad/
