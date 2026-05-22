@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "5ddf161bca70",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "family_agent/evals/fixtures.py",
+    "family_agent/evals/runner.py",
+    "family_agent/evals/scenarios.json",
+    "family_agent/evals/validators.py",
+    "family_agent/runtime.py",
+    "family_agent/tests/test_evals.py",
+    "family_agent/tests/test_runtime.py",
+    "family_scheduler/settings.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5d/df161bca70/0/metadata.json",
+      "transcript": "/5d/df161bca70/0/full.jsonl",
+      "content_hash": "/5d/df161bca70/0/content_hash.txt",
+      "prompt": "/5d/df161bca70/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 120493,
+    "cache_read_tokens": 4081592,
+    "output_tokens": 18648,
+    "api_call_count": 42
+  }
+}
