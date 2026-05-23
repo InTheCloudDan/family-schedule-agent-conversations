@@ -1,0 +1,5 @@
+fix organize/tests.py:780: error: "_MonkeyPatchedResponse" has no attribute "url"  [attr-defined]
+organize/tests.py:815: error: "_MonkeyPatchedResponse" has no attribute "url"  [attr-defined]
+organize/tests.py:834: error: "_MonkeyPatchedResponse" has no attribute "url"  [attr-defined]
+organize/tests.py:852: error: "_MonkeyPatchedResponse" has no attribute "url"  [attr-defined]
+Found 4 errors in 1 file (checked 6 source files)
