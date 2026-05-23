@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "34092d604fa2",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "desktop/views_part1.tmp",
+    "family_agent/tests/test_tool_adapter_organize.py",
+    "family_agent/tool_adapter.py",
+    "static/css/main.css",
+    "static/js/dropzone.js",
+    "templates/base.html",
+    "templates/events/event_detail.html",
+    "templates/family_agent/planner.html",
+    "templates/famstream/partials/_create_post_modal.html",
+    "templates/trips/lists/grocery_detail.html",
+    "templates/trips/trip_photos.html",
+    "templates/users/family_settings.html"
+  ],
+  "sessions": [
+    {
+      "metadata": "/34/092d604fa2/0/metadata.json",
+      "transcript": "/34/092d604fa2/0/full.jsonl",
+      "content_hash": "/34/092d604fa2/0/content_hash.txt",
+      "prompt": "/34/092d604fa2/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 101,
+    "cache_creation_tokens": 202807,
+    "cache_read_tokens": 5558645,
+    "output_tokens": 20904,
+    "api_call_count": 62
+  }
+}

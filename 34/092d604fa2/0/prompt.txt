@@ -1,0 +1,5 @@
+On web for Clancy, can we support drag and drop images
+
+---
+
+all of them except coupon, we should hide coupon if it's still showing anywhere
