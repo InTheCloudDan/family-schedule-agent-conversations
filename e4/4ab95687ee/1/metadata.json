@@ -1,9 +1,11 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "e44ab95687ee",
+  "session_id": "3d31321f-26ef-4d24-961a-7025ce7fb3c6",
   "strategy": "manual-commit",
+  "created_at": "2026-05-24T12:39:01.006693Z",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 2,
   "files_touched": [
     "desktop/serializers.py",
     "desktop/services.py",
@@ -26,25 +28,26 @@
     "organize/web_views.py",
     "templates/organize/tasks_board.html"
   ],
-  "sessions": [
-    {
-      "metadata": "/e4/4ab95687ee/0/metadata.json",
-      "transcript": "/e4/4ab95687ee/0/full.jsonl",
-      "content_hash": "/e4/4ab95687ee/0/content_hash.txt",
-      "prompt": "/e4/4ab95687ee/0/prompt.txt"
-    },
-    {
-      "metadata": "/e4/4ab95687ee/1/metadata.json",
-      "transcript": "/e4/4ab95687ee/1/full.jsonl",
-      "content_hash": "/e4/4ab95687ee/1/content_hash.txt",
-      "prompt": "/e4/4ab95687ee/1/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "20730a1ff726",
   "token_usage": {
-    "input_tokens": 1163,
-    "cache_creation_tokens": 142031,
-    "cache_read_tokens": 3847912,
-    "output_tokens": 15161,
-    "api_call_count": 59
+    "input_tokens": 218,
+    "cache_creation_tokens": 49994,
+    "cache_read_tokens": 609240,
+    "output_tokens": 2513,
+    "api_call_count": 14
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-24T12:39:00.917085Z",
+    "agent_lines": 46,
+    "human_added": 918,
+    "human_modified": 44,
+    "human_removed": 0,
+    "total_committed": 1008,
+    "agent_percentage": 4.563492063492063
   }
 }
