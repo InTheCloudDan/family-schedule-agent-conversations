@@ -1,0 +1,1 @@
+In the web Feed clicking on the +N for more photos/videos does not do anythign, it should allow me to view all of them
