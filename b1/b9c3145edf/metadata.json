@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "b1b9c3145edf",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "events/api.py",
+    "events/google_places.py",
+    "events/tests/test_places_proxy_views.py",
+    "notifications/tests.py",
+    "trip_intake/services.py",
+    "trip_intake/tests/test_intake_apply.py",
+    "trips/migrations/0032_backfill_applied_intake_sources.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b1/b9c3145edf/0/metadata.json",
+      "transcript": "/b1/b9c3145edf/0/full.jsonl",
+      "content_hash": "/b1/b9c3145edf/0/content_hash.txt",
+      "prompt": "/b1/b9c3145edf/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 17,
+    "cache_creation_tokens": 48340,
+    "cache_read_tokens": 599820,
+    "output_tokens": 2242,
+    "api_call_count": 14
+  }
+}
