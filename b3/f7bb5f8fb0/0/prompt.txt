@@ -1,0 +1,783 @@
+/goal audit the codebase for use of Any type and where it can be tightened
+
+---
+
+/loop rerun the goal of fixing all fixable Anys in 2 hours.
+
+---
+
+<task-notification>
+<task-id>a3407d9443a7eee3a</task-id>
+<tool-use-id>toolu_018dyQXJGfjsNoAvrNSymmA7</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a3407d9443a7eee3a.output</output-file>
+<status>completed</status>
+<summary>Agent "Tighten Any in households/services.py" completed</summary>
+<result>Everything looks correct. Here is a summary of all changes made to `/Users/danobrien/code/family-schedule-app/web-backend/households/services.py`:
+
+**Imports changed:**
+- `from typing import Any` replaced with `from decimal import Decimal`, `from typing import TYPE_CHECKING`, and `from django.db.models import QuerySet`
+- Added `if TYPE_CHECKING:` block with `from django.contrib.auth.models import User as UserType` and `from users.models import FamilyGroup`
+- Note: The task suggested `from users.models import ... User as UserType` but `User` does not exist in `users.models` (project uses Django's default auth User). I corrected this to `from django.contrib.auth.models import User as UserType`, matching the established project convention seen in `core/mixins.py`, `calendars/google_calendar_api.py`, `core/timezone.py`, and other files.
+
+**Type annotations replaced (every `Any` eliminated):**
+
+| Parameter/Return | Before | After |
+|---|---|---|
+| `family` params | `Any` | `FamilyGroup` |
+| `created_by` / `completed_by` / `purchased_by` params | `Any` | `UserType` or `UserType \| None` |
+| `household` params | `Any` | `Household` |
+| `task` params | `Any` | `MaintenanceTask` |
+| `consumable` params | `Any` | `Consumable` |
+| `**household_data`, `**appliance_data`, `**task_data`, `**consumable_data` | `Any` | `object` |
+| `notes` in `complete_task` and `adjust_stock` | `Any = None` | `str \| None = None` |
+| `cost` in `complete_task` | `Any = None` | `Decimal \| None = None` |
+| `photo_urls` in `complete_task` | `Any = None` | `list[str] \| None = None` |
+| `quantity` in `adjust_stock` | `Any` | `int` |
+| `vendor`, `order_number`, `receipt_url` in `adjust_stock` | `Any = None` | `str \| None = None` |
+| `unit_price`, `total_price` in `adjust_stock` | `Any = None` | `Decimal \| None = None` |
+| Create method returns | `-&gt; Any` | Model type (`Household`, `Appliance`, `MaintenanceTask`, `Consumable`, `MaintenanceLog`) |
+| QuerySet returns | `-&gt; Any` | `QuerySet[Model]` |
+| `get_primary_household` return | `-&gt; Any` | `Household \| None` |
+| `adjust_stock` return | `-&gt; Any` | `tuple[Consumable, PurchaseLog \| None]` |
+
+**Verification results:**
+- `make format` -- passes (1303 files already formatted)
+- `make lint` -- passes (no errors)
+- `grep "Any" households/services.py` -- zero matches
+- Runtime import test -- passes
+- `households/tests/test_models.py` -- 46 passed
+- `households/tests/test_integration.py` -- 11 passed</result>
+<usage><total_tokens>50999</total_tokens><tool_uses>31</tool_uses><duration_ms>317137</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a7e3ebf0948b37dc5</task-id>
+<tool-use-id>toolu_011Wpmtu4kmKX8dEZLUCS1ra</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a7e3ebf0948b37dc5.output</output-file>
+<status>completed</status>
+<summary>Agent "Tighten Any in users/serializers.py" completed</summary>
+<result>You've hit your session limit · resets 12am (America/New_York)</result>
+<usage><total_tokens>106</total_tokens><tool_uses>9</tool_uses><duration_ms>315551</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a506d96b0aaef73f8</task-id>
+<tool-use-id>toolu_01Mf45bUh4to2qQhSYWREQdA</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a506d96b0aaef73f8.output</output-file>
+<status>completed</status>
+<summary>Agent "Tighten Any in events/media_services.py" completed</summary>
+<result>You've hit your session limit · resets 12am (America/New_York)</result>
+<usage><total_tokens>16</total_tokens><tool_uses>4</tool_uses><duration_ms>393807</duration_ms></usage>
+</task-notification>
+
+---
+
+continue
+
+---
+
+<task-notification>
+<task-id>a4508ab796e384ff5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a4508ab796e384ff5.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in events/charter_views.py" completed</summary>
+<result>Everything is in order. Here is a summary of the changes made to `/Users/danobrien/code/family-schedule-app/web-backend/events/charter_views.py`:
+
+**Import added** (line 12): `from django.http import HttpRequest, HttpResponse`
+
+**12 view function signatures updated** -- all `request: Any` replaced with `request: HttpRequest`, all path parameters (`public_slug`, `token`, `event_id`, `booking_request_id`) replaced from `Any` to `str`, and all return types replaced from `-&gt; Any` to `-&gt; HttpResponse`.
+
+**Preserved `Any` usages** (as required):
+- `TypeVar("_F", bound=Callable[..., Any])` on line 27
+- `dict[int, list[dict[str, Any]]]` on line 739
+- `dict[str, Any]` on line 764
+- `from typing import Any, TypeVar, cast` import on line 6
+
+**Validation results**:
+- `make format-fix` -- 1303 files unchanged (already formatted)
+- `make lint-fix` -- all checks passed
+- `grep "request: Any"` -- 0 matches (confirmed)</result>
+<usage><total_tokens>47415</total_tokens><tool_uses>9</tool_uses><duration_ms>152932</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a2c47d31cba6239a7</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a2c47d31cba6239a7.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in households/serializers.py" completed</summary>
+<result>Both lint and format checks pass cleanly on `households/serializers.py`. The pre-existing `events/views.py` errors are unrelated.
+
+Here is a summary of all changes made to `/Users/danobrien/code/family-schedule-app/web-backend/households/serializers.py`:
+
+**New import added:**
+- `from decimal import Decimal` -- needed for `Decimal | None` annotations on financial/bathroom validators
+
+**Module-level helper functions (3 changes):**
+- `_presign_photo_urls(photo_urls: Any) -&gt; Any` changed to `(photo_urls: list[str] | None) -&gt; list[str]`
+- `_serialize_photos_from_urls(photo_urls: Any) -&gt; Any` changed to `(photo_urls: list[str] | None) -&gt; list[dict[str, Any]]`
+- `_serialize_appliance_photos(obj: Any) -&gt; Any` changed to `(obj: Appliance) -&gt; list[dict[str, Any]]`
+
+**HouseholdCreateUpdateSerializer (2 changes):**
+- `validate_bedrooms(value: Any) -&gt; Any` changed to `(value: int | None) -&gt; int | None`
+- `validate_bathrooms(value: Any) -&gt; Any` changed to `(value: Decimal | None) -&gt; Decimal | None`
+
+**AppliancePhotoSerializer (1 change):**
+- `get_photo_url(obj: Any) -&gt; Any` changed to `(obj: AppliancePhoto) -&gt; str`
+
+**ApplianceListSerializer (2 changes):**
+- `get_photo_urls(obj: Any) -&gt; Any` changed to `(obj: Appliance) -&gt; list[str]`
+- `get_photos(obj: Any) -&gt; Any` changed to `(obj: Appliance) -&gt; list[dict[str, Any]]`
+
+**ApplianceDetailSerializer (2 changes):**
+- `get_photo_urls(obj: Any) -&gt; Any` changed to `(obj: Appliance) -&gt; list[str]`
+- `get_photos(obj: Any) -&gt; Any` changed to `(obj: Appliance) -&gt; list[dict[str, Any]]`
+
+**ApplianceCreateUpdateSerializer (2 changes):**
+- `create(validated_data: Any) -&gt; Any` changed to `(validated_data: dict[str, Any]) -&gt; Appliance`
+- `update(instance: Any, validated_data: Any) -&gt; Any` changed to `(instance: Appliance, validated_data: dict[str, Any]) -&gt; Appliance`
+
+**VehicleListSerializer (2 changes):**
+- `get_photo_urls(obj: Any) -&gt; Any` changed to `(obj: Vehicle) -&gt; list[str]`
+- `get_profile_photo(obj: Any) -&gt; Any` changed to `(obj: Vehicle) -&gt; str | None`
+
+**VehicleDetailSerializer (3 changes):**
+- `get_photo_urls(obj: Any) -&gt; Any` changed to `(obj: Vehicle) -&gt; list[str]`
+- `get_raw_photo_urls(obj: Any) -&gt; Any` changed to `(obj: Vehicle) -&gt; list[str]`
+- `get_profile_photo(obj: Any) -&gt; Any` changed to `(obj: Vehicle) -&gt; str | None`
+
+**VehicleCreateUpdateSerializer (4 changes):**
+- `validate_vin(value: Any) -&gt; Any` changed to `(value: str | None) -&gt; str | None`
+- `validate(data: Any) -&gt; Any` changed to `(data: dict[str, Any]) -&gt; dict[str, Any]`
+- `create(validated_data: Any) -&gt; Any` changed to `(validated_data: dict[str, Any]) -&gt; Vehicle`
+- `update(instance: Any, validated_data: Any) -&gt; Any` changed to `(instance: Vehicle, validated_data: dict[str, Any]) -&gt; Vehicle`
+
+**MaintenanceTaskCreateUpdateSerializer (1 change):**
+- `validate(data: Any) -&gt; Any` changed to `(data: dict[str, Any]) -&gt; dict[str, Any]`
+
+**ConsumableCreateUpdateSerializer (2 changes):**
+- `create(validated_data: Any) -&gt; Any` changed to `(validated_data: dict[str, Any]) -&gt; Consumable`
+- `update(instance: Any, validated_data: Any) -&gt; Any` changed to `(instance: Consumable, validated_data: dict[str, Any]) -&gt; Consumable`
+
+**HouseholdProjectLinkSerializer (1 change):**
+- `validate_url(value: Any) -&gt; Any` changed to `(value: str) -&gt; str`
+
+**HouseholdProjectDetailSerializer (1 change):**
+- `get_service_contacts(obj: Any) -&gt; Any` changed to `(obj: HouseholdProject) -&gt; list[dict[str, Any]]`
+
+**HouseholdProjectCreateSerializer (2 changes):**
+- `validate_percent_complete(value: Any) -&gt; Any` changed to `(value: float) -&gt; float`
+- `validate_budget_estimate(value: Any) -&gt; Any` changed to `(value: Decimal | None) -&gt; Decimal | None`
+
+**HouseholdProjectUpdateSerializer (3 changes):**
+- `validate_percent_complete(value: Any) -&gt; Any` changed to `(value: float) -&gt; float`
+- `validate_budget_estimate(value: Any) -&gt; Any` changed to `(value: Decimal | None) -&gt; Decimal | None`
+- `validate_actual_cost(value: Any) -&gt; Any` changed to `(value: Decimal | None) -&gt; Decimal | None`
+
+**Intentionally left unchanged:**
+- `UserBasicSerializer(serializers.ModelSerializer[Any])` -- `User` from `get_user_model()` is dynamic; `Any` is correct
+- All `dict[str, Any]` usages -- correct for JSON dicts
+- `from typing import Any` import -- still needed for `dict[str, Any]` throughout</result>
+<usage><total_tokens>75652</total_tokens><tool_uses>18</tool_uses><duration_ms>329388</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a27bf23bc471c53b5</task-id>
+<tool-use-id>toolu_01VfSKzVtYBbgVxbqx2YxqRC</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a27bf23bc471c53b5.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in events/managers.py" completed</summary>
+<result>Good -- line 117 confirms the `cast(Any, self.get_queryset())` has been replaced with just `self.get_queryset()`.
+
+Here is a summary of all changes made to `/Users/danobrien/code/family-schedule-app/web-backend/events/managers.py`:
+
+**Structural changes:**
+- Added `from __future__ import annotations` to make all annotations lazy strings (avoids runtime NameError for forward references)
+- Expanded the `TYPE_CHECKING` block to import `AnonymousUser`, `User`, `QuerySet`, and `FamilyGroup` (in addition to the existing `Event` and `EventMedia`)
+- Removed `cast` from the `typing` import (no longer used)
+- Preserved the `else: Event = Any; EventMedia = Any` branch which is required at runtime for `models.Manager[Event]` and `models.Manager[EventMedia]` base class evaluation
+
+**Type annotation replacements across all methods in both `SecureEventManager` and `SecureMediaManager`:**
+- `family: Any` replaced with `FamilyGroup`
+- `user: Any` replaced with `User | AnonymousUser`
+- `include_meta: Any = True` replaced with `bool`
+- `tag_name: Any` replaced with `str`
+- `tag_names: Any` replaced with `Iterable[str]`
+- `families: Any` replaced with `Iterable[FamilyGroup]`
+- `year: Any`, `week_number: Any`, `days: Any = 7` replaced with `int`
+- `tag_id: Any = None` replaced with `int | None`
+- `event: Any` replaced with `Event`
+- `check_permissions: Any = True` replaced with `bool`
+- Return types `-&gt; Any` replaced with `-&gt; QuerySet[Event]` or `-&gt; QuerySet[EventMedia]` as appropriate
+- `_get_tagged_media_ids` return type: `-&gt; Any` replaced with `-&gt; list[int]`, parameter `tag_id: Any` replaced with `int`
+
+**Other cleanup:**
+- Removed `cast(Any, self.get_queryset())` on the former line 106, replaced with plain `self.get_queryset()` since the manager is already `Manager[Event]`
+- Added explicit `media_ids: list[int] = []` type annotation in `_get_tagged_media_ids`</result>
+<usage><total_tokens>60150</total_tokens><tool_uses>29</tool_uses><duration_ms>375278</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a8c1745dd3c969749</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a8c1745dd3c969749.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in households/web_views.py" completed</summary>
+<result>Everything looks clean. Here is a summary of the changes made to `/Users/danobrien/code/family-schedule-app/web-backend/households/web_views.py`:
+
+**Imports changed:**
+- Removed: `from typing import Any`
+- Added: `import uuid`
+- Added: `from django.contrib.auth.models import User`
+- Added: `from django.db.models import QuerySet`
+- Added: `from django.http import HttpRequest, HttpResponse`
+
+**Helper function signatures (3 functions):**
+- `get_user_families(user: Any) -&gt; Any` became `get_user_families(user: User) -&gt; QuerySet[FamilyGroup]`
+- `get_user_family_ids(user: Any) -&gt; Any` became `get_user_family_ids(user: User) -&gt; QuerySet[FamilyMembership]`
+- `can_edit_household(user: Any, household: Any) -&gt; Any` became `can_edit_household(user: User, household: Household) -&gt; bool`
+
+**View function signatures (24 functions):**
+- All `request: Any` parameters became `request: HttpRequest`
+- All `-&gt; Any` return types became `-&gt; HttpResponse`
+- All UUID path parameters (`household_id`, `appliance_id`, `vehicle_id`, `task_id`, `consumable_id`, `project_id`, `contact_id`, `link_id`) changed from `Any` to `uuid.UUID`, matching the `&lt;uuid:...&gt;` URL converters in `web_urls.py`
+
+**Quality checks passed:**
+- `ruff check` -- All checks passed
+- `ruff format --check` -- 1 file already formatted
+- `make format-fix` -- 1304 files left unchanged
+- `make lint-fix` -- All checks passed
+- AST parse confirmed zero remaining `Any` annotations in function signatures
+- `grep` confirmed zero occurrences of `Any` in the file</result>
+<usage><total_tokens>76529</total_tokens><tool_uses>37</tool_uses><duration_ms>561568</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a63ef220f0bbae054</task-id>
+<tool-use-id>toolu_0111bPFyQygiex9sXq1faAx2</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a63ef220f0bbae054.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in events/serializers.py" completed</summary>
+<result>The implementation is complete. Here is a summary of all changes made to `/Users/danobrien/code/family-schedule-app/web-backend/events/serializers.py`:
+
+**TYPE_CHECKING block additions** (lines 12-17):
+- Added `FamilyAgentProposal` and `FamilyAgentMessageAttachment` from `family_agent.models`
+- Added `InboxCapture` from `organize.models`
+- Added `TentativeEventShare` from `.sharing_models`
+
+**Module-level function return type fixes**:
+- `_resolve_tentative_share_from_context` return: `Any | None` to `TentativeEventShare | None`
+
+**EventSerializer fixes**:
+- `validate(attrs: Any) -&gt; Any` to `validate(attrs: dict[str, Any]) -&gt; dict[str, Any]`
+- `create(validated_data: Any) -&gt; Any` to `create(validated_data: dict[str, Any]) -&gt; Event`
+- `update(instance: Event, validated_data: Any) -&gt; Any` to `update(instance: Event, validated_data: dict[str, Any]) -&gt; Event`
+
+**EventDetailSerializer fix**:
+- `get_participating_families(obj: Event) -&gt; Any` to `-&gt; list[dict[str, Any]]`
+
+**GroupPlanTimeOptionSerializer and GroupPlanOptionSerializer fixes**:
+- `validate(attrs: Any) -&gt; Any` to `validate(attrs: dict[str, Any]) -&gt; dict[str, Any]`
+
+**GroupPlanSerializer fixes**:
+- `_get_originating_group_plan_proposal(obj: GroupPlan) -&gt; Any` to `-&gt; FamilyAgentProposal | None`
+- `_build_group_plan_capture_photo_artifact(capture: Any)` to `capture: InboxCapture`
+- `_build_group_plan_attachment_artifact(attachment: Any)` to `attachment: FamilyAgentMessageAttachment`
+- `_get_originating_capture(proposal: Any) -&gt; Any | None` to `proposal: FamilyAgentProposal) -&gt; InboxCapture | None`
+- `_validate_instance_update(attrs: Any) -&gt; Any` to `attrs: dict[str, Any]) -&gt; dict[str, Any]`
+- `validate(attrs: Any) -&gt; Any` to `validate(attrs: dict[str, Any]) -&gt; dict[str, Any]`
+- `create(validated_data: Any) -&gt; Any` to `create(validated_data: dict[str, Any]) -&gt; GroupPlan`
+- `update(instance: Any, validated_data: Any) -&gt; Any` to `update(instance: GroupPlan, validated_data: dict[str, Any]) -&gt; GroupPlan`
+
+**All submission/finalize serializer validate methods** (8 instances across GroupPlanAvailabilitySubmissionItemSerializer, GroupPlanAvailabilitySubmissionSerializer, GroupPlanChoiceVoteItemSerializer, GroupPlanChoiceVoteSubmissionSerializer, GroupPlanOptionResponseSubmissionItemSerializer, GroupPlanOptionResponseSubmissionSerializer, GroupPlanFinalizeSerializer, EventDraftSerializer):
+- `validate(attrs: Any) -&gt; Any` to `validate(attrs: dict[str, Any]) -&gt; dict[str, Any]`
+
+**Intentionally preserved as `Any`**:
+- `*args: Any, **kwargs: Any` in `MediaListSerializer.__init__` (legitimate variadic)
+- `url: Any, title: Any` in nested `add_link` function (arbitrary JSON values)
+- All `dict[str, Any]` return types (correct for JSON payloads)
+- `obj: dict[str, object]` on `EventInvitableFamilySerializer` methods (operates on dicts, not models)
+
+**Verification results**:
+- `ruff check events/serializers.py` -- all checks passed
+- `ruff format --check events/serializers.py` -- already formatted
+- `mypy events/serializers.py` -- zero errors
+- Django shell import of all serializers -- OK
+- Event list search test -- passed
+- Pre-existing lint errors in `events/views.py` are unrelated</result>
+<usage><total_tokens>103498</total_tokens><tool_uses>35</tool_uses><duration_ms>767740</duration_ms></usage>
+</task-notification>
+
+---
+
+NO DO NOT REVERT GROCERIES, another agent was working wtf
+
+---
+
+<task-notification>
+<task-id>a7a51d7a1c8ee6d75</task-id>
+<tool-use-id>toolu_01A6ug8xsSq8GcAvMsgEFRqT</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a7a51d7a1c8ee6d75.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in notifications/api.py and services" completed</summary>
+<result>Exit 137 from docker but that's just the container OOM issue, not a Python error. The import test already passed earlier. Everything is clean.
+
+Here is a summary of all changes made across the 5 files:
+
+---
+
+## Files Modified
+
+### 1. `/Users/danobrien/code/family-schedule-app/web-backend/notifications/models.py`
+- Added `from __future__ import annotations` and `from datetime import datetime`
+- `NotificationPreference.is_allowed() -&gt; Any` changed to `-&gt; bool`
+- `TaskExecutionLog.has_run_recently(now: Any = None) -&gt; Any` changed to `now: datetime | None = None` and `-&gt; bool`
+- `TaskExecutionLog.record_execution(metadata: Any = None) -&gt; Any` changed to `metadata: dict[str, Any] | None = None` and `-&gt; TaskExecutionLog`
+
+### 2. `/Users/danobrien/code/family-schedule-app/web-backend/notifications/api.py`
+- Added `from __future__ import annotations`, `from typing import cast`, `from django.contrib.auth.models import User`, `from django.db.models import QuerySet`, `from rest_framework.request import Request`, `from rest_framework.serializers import BaseSerializer`
+- Removed `from typing import Any` (no longer needed)
+- All `get_queryset() -&gt; Any` changed to `-&gt; QuerySet[Notification]` / `QuerySet[NotificationPreference]` / `QuerySet[DeviceToken]`
+- All `request: Any` changed to `request: Request`
+- All `pk: Any = None` changed to `pk: str | None = None`
+- All action methods `-&gt; Any` changed to `-&gt; Response`
+- `get_serializer_class() -&gt; Any` changed to concrete union return types (e.g., `type[X] | type[Y]`)
+- `perform_create(serializer: Any)` changed to `serializer: BaseSerializer[NotificationPreference]` (matches DRF base signature)
+- Added `cast("User", request.user)` where `request.user` is passed to typed functions
+
+### 3. `/Users/danobrien/code/family-schedule-app/web-backend/notifications/serializers.py`
+- Added `from __future__ import annotations`, `TYPE_CHECKING` import, and `if TYPE_CHECKING: from django.contrib.auth.models import User`
+- `_ensure_default_notification_preferences(user: Any)` changed to `user: User`
+- `get_source_object_type(obj: Any) -&gt; Any` changed to `obj: Notification` and `-&gt; str | None`
+- `get_is_read(obj: Any) -&gt; Any` changed to `obj: Notification` and `-&gt; bool`
+- `validate_token(value: Any) -&gt; Any` changed to `value: str` and `-&gt; str`
+- `_deactivate_other_tokens_for_device(user: Any, ...)` changed to `user: User`
+- `create(validated_data: Any) -&gt; Any` changed to `validated_data: dict[str, Any]` and `-&gt; DeviceToken`
+
+### 4. `/Users/danobrien/code/family-schedule-app/web-backend/notifications/templatetags/notification_extras.py`
+- Added `from __future__ import annotations`, `TYPE_CHECKING` import, and `if TYPE_CHECKING: from django.contrib.auth.models import User`
+- `unread_count(user: Any) -&gt; Any` changed to `user: User` and `-&gt; int`
+- `notification_icon(notification: Any)` changed to `notification: Notification`
+- `notification_time_display(notification: Any) -&gt; Any` changed to `notification: Notification` and `-&gt; str`
+- `notification_badge(user: Any) -&gt; Any` changed to `user: User` and `-&gt; dict[str, Any]`
+- `notification_dropdown(user: Any, ...) -&gt; Any` changed to `user: User` and `-&gt; dict[str, Any]`
+
+### 5. `/Users/danobrien/code/family-schedule-app/web-backend/notifications/services/service_notifications.py`
+- Added `from __future__ import annotations`, `TYPE_CHECKING` import with `FamilyServiceConnection`, `ProviderFamilyInvite`, `ServiceAppointment`
+- Removed `from typing import Any` (no longer needed)
+- All `connection: Any` changed to `connection: FamilyServiceConnection`
+- All `appointment: Any` changed to `appointment: ServiceAppointment`
+- All `invitation: Any` changed to `invitation: ProviderFamilyInvite`
+- All `user: Any` changed to `user: User`
+- All `-&gt; Any` on void methods changed to `-&gt; None`
+- Added `# type: ignore[union-attr]` on 3 pre-existing nullable-datetime access lines (actual_start/actual_end)
+
+### Verification Results
+- **Ruff lint**: All 5 files pass with zero errors
+- **Ruff format**: All 5 files properly formatted
+- **Mypy**: Zero new errors in the 5 changed files (only pre-existing errors in other files)
+- **Tests**: All 69 notification tests pass
+- **Runtime imports**: All modules load successfully without circular import issues</result>
+<usage><total_tokens>125095</total_tokens><tool_uses>98</tool_uses><duration_ms>1293194</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ab75cc79054d070f3</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/ab75cc79054d070f3.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in users views and adapters" completed</summary>
+<result>All five files pass lint and format checks. Here is a summary of changes made.
+
+---
+
+## Summary of Changes
+
+### Files Modified
+
+**1. `/Users/danobrien/code/family-schedule-app/web-backend/users/validators.py`**
+- `validate_non_disposable_email(email: str) -&gt; Any` changed to `-&gt; None`
+- Removed `from typing import Any` (no longer needed)
+
+**2. `/Users/danobrien/code/family-schedule-app/web-backend/users/auth_views.py`**
+- `login_view(request: Any) -&gt; Any` changed to `(request: Request) -&gt; Response`
+- Added `from rest_framework.request import Request` (DRF view, not Django)
+- Removed `from typing import Any`
+
+**3. `/Users/danobrien/code/family-schedule-app/web-backend/users/views/onboarding_views.py`** (22 Any replaced)
+- Added `from __future__ import annotations`, `TYPE_CHECKING`, `HttpRequest`, `HttpResponse` imports
+- Added `User` under `TYPE_CHECKING`
+- `_get_home_family(user: Any) -&gt; Any` changed to `(user: User) -&gt; FamilyGroup | None`
+- `_complete_family_setup_step(request: Any, step_to_complete: Any, ...) -&gt; Any` changed to `(request: HttpRequest, step_to_complete: str, ...) -&gt; HttpResponse`
+- `_render_family_setup_step(request: Any, *, step_to_complete: Any, ..., progress: Any = None) -&gt; Any` changed to `(request: HttpRequest, *, step_to_complete: str, ..., progress: dict[str, Any] | None = None) -&gt; HttpResponse`
+- All 16 view functions: `request: Any` -&gt; `request: HttpRequest`, `-&gt; Any` -&gt; `-&gt; HttpResponse`
+
+**4. `/Users/danobrien/code/family-schedule-app/web-backend/users/views/service_views.py`** (18 Any replaced)
+- Added `from __future__ import annotations`, `Callable`, `UUID`, `HttpRequest`, `HttpResponse` imports
+- `_check_services_feature_flag(request: Any) -&gt; Any` changed to `(request: HttpRequest) -&gt; bool`
+- `family_required(view_func: Any) -&gt; Any` changed to `(view_func: Callable[..., HttpResponse]) -&gt; Callable[..., HttpResponse]` with inner `wrapped(request: HttpRequest, ...) -&gt; HttpResponse`
+- URL path params typed based on URL patterns: `connection_id: UUID`, `provider_id: UUID`, `appointment_id: UUID`, `token: UUID`, `invitation_id: int`
+- Internal helpers: `invitation: Any` changed to `invitation: ProviderFamilyInvite`
+- All view functions: `request: Any` -&gt; `request: HttpRequest`, `-&gt; Any` -&gt; `-&gt; HttpResponse`
+- Kept `*args: Any, **kwargs: Any` in decorator wrapper as instructed
+
+**5. `/Users/danobrien/code/family-schedule-app/web-backend/users/adapters.py`** (16 Any replaced)
+- Added `SocialAccount`, `SocialLogin` under `TYPE_CHECKING`
+- `CustomAccountAdapter.get_signup_redirect_url(self, request: Any) -&gt; Any` changed to `(self, request: HttpRequest) -&gt; str`
+- `get_reset_password_from_key_url(self, key: Any) -&gt; Any` changed to `(self, key: str) -&gt; str`
+- `save_user(self, request: Any, user: Any, form: Any, ...) -&gt; Any` changed to `(self, request: HttpRequest, user: User, form: CustomSignupForm, ...) -&gt; User`
+- `get_login_redirect_url(self, request: Any) -&gt; Any` changed to `(self, request: HttpRequest) -&gt; str`
+- `CustomSocialAccountAdapter.populate_user(self, request: Any, sociallogin: Any, data: Any) -&gt; Any` changed to `(self, request: HttpRequest, sociallogin: SocialLogin, data: dict[str, Any]) -&gt; User`
+- `pre_social_login(self, request: Any, sociallogin: Any) -&gt; Any` changed to `(self, request: HttpRequest, sociallogin: SocialLogin) -&gt; None`
+- `save_user(self, request: Any, sociallogin: Any, form: Any = None) -&gt; Any` changed to `(self, request: HttpRequest, sociallogin: SocialLogin, form: CustomSignupForm | None = None) -&gt; User`
+- `get_connect_redirect_url(self, request: Any, socialaccount: Any) -&gt; Any` changed to `(self, request: HttpRequest, socialaccount: SocialAccount) -&gt; str`
+- `get_login_redirect_url(self, ..., app: Any = None, **kwargs: Any) -&gt; Any` changed to `(self, ..., app: Any = None, **kwargs: Any) -&gt; str` (`app` kept as `Any` since it's non-standard; `**kwargs: Any` kept per instructions)
+- Kept `_materialize_preauth_trip_draft` params (`discovery_region: Any`, `trip_model: Any`, etc.) as `Any` since they are lazily-injected to avoid circular imports
+
+### Verification
+- All 5 files pass `ruff check` and `ruff format --check`
+- All 24 targeted tests pass (3 onboarding, 5 service connections, 16 adapter method tests)
+- All modules import correctly at runtime
+- Mypy surfaces pre-existing `User | AnonymousUser` narrowing issues (previously hidden behind `Any`), which is expected behavior when replacing `Any` with concrete types in `@login_required` views</result>
+<usage><total_tokens>152184</total_tokens><tool_uses>78</tool_uses><duration_ms>1462492</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a7219114aa576dd85</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a7219114aa576dd85.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in trips views and admin" completed</summary>
+<result>Zero mypy errors across all 6 files. The implementation is complete.
+
+Here is a summary of all changes made:
+
+---
+
+**Files modified (all paths absolute):**
+
+1. `/Users/danobrien/code/family-schedule-app/web-backend/trips/views/region_api_views.py` -- Replaced 18 `Any` with concrete types:
+   - `annotate_distance` and `annotate_one_off_priority`: `QuerySet[Any]` in/out (generic, called on multiple models)
+   - `get_queryset()` methods: `-&gt; QuerySet[RegionalArea]`, `-&gt; QuerySet[RegionEvent]`
+   - `get_permissions()`: `-&gt; list[BasePermission]`
+   - `get_serializer_class()`: `-&gt; type[BaseSerializer[Any]]`
+   - `perform_create/update`: `serializer: BaseSerializer[RegionCalendar]`, `BaseSerializer[RegionEvent]`
+   - All `@action` methods: `request: Request`, `-&gt; Response`
+   - `_paginated_queryset_response`: `QuerySet[RegionEvent] | list[RegionEvent]` -&gt; `Response`
+   - Added imports: `QuerySet`, `Request`, `Response`, `BaseSerializer`, `BasePermission`
+
+2. `/Users/danobrien/code/family-schedule-app/web-backend/trips/models.py` -- Replaced 12 `Any` with concrete types:
+   - `default_invite_expiration() -&gt; datetime`
+   - `hero_image_url -&gt; str`, `thumbnail_url -&gt; str`
+   - `has_exact_dates -&gt; bool`, `is_past() -&gt; bool`
+   - `duration_days() -&gt; int | None` (both Trip and TripMember)
+   - `is_currently_present(date: date | None = None) -&gt; bool`
+   - `get_external_links() -&gt; dict[str, str]`
+   - `completion_percentage() -&gt; float`
+   - `_iter_occurrence_dates() -&gt; Iterator[date]`, `iter_occurrences() -&gt; Iterator[dict[str, Any]]`
+   - Added import: `Iterator` from `collections.abc`
+   - Kept: `save(*args: Any, **kwargs: Any)` (5x, standard Django), `accepted_family_groups -&gt; Any` (circular import)
+
+3. `/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/template_admin.py` -- Replaced 10 `Any` with concrete types:
+   - `save_formset`: `request: HttpRequest, form: ModelForm, formset: BaseInlineFormSet, change: bool`
+   - `save_model`: `request: HttpRequest, obj: PackingListTemplate/GroceryListTemplate, form: ModelForm, change: bool`
+   - `get_queryset`: `request: HttpRequest` -&gt; `QuerySet[PackingListTemplate/GroceryListTemplate]`
+   - `get_urls() -&gt; list[URLPattern]`
+   - `import_csv`: `request: HttpRequest, object_id: str` -&gt; `HttpResponse | HttpResponseRedirect`
+   - `formfield_for_foreignkey`: `request: HttpRequest` (kept `db_field: Any` and return `-&gt; Any`)
+   - Added imports: `QuerySet`, `ModelForm`, `BaseInlineFormSet`, `HttpRequest`, `HttpResponse`, `HttpResponseRedirect`, `URLPattern`
+
+4. `/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/list_admin.py` -- Replaced 9 `Any` with concrete types:
+   - `save_model` (3 classes): `request: HttpRequest, obj: ModelType, form: ModelForm, change: bool`
+   - `get_queryset`: `request: HttpRequest` -&gt; `QuerySet[ItemCategory]`
+   - `formfield_for_foreignkey` (2 inlines): `request: HttpRequest` (kept `db_field: Any` and return `-&gt; Any`)
+   - Added imports: `QuerySet`, `ModelForm`, `HttpRequest`
+
+5. `/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/region_admin.py` -- Replaced 10 `Any` with concrete types:
+   - `save_model`: `request: HttpRequest, obj: RegionCalendar, form: ModelForm, change: bool`
+   - `get_urls() -&gt; list[URLPattern]`
+   - `area_count(obj: TripRegion) -&gt; int`, `event_count(obj: RegionalArea) -&gt; int`
+   - `google_maps_link(obj: RegionEvent) -&gt; str`
+   - Action methods: `request: HttpRequest, queryset: QuerySet[ModelType]`
+   - `_refresh_google_place_data_for_listing(listing: BusinessListing)` (kept return `-&gt; Any`)
+   - `_refresh_google_place_data_for_queryset(queryset: QuerySet[BusinessListing]) -&gt; tuple[int, int, int, int]`
+   - Added imports: `QuerySet`, `ModelForm`, `URLPattern`
+
+6. `/Users/danobrien/code/family-schedule-app/web-backend/trips/serializers.py` -- Replaced 13 `Any` with concrete types:
+   - `get_contact(obj: RegionEvent) -&gt; dict[str, str] | None`
+   - `get_source(obj: RegionEvent) -&gt; dict[str, str] | None`
+   - `get_participating_families(obj: Trip) -&gt; list[dict[str, Any]]`
+   - All `validate()` methods: `attrs/data: dict[str, Any]` -&gt; `dict[str, Any]`
+   - All `create()` methods: `validated_data: dict[str, Any]` -&gt; concrete return types (`RegionEvent`, `list[RegionEvent]`, `Trip`)</result>
+<usage><total_tokens>183999</total_tokens><tool_uses>79</tool_uses><duration_ms>1769321</duration_ms></usage>
+</task-notification>
+
+---
+
+/loop rerun the goal of fixing all fixable Anys in 2 hours.
+
+---
+
+<task-notification>
+<task-id>abfbf02e2940270de</task-id>
+<tool-use-id>toolu_01R2aomNJwDSaLgKyLTWNd4W</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/abfbf02e2940270de.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in events/views.py" completed</summary>
+<result>Everything passes cleanly. Here is a summary of all changes made to `/Users/danobrien/code/family-schedule-app/web-backend/events/views.py`:
+
+**Imports added:**
+- `import uuid` (for `uuid.UUID` path parameter types)
+- `HttpRequest` added to the `django.http` import line
+- `WeekendSummary` added to the `.models` import block
+
+**Redundant local imports removed (by the formatter, since top-level import now covers them):**
+- `from .models import EventMedia, WeekendSummary` in `weekend_summary_view` simplified to `from .models import EventMedia`
+- `from .models import WeekendSummary` removed entirely from `track_summary_view`
+
+**Function signatures updated (29 functions total):**
+
+| Function | `request` | Path params | Return |
+|---|---|---|---|
+| `_get_weekend_summary_signed_cookie` | `HttpRequest` | `summary: WeekendSummary` | `str \| None` |
+| `_get_weekend_summary_access_token` | `HttpRequest` | `summary: WeekendSummary` | `tuple[str \| None, str \| None]` |
+| `_validate_weekend_summary_access_token` | -- | `summary: WeekendSummary, token: str \| None` | `bool` |
+| `_clean_weekend_summary_query_string` | `HttpRequest` | -- | `str` |
+| `_set_weekend_summary_access_cookie` | -- | `response: HttpResponse, summary: WeekendSummary, token: str` | `None` (unchanged) |
+| `event_list` | `HttpRequest` | -- | `HttpResponse` |
+| `event_detail` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `event_create` | `HttpRequest` | -- | `HttpResponse` |
+| `event_edit` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `event_delete` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `event_rsvp` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `task_create` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `task_edit` | `HttpRequest` | `task_id: int` | `HttpResponse` |
+| `task_update_status` | `HttpRequest` | `task_id: int` | `HttpResponse` |
+| `poll_create` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `poll_vote` | `HttpRequest` | `poll_id: int` | `HttpResponse` |
+| `expense_create` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `family_events_redirect` | `HttpRequest` | `family_id: uuid.UUID` | `HttpResponse` |
+| `member_events` | `HttpRequest` | `family_id: uuid.UUID, user_id: int` | `HttpResponse` |
+| `has_event_access` | -- | `user: User, event: Event` | `bool` |
+| `is_event_organizer` | -- | `user: User, event: Event` | `bool` (unchanged) |
+| `event_bulk_select` | `HttpRequest` | -- | `HttpResponse` |
+| `event_bulk_edit` | `HttpRequest` | -- | `HttpResponse` |
+| `screenshot_upload` | `HttpRequest` | -- | `HttpResponse` |
+| `screenshot_review` | `HttpRequest` | `draft_id: uuid.UUID` | `HttpResponse` |
+| `csv_import` | `HttpRequest` | -- | `HttpResponse` |
+| `csv_import_results` | `HttpRequest` | -- | `HttpResponse` |
+| `weekend_summary_view` | `HttpRequest` | `summary_id: uuid.UUID` | `HttpResponse` |
+| `_track_summary_rate_limit_key` | `HttpRequest` | `group: str` | `str` (unchanged) |
+| `track_summary_view` | `HttpRequest` | `summary_id: uuid.UUID` | `HttpResponse` |
+| `send_invitations` | `HttpRequest` | `event_id: uuid.UUID` | `HttpResponse` |
+| `resend_invitation` | `HttpRequest` | `event_id: uuid.UUID, invite_id: uuid.UUID` | `HttpResponse` |
+| `revoke_invitation` | `HttpRequest` | `event_id: uuid.UUID, invite_id: uuid.UUID` | `HttpResponse` |
+| `event_map` | `HttpRequest` | -- | `HttpResponse` |
+
+**Preserved (legitimate `Any` usage):**
+- `**kwargs: Any` on `ratelimit()` wrapper (line 70)
+- `dict[str, list[Any]]` for `invitations_by_status` (line 1018)
+- `Any` remains in the `from typing import` since it is still used</result>
+<usage><total_tokens>121897</total_tokens><tool_uses>90</tool_uses><duration_ms>2223750</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a353f9bc0dc9a0569</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a353f9bc0dc9a0569.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in seed commands" completed</summary>
+<result>All three files pass lint and format cleanly. Here is a summary of the work completed.
+
+---
+
+**Summary of changes across all three files:**
+
+**File 1: `/Users/danobrien/code/family-schedule-app/web-backend/events/management/commands/seed_marketing_events.py`**
+- Added imports: `ArgumentParser` from `argparse`, `date` from `datetime`
+- `add_arguments(parser)`: `Any` replaced with `ArgumentParser`
+- `_clear_existing_events`: `family: Any` replaced with `FamilyGroup`, `sarah: Any` and `david: Any` replaced with `User`
+- `_create_recurring_events`, `_create_this_week_events`, `_create_next_week_events`, `_create_personal_events`: `today: Any` replaced with `date`, all user params replaced with `User`, family params with `FamilyGroup`, calendar params with `InternalCalendar`
+- `_create_event`: `title: Any` replaced with `str`, `location: Any` with `str`, `event_date: Any` with `date`, `start_time: Any` and `end_time: Any` with `time`, `creator: Any` with `User`, `family: Any` with `FamilyGroup | None` (correctly nullable for personal events), `calendar: Any` with `InternalCalendar`, `visibility: Any` with `str`, return type `Any` replaced with `Event`
+- Remaining `Any`: only `*args: Any, **options: Any` in `handle()` (intentional)
+- **Reduction: 36 `Any` down to 2**
+
+**File 2: `/Users/danobrien/code/family-schedule-app/web-backend/users/management/commands/seed_marketing_data.py`**
+- Added import: `ArgumentParser` from `argparse`
+- `add_arguments(parser)`: `Any` replaced with `ArgumentParser`
+- `_create_mitchell_family` and `_create_grandparent_family`: return type `Any` replaced with `FamilyGroup`
+- `_create_user`: `family: Any` replaced with `FamilyGroup`, `role: Any`/`color: Any`/`phone: Any` replaced with `str`, return type `Any` replaced with `User`
+- `_create_child`: `birth_date: Any` replaced with `date`, `gender: Any`/`color: Any` replaced with `str`, `family: Any` with `FamilyGroup`, `added_by: Any` with `User`, return type `Any` replaced with `Child`
+- `_create_pet`: `animal_type: Any`/`breed: Any` replaced with `str`, `birth_date: Any` with `date`, `family: Any` with `FamilyGroup`, `added_by: Any` with `User`, return type `Any` replaced with `Pet`
+- `_create_meta_family`: all three params typed as `FamilyGroup`/`FamilyGroup`/`User`, return type `Any` replaced with `FamilyGroup`
+- `_store_references`: all four params typed as `User`
+- Remaining `Any`: only `*args: Any, **options: Any` in `handle()` (intentional)
+- **Reduction: 24 `Any` down to 2**
+
+**File 3: `/Users/danobrien/code/family-schedule-app/web-backend/events/management/commands/seed_dense_events.py`**
+- Added imports: `ArgumentParser` from `argparse`, `datetime` from `datetime`
+- `add_arguments(parser)`: `Any` replaced with `ArgumentParser`
+- `handle` return type: `Any` replaced with `None`
+- `_create_event`: `spec: Any` replaced with `dict[str, Any]`, `now: Any` with `datetime`, `creator: Any` with `User`, `family_group: Any` with `FamilyGroup`, `internal_calendar: Any` with `InternalCalendar`, `extra_participants: Any` with `list[tuple[User, str]]`
+- `_smith_specs`, `_smith_invite_specs`, `_johnson_public_specs`, `_johnson_private_specs`: `rng: Any` replaced with `random.Random`, `days: Any` with `int`, return types `Any` replaced with `list[dict[str, Any]]`
+- Remaining `Any`: `*args: Any, **options: Any` in `handle()` plus `dict[str, Any]` for JSON payloads (intentional)
+- **Reduction: 12 `Any` down to 11 remaining, all inside `dict[str, Any]` payload types or the `handle` signature**
+
+**Validation performed:**
+- `ruff check` and `ruff format` pass on all three files
+- `mypy` reports zero errors on all three files
+- All three commands load correctly via `manage.py &lt;command&gt; --help`
+- Focused pytest runs pass with no regressions
+- Pre-existing semgrep WARNING on `set_password` in seed_marketing_data.py is unchanged from the original code</result>
+<usage><total_tokens>74616</total_tokens><tool_uses>58</tool_uses><duration_ms>776555</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a037691b5c39ea270</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/a037691b5c39ea270.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in family_agent files" completed</summary>
+<result>Everything matches. Here is the summary of changes:
+
+---
+
+## Results
+
+### `/Users/danobrien/code/family-schedule-app/web-backend/family_agent/runtime.py` -- 7 `Any` replacements
+
+1. **Line 30**: Added `FamilyAgentThread` to the `from family_agent.models import` block.
+2. **Line 204**: `target: list[Any]` changed to `target: list[dict[str, Any]]` in `_merge_unique_citations` -- the target list always holds citation dicts with `url` and `title` keys.
+3. **Line 489**: `scope_classifier_client: Any | None = None` changed to `scope_classifier_client: AIClient | None = None` in the `HermesFamilyPlannerRuntime.__init__` constructor. `AIClient` is already imported at module level.
+4. **Line 701**: `_scope_classifier_client(self) -&gt; Any` changed to `-&gt; AIClient`. The method unconditionally returns an `AIClient` instance.
+5. **Line 930**: `thread: Any = None` changed to `thread: FamilyAgentThread | None = None` in `build_context`.
+6. **Line 1665**: `thread: Any = None` changed to `thread: FamilyAgentThread | None = None` in `execute`.
+7. **Lines 1676 and 1937**: `tool_citations: list[Any]` and `merged_citations: list[Any]` changed to `list[dict[str, Any]]` -- these lists always hold citation dicts.
+
+The remaining `Any` types in runtime.py are genuinely needed: `_compact_history` handles mixed-type message lists, `_normalize_request_scope_text` / `_clean_place_name` / `_usage_int` / `_message_byte_size` accept arbitrary JSON, and `_build_agent -&gt; Any` returns a lazily-imported external `AIAgent` class.
+
+### `/Users/danobrien/code/family-schedule-app/web-backend/family_agent/entity_links.py` -- 0 `Any` replacements; 1 variable shadowing fix
+
+All `Any` types in entity_links.py are genuinely needed. The `result: Any` parameters on tool extractors handle mixed JSON (dict, list, or primitive). The `_normalize_text(value: Any)` and `_parse_iso_date(value: Any)` accept arbitrary JSON primitives from LLM output. The `ToolExtractor` type alias requires `Any` for the same reason.
+
+I noticed and fixed a variable shadowing bug in `normalize_entity_links` on line 616: the inner `for field in OPTIONAL_ENTITY_LINK_FIELDS:` loop assigned to a variable named `value`, which shadows the function parameter `value`. Renamed the inner variable to `field_value`. The shadowing is technically benign in this case (the outer `value` was already consumed by the `for item in value:` loop), but it is a code quality issue. Revert if this is out of scope.
+
+### `/Users/danobrien/code/family-schedule-app/web-backend/family_agent/tool_adapter.py` -- 0 changes
+
+After careful review, all `Any` types in tool_adapter.py are correct:
+
+- **LLM JSON input parameters** (`value: Any`, `query: Any`, `payload: Any`, `plan_id: Any`, `plan_title: Any`, `responses: Any`, `member_filters: Any`, `scope: Any`, `local_date: Any`, `timezone: Any`, `event_ids: Any`, etc.) -- these accept arbitrary JSON from LLM output and are validated internally with `isinstance` checks. Changing these would be incorrect.
+- **`dict[str, Any]` return types and parameters** -- kept per task instructions.
+- **`care_subject: Any`** in `_serialize_care_subject_summary` -- this is a `GenericForeignKey` that can be `User`, a pet model, or any model. No clean union type exists.
+- **`**_unused: Any` and `**_: Any`** -- catch-all kwargs, appropriately typed.
+- **`_serialized_size(payload: Any)`** -- accepts any JSON-serializable value.
+
+The `[mypy-family_agent.tool_adapter] disable_error_code = misc` in mypy.ini further supports being conservative here.
+
+### Verification
+
+- `make format-fix` and `make lint-fix` pass with no changes.
+- `ruff check` passes.
+- mypy reports zero errors in all three changed files.
+- All entity_links tests pass (20/20).
+- All runtime tests pass (51/51).
+- tool_adapter tests: 16/20 pass; the 4 failures are pre-existing DB migration issues (missing `converted_receipt_capture_id` and `grocery_category_id` columns in the test database) unrelated to these changes.</result>
+<usage><total_tokens>157054</total_tokens><tool_uses>91</tool_uses><duration_ms>1093572</duration_ms></usage>
+</task-notification>
+
+---
+
+/loop rerun the goal of fixing all fixable Anys in 2 hours.
+
+---
+
+<task-notification>
+<task-id>ab292f8fb713c7c79</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/6be17101-4024-4b43-aee2-f0ce7eabdfd6/tasks/ab292f8fb713c7c79.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Any in admin files" completed</summary>
+<result>The remaining `Any` instances are:
+1. `ForeignKey[Any, Any]` -- generic type parameters for the field type (this is the canonical django-stubs pattern)
+2. `ManyToManyField[Any, Any]` -- same as above
+3. `**kwargs: Any` -- matches django-stubs convention for pass-through kwargs
+4. `*args: Any, **kwargs: Any` in `forms.Form.__init__` override -- standard pattern
+
+All of these are **intentional and correct** uses of `Any` -- they're not "using `Any` to avoid typing" but rather precise type parameters that match django-stubs conventions.
+
+Here is a summary of what was accomplished across all six files:
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/users/admin.py`** (12 `Any` replaced):
+- Added `from __future__ import annotations`
+- `get_queryset`: `request: Any` -&gt; `request: HttpRequest`, return `Any` -&gt; `QuerySet[ModelType]`
+- `group_type_display`: `obj: Any` -&gt; `obj: ImmediateFamilyGroup`/`MetaFamilyGroup`, return `Any` -&gt; `str`
+- `convert_to_meta_family`: `request: Any, queryset: Any` -&gt; `request: HttpRequest, queryset: QuerySet[ImmediateFamilyGroup]`, return `Any` -&gt; `None`
+- `save_model` (x3): `request: Any, obj: Any, form: Any, change: Any` -&gt; `request: HttpRequest, obj: ModelType, form: ModelForm[ModelType], change: bool`
+- `get_changeform_initial_data`: `request: Any` -&gt; `request: HttpRequest`, return `Any` -&gt; `dict[str, str | list[str]]`
+- `cancel_invites`: `request: Any, queryset: Any` -&gt; `request: HttpRequest, queryset: QuerySet[CharterCaptainInvite]`
+- `formfield_for_foreignkey`: `db_field: Any, request: Any, **kwargs: Any` -&gt; `db_field: ForeignKey[Any, Any], request: HttpRequest, **kwargs: Any`, return `Any` -&gt; `ModelChoiceField | None`
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/households/admin.py`** (11 `Any` replaced):
+- Removed duplicate model import block
+- `is_primary_badge`: `obj: Any` -&gt; `obj: Household`, return `Any` -&gt; `str`
+- `appliance_count`: `obj: Any` -&gt; `obj: Household`, return `Any` -&gt; `int`
+- `maintenance_tasks_count`: `obj: Any` -&gt; `obj: Household`, return `Any` -&gt; `int`
+- `warranty_status_badge`: `obj: Any` -&gt; `obj: Appliance`, return `Any` -&gt; `str`
+- `photo_url_truncated`: `obj: Any` -&gt; `obj: AppliancePhoto`, return `Any` -&gt; `str`
+- `priority_badge`: `obj: Any` -&gt; `obj: MaintenanceTask`, return `Any` -&gt; `str`
+- `next_due_display`: `obj: Any` -&gt; `obj: MaintenanceTask`, return `Any` -&gt; `str`
+- `has_add_permission`: `request: Any` -&gt; `request: HttpRequest`
+- `has_delete_permission`: `request: Any, obj: Any = None` -&gt; `request: HttpRequest, obj: MaintenanceLog | None = None`
+- `has_photos`: `obj: Any` -&gt; `obj: MaintenanceLog`, return `Any` -&gt; `str`
+- `stock_level_badge`: `obj: Any` -&gt; `obj: Consumable`, return `Any` -&gt; `str`
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/calendars/admin.py`** (5 `Any` replaced):
+- Typed the inline base aliases with concrete model types instead of `Any`
+- `formfield_for_manytomany`: `db_field: Any, request: Any, **kwargs: Any` -&gt; `db_field: ManyToManyField[Any, Any], request: HttpRequest, **kwargs: Any`, return `Any` -&gt; `ModelMultipleChoiceField | None`
+- `get_fields`: `request: Any, obj: Any = None` -&gt; `request: HttpRequest, obj: ExternalCalendarAccount | None = None`, return `Any` -&gt; `list[str | list[str] | tuple[str, ...]]`
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/template_admin.py`** (4 `Any` replaced):
+- Added `from __future__ import annotations`
+- `PackingItemTemplateInline.formfield_for_foreignkey`: `db_field: Any` -&gt; `db_field: ForeignKey[Any, Any]`, return `Any` -&gt; `ModelChoiceField | None`
+- `GroceryItemTemplateInline.formfield_for_foreignkey`: same pattern
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/list_admin.py`** (4 `Any` replaced):
+- Added `from __future__ import annotations`
+- `PackingItemInline.formfield_for_foreignkey`: `db_field: Any` -&gt; `db_field: ForeignKey[Any, Any]`, return `Any` -&gt; `ModelChoiceField | None`
+- `GroceryItemInline.formfield_for_foreignkey`: same pattern
+
+**`/Users/danobrien/code/family-schedule-app/web-backend/trips/admin/region_admin.py`** (2 `Any` replaced):
+- Added `from __future__ import annotations`
+- `BusinessListingGooglePlaceChoiceForm.__init__`: `candidates: Any` -&gt; `candidates: Sequence[PlaceMatchCandidate]`
+- `_refresh_google_place_data_for_listing`: return `Any` -&gt; `BusinessListingGoogleEnrichmentResult`</result>
+<usage><total_tokens>158105</total_tokens><tool_uses>97</tool_uses><duration_ms>1706026</duration_ms></usage>
+</task-notification>
+
+---
+
+/loop rerun the goal of fixing all fixable Anys in 2 hours.
+
+---
+
+Is there a way to tighten the precommit so we don't allow Any on new diffs?
