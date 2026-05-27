@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "53d6eb341c9b",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "groceries/receipt_services.py",
+    "groceries/views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/53/d6eb341c9b/0/metadata.json",
+      "transcript": "/53/d6eb341c9b/0/full.jsonl",
+      "content_hash": "/53/d6eb341c9b/0/content_hash.txt",
+      "prompt": "/53/d6eb341c9b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 81,
+    "cache_creation_tokens": 64342,
+    "cache_read_tokens": 2282963,
+    "output_tokens": 6943,
+    "api_call_count": 43
+  }
+}
