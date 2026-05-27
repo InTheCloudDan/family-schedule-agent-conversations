@@ -1,0 +1,435 @@
+Apply this patch: """git apply - <<PATCH
+diff --git a/events/tests/test_event_detail_shared_external_calendar.py b/events/tests/test_event_detail_shared_external_calendar.py
+index 1c57db332b9ea2985dc4b55d4ab8699760907d9a..398b73f233280754dada486086177fc4b936e20a 100644
+--- a/events/tests/test_event_detail_shared_external_calendar.py
++++ b/events/tests/test_event_detail_shared_external_calendar.py
+@@ -97,25 +97,82 @@ def test_event_delete_records_suppression_for_each_matching_calendar() -> None:
+         account_name="Viewer Google",
+         calendar_id=SHARED_CALENDAR_ID,
+     )
+     ExternalCalendarAccount.objects.create(
+         user=sibling,
+         provider="GOOGLE",
+         provider_uid="sibling-uid",
+         account_name="Sibling Google",
+         calendar_id=SHARED_CALENDAR_ID,
+     )
+ 
+     event = _make_shared_external_event(viewer, family)
+ 
+     client = Client()
+     client.force_login(viewer)
+ 
+     response = client.post(reverse("event_delete", args=[event.id]))
+ 
+     assert response.status_code == 302
+     assert not Event.objects.filter(pk=event.pk).exists()
+     suppressed = DeletedExternalEvent.objects.filter(
+         external_id=event.external_id,
+         calendar__calendar_id=SHARED_CALENDAR_ID,
+     )
+     assert suppressed.count() == 2
++
++
++@pytest.mark.django_db
++def test_event_delete_does_not_suppress_unrelated_family_calendar() -> None:
++    viewer, sibling, family = _make_family_with_two_members()
++    other_family = FamilyGroup.objects.create(name="Unrelated Shared Cal Family")
++    victim = User.objects.create_user(
++        username="shared-cal-victim",
++        email="shared-cal-victim@example.com",
++        password="testpass123",  # pragma: allowlist secret
++    )
++    FamilyMembership.objects.create(user=victim, family=other_family, role="PARENT")
++
++    ExternalCalendarAccount.objects.create(
++        user=viewer,
++        provider="GOOGLE",
++        provider_uid="viewer-uid",
++        account_name="Viewer Google",
++        calendar_id=SHARED_CALENDAR_ID,
++    )
++    ExternalCalendarAccount.objects.create(
++        user=sibling,
++        provider="GOOGLE",
++        provider_uid="sibling-uid",
++        account_name="Sibling Google",
++        calendar_id=SHARED_CALENDAR_ID,
++    )
++    victim_calendar = ExternalCalendarAccount.objects.create(
++        user=victim,
++        provider="GOOGLE",
++        provider_uid="victim-uid",
++        account_name="Victim Google",
++        calendar_id=SHARED_CALENDAR_ID,
++    )
++    ExternalCalendarAccount.objects.create(
++        user=viewer,
++        provider="APPLE",
++        provider_uid="viewer-apple-uid",
++        account_name="Viewer Apple",
++        calendar_id=SHARED_CALENDAR_ID,
++    )
++
++    event = _make_shared_external_event(viewer, family)
++
++    client = Client()
++    client.force_login(viewer)
++
++    response = client.post(reverse("event_delete", args=[event.id]))
++
++    assert response.status_code == 302
++    suppressed = DeletedExternalEvent.objects.filter(
++        external_id=event.external_id,
++        calendar__calendar_id=SHARED_CALENDAR_ID,
++    )
++    assert suppressed.count() == 2
++    assert not suppressed.filter(calendar=victim_calendar).exists()
++    assert not suppressed.filter(calendar__provider="APPLE").exists()
+
+
+diff --git a/events/views.py b/events/views.py
+index b2bbfca434b4a2dd6fdc5bc406f032843932208e..7c9198312cb61302e9642bbe76f06631515d467b 100644
+--- a/events/views.py
++++ b/events/views.py
+@@ -52,50 +52,76 @@ from .models import (
+     Event,
+     EventDraft,
+     EventParticipant,
+     EventReminder,
+     Poll,
+     PollOption,
+     PollVote,
+     Task,
+ )
+ from .sharing_models import TentativeEventShare
+ 
+ 
+ def ratelimit(
+     **kwargs: Any,
+ ) -> Callable[[Callable[..., HttpResponse]], Callable[..., HttpResponse]]:
+     decorator = _ratelimit(**kwargs)
+     return cast(
+         Callable[[Callable[..., HttpResponse]], Callable[..., HttpResponse]],
+         decorator,
+     )
+ 
+ 
+ logger = logging.getLogger(__name__)
+ 
+ 
++def _external_calendar_accounts_for_event_sync_state(
++    event: Event, requester: User
++) -> Any:
++    """Return tenant-scoped external calendars that may store sync state.
++
++    External provider calendar IDs are not globally unique in ClanCal: unrelated
++    families can import calendars with the same provider calendar_id. Sync
++    suppression/modification rows must therefore only be written for the
++    requester's account and active members of the event's family.
++    """
++    calendar_filters = Q(user=requester)
++    if event.family_group_id:
++        calendar_filters |= Q(
++            user__family_memberships__family_id=event.family_group_id,
++            user__family_memberships__is_active=True,
++        )
++
++    calendars_qs = ExternalCalendarAccount.objects.filter(
++        calendar_id=event.calendar_id
++    ).filter(calendar_filters)
++    if event.external_source:
++        calendars_qs = calendars_qs.filter(provider=event.external_source)
++
++    return calendars_qs.distinct()
++
++
+ def _get_weekend_summary_signed_cookie(request: Any, summary: Any) -> Any:
+     """Return a redeemed weekend summary token from a signed browser cookie."""
+     try:
+         return request.get_signed_cookie(
+             summary.get_access_cookie_name(),
+             default=None,
+             salt=summary.ACCESS_COOKIE_SALT,
+         )
+     except BadSignature:
+         logger.warning(
+             "Invalid signed weekend summary cookie for summary %s", summary.id
+         )
+         return None
+ 
+ 
+ def _get_weekend_summary_access_token(request: Any, summary: Any) -> Any:
+     """Resolve a weekend summary access token from request metadata."""
+     header_token = request.headers.get("X-Weekend-Summary-Token")
+     if header_token:
+         return header_token, "header"
+ 
+     query_token = request.GET.get("token")
+     if query_token:
+         return query_token, "query"
+ 
+@@ -1342,62 +1368,60 @@ def event_edit(request: Any, event_id: Any) -> Any:
+         "form": form,
+         "event": event,
+         "family_groups": family_groups,
+         "potential_participants": potential_participants,
+         "current_participant_ids": current_participant_ids,
+         "google_places_api_key": getattr(settings, "GOOGLE_PLACES_API_KEY", ""),
+     }
+ 
+     return render(request, "events/event_form.html", context)
+ 
+ 
+ @login_required
+ def event_delete(request: Any, event_id: Any) -> Any:
+     """
+     Delete an event
+     """
+     event = get_object_or_404(Event, pk=event_id)  # Use pk for UUID
+ 
+     # Check if user is allowed to delete this event
+     if not is_event_organizer(request.user, event):
+         return HttpResponseForbidden("You don't have permission to delete this event.")
+ 
+     if request.method == "POST":
+         # If this is an external event, track it to prevent re-syncing
+         if event.is_external and event.external_id and event.calendar_id:
+-            from calendars.models import DeletedExternalEvent, ExternalCalendarAccount
++            from calendars.models import DeletedExternalEvent
+ 
+-            # calendar_id is not unique — every account that mirrors this
+-            # provider event needs a suppression row, otherwise a sibling
+-            # family member's next sync will re-create the event.
+-            calendars_qs = ExternalCalendarAccount.objects.filter(
+-                calendar_id=event.calendar_id
++            calendars_qs = _external_calendar_accounts_for_event_sync_state(
++                event, request.user
+             )
+             if not calendars_qs.exists():
+                 logger.warning(
+-                    "No ExternalCalendarAccount for calendar_id=%s",
++                    "No authorized ExternalCalendarAccount for calendar_id=%s provider=%s",
+                     event.calendar_id,
++                    event.external_source,
+                 )
+             for calendar in calendars_qs:
+                 DeletedExternalEvent.objects.create(
+                     calendar=calendar, external_id=event.external_id
+                 )
+ 
+         event.delete()
+         messages.success(request, "Event deleted successfully!")
+         return redirect("event_list")
+ 
+     context = {
+         "event": event,
+     }
+ 
+     return render(request, "events/event_confirm_delete.html", context)
+ 
+ 
+ @login_required
+ @require_POST
+ def event_rsvp(request: Any, event_id: Any) -> Any:
+     """
+     Respond to an event invitation
+     """
+     event = get_object_or_404(Event, pk=event_id)  # Use pk for UUID
+ 
+@@ -1850,172 +1874,172 @@ def event_bulk_edit(request: Any) -> Any:
+     # nosemgrep: clancal.security.event-objects-bypass-secure-manager
+     selected_events = Event.objects.filter(id__in=selected_event_ids)
+ 
+     # Check permissions for all events
+     for event in selected_events:
+         if not is_event_organizer(request.user, event):
+             messages.error(
+                 request, "You don't have permission to edit some of the selected events"
+             )
+             return redirect("event_bulk_select")
+ 
+     if request.method == "POST":
+         form = BulkEditForm(request.POST)
+ 
+         if form.is_valid():
+             action = form.cleaned_data["action"]
+             confirm = form.cleaned_data["confirm"]
+ 
+             if not confirm:
+                 form.add_error("confirm", "You must confirm this action")
+ 
+             else:
+                 # Perform the selected action
+                 if action == "delete":
+                     # Track external events to prevent re-syncing
+-                    from calendars.models import (
+-                        DeletedExternalEvent,
+-                        ExternalCalendarAccount,
+-                    )
++                    from calendars.models import DeletedExternalEvent
+ 
+                     for event in selected_events:
+                         if (
+                             event.is_external
+                             and event.external_id
+                             and event.calendar_id
+                         ):
+-                            calendars_qs = ExternalCalendarAccount.objects.filter(
+-                                calendar_id=event.calendar_id
++                            calendars_qs = (
++                                _external_calendar_accounts_for_event_sync_state(
++                                    event, request.user
++                                )
+                             )
+                             if not calendars_qs.exists():
+                                 logger.warning(
+-                                    "No ExternalCalendarAccount for calendar_id=%s",
++                                    "No authorized ExternalCalendarAccount for calendar_id=%s provider=%s",
+                                     event.calendar_id,
++                                    event.external_source,
+                                 )
+                             for calendar in calendars_qs:
+                                 DeletedExternalEvent.objects.create(
+                                     calendar=calendar, external_id=event.external_id
+                                 )
+ 
+                     # Delete all selected events
+                     count = selected_events.count()
+                     selected_events.delete()
+                     messages.success(request, f"Successfully deleted {count} events")
+ 
+                     # Clear session data
+                     if "selected_event_ids" in request.session:
+                         del request.session["selected_event_ids"]
+ 
+                     return redirect("event_list")
+ 
+                 elif action == "change_visibility":
+                     new_visibility = form.cleaned_data["new_visibility"]
+ 
+                     if not new_visibility:
+                         form.add_error(
+                             "new_visibility", "Please select a visibility option"
+                         )
+                     else:
+                         # Track external events to prevent sync overrides
+-                        from calendars.models import (
+-                            ExternalCalendarAccount,
+-                            ModifiedExternalEvent,
+-                        )
++                        from calendars.models import ModifiedExternalEvent
+ 
+                         for event in selected_events:
+                             if (
+                                 event.is_external
+                                 and event.external_id
+                                 and event.calendar_id
+                             ):
+-                                calendars_qs = ExternalCalendarAccount.objects.filter(
+-                                    calendar_id=event.calendar_id
++                                calendars_qs = (
++                                    _external_calendar_accounts_for_event_sync_state(
++                                        event, request.user
++                                    )
+                                 )
+                                 if not calendars_qs.exists():
+                                     logger.warning(
+-                                        "No ExternalCalendarAccount for calendar_id=%s",
++                                        "No authorized ExternalCalendarAccount for calendar_id=%s provider=%s",
+                                         event.calendar_id,
++                                        event.external_source,
+                                     )
+                                 for calendar in calendars_qs:
+                                     ModifiedExternalEvent.objects.update_or_create(
+                                         calendar=calendar,
+                                         external_id=event.external_id,
+                                         defaults={"event": event},
+                                     )
+ 
+                         # Update visibility for all selected events
+                         count = selected_events.count()
+                         selected_events.update(visibility=new_visibility)
+                         messages.success(
+                             request,
+                             f"Successfully updated visibility for {count} events",
+                         )
+ 
+                         # Clear session data
+                         if "selected_event_ids" in request.session:
+                             del request.session["selected_event_ids"]
+ 
+                         return redirect("event_list")
+ 
+                 elif action == "move":
+                     date_offset = form.cleaned_data["date_offset"]
+                     time_offset = form.cleaned_data["time_offset"]
+ 
+                     if date_offset is None and time_offset is None:
+                         form.add_error(
+                             None, "Please provide either a date offset or time offset"
+                         )
+                     else:
+                         # Calculate the timedelta
+                         delta = timedelta()
+                         if date_offset is not None:
+                             delta += timedelta(days=date_offset)
+                         if time_offset is not None:
+                             delta += timedelta(hours=time_offset)
+ 
+                         # Track external events to prevent sync overrides
+-                        from calendars.models import (
+-                            ExternalCalendarAccount,
+-                            ModifiedExternalEvent,
+-                        )
++                        from calendars.models import ModifiedExternalEvent
+ 
+                         # Update each event
+                         count = 0
+                         for event in selected_events:
+                             # Track external events before modifying
+                             if (
+                                 event.is_external
+                                 and event.external_id
+                                 and event.calendar_id
+                             ):
+-                                calendars_qs = ExternalCalendarAccount.objects.filter(
+-                                    calendar_id=event.calendar_id
++                                calendars_qs = (
++                                    _external_calendar_accounts_for_event_sync_state(
++                                        event, request.user
++                                    )
+                                 )
+                                 if not calendars_qs.exists():
+                                     logger.warning(
+-                                        "No ExternalCalendarAccount for calendar_id=%s",
++                                        "No authorized ExternalCalendarAccount for calendar_id=%s provider=%s",
+                                         event.calendar_id,
++                                        event.external_source,
+                                     )
+                                 for calendar in calendars_qs:
+                                     ModifiedExternalEvent.objects.update_or_create(
+                                         calendar=calendar,
+                                         external_id=event.external_id,
+                                         defaults={"event": event},
+                                     )
+ 
+                             event.start_time += delta
+                             event.end_time += delta
+                             event.save()
+                             count += 1
+ 
+                         messages.success(request, f"Successfully moved {count} events")
+ 
+                         # Clear session data
+                         if "selected_event_ids" in request.session:
+                             del request.session["selected_event_ids"]
+ 
+                         return redirect("event_list")
+     else:
+         form = BulkEditForm()
+ 
+     context = {
+         "form": form,
+
+PATCH"""
