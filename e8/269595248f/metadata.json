@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "e8269595248f",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "calendars/admin.py",
+    "events/templatetags/event_extras.py",
+    "events/test_security_csv_injection.py",
+    "family_agent/evals/runner.py",
+    "households/tests/test_integration.py",
+    "households/tests/test_services.py",
+    "households/web_views.py",
+    "trips/admin/list_admin.py",
+    "trips/admin/region_admin.py",
+    "trips/admin/template_admin.py",
+    "trips/management/commands/seed_marketing_trips.py",
+    "trips/tests/test_tasks.py",
+    "users/admin.py",
+    "users/tests/test_signup_join_requests.py",
+    "users/views/onboarding_views.py",
+    "users/views/service_views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e8/269595248f/0/metadata.json",
+      "transcript": "/e8/269595248f/0/full.jsonl",
+      "content_hash": "/e8/269595248f/0/content_hash.txt",
+      "prompt": "/e8/269595248f/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 42547,
+    "cache_creation_tokens": 496016,
+    "cache_read_tokens": 33977829,
+    "output_tokens": 171049,
+    "api_call_count": 165
+  }
+}
