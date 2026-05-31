@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "720e5720d78e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "events/admin.py",
+    "events/api.py",
+    "events/forms.py",
+    "events/management/commands/seed_marketing_events.py",
+    "events/migrations/0046_delete_task.py",
+    "events/models.py",
+    "events/serializers.py",
+    "events/test_security_event_child_idor.py",
+    "events/tests/test_finalized_event_participation.py",
+    "events/urls.py",
+    "events/views.py",
+    "family_scheduler/api.py",
+    "family_scheduler/celery.py",
+    "holiday_showcase/views.py",
+    "meals/services.py",
+    "notifications/services/notification_service.py",
+    "notifications/signals.py",
+    "notifications/tasks.py",
+    "organize/api.py",
+    "organize/migrations/0010_migrate_legacy_event_tasks.py",
+    "organize/services.py",
+    "organize/web_views.py",
+    "recipes/admin.py",
+    "recipes/api.py",
+    "recipes/composition.py",
+    "recipes/grocery_service.py",
+    "recipes/migrations/0010_recipeingredient_component_recipe_and_more.py",
+    "recipes/models.py",
+    "recipes/tests/test_composition.py",
+    "recipes/tests/test_grocery_service.py",
+    "recipes/tests/test_to_grocery_components.py",
+    "templates/events/event_detail.html",
+    "templates/events/task_form.html",
+    "trips/views/region_api_views.py",
+    "users/adapters.py",
+    "users/api.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/72/0e5720d78e/0/metadata.json",
+      "transcript": "/72/0e5720d78e/0/full.jsonl",
+      "content_hash": "/72/0e5720d78e/0/content_hash.txt",
+      "prompt": "/72/0e5720d78e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 27492,
+    "cache_creation_tokens": 318622,
+    "cache_read_tokens": 8742602,
+    "output_tokens": 63603,
+    "api_call_count": 75
+  }
+}
