@@ -1,0 +1,5 @@
+yes fully test it
+
+---
+
+fix the existing failures and then run and verify dagger ci
