@@ -1,0 +1,1 @@
+how can we modify it so we don't need nix to run dagger? At a minimum locally, possibly everwhere I'm not sure it's bringing us value for the complexity
