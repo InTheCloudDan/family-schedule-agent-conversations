@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "5d6cfdafb2af",
+  "session_id": "796c97ba-cc72-4bc9-a879-d6264589b8e3",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-01T02:11:09.160129Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".claude/skills/ci-pipeline/SKILL.md",
+    ".dagger/README.md",
+    ".dagger/src/family_schedule_ci/main.py",
+    ".github/workflows/ci.yml",
+    "Makefile",
+    "README.md",
+    "calendars/api.py",
+    "calendars/tests/test_month_view_external_visibility.py",
+    "calendars/tests/test_provider_sync_completion.py",
+    "calendars/views/month_view.py",
+    "calendars/views/week_view.py",
+    "dagger.json",
+    "flake.lock",
+    "flake.nix",
+    "groceries/management/commands/backfill_grocery_list_stores.py",
+    "groceries/tests/test_receipts_pantry.py",
+    "scripts/run-dagger-ci.sh",
+    "scripts/run-host-dev.sh"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "532da2022286",
+  "token_usage": {
+    "input_tokens": 20471,
+    "cache_creation_tokens": 59390,
+    "cache_read_tokens": 154723,
+    "output_tokens": 931,
+    "api_call_count": 4
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-01T02:11:09.102725Z",
+    "agent_lines": 280,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 280,
+    "agent_percentage": 100
+  }
+}

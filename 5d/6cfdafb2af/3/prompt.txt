@@ -1,0 +1,5 @@
+Why do we get errors like this, is it just a test artifact? 55  : ┆ ┆ Container.asService CACHED [6m30s]
+55  : ┆ ┆ [7m8s] | 2026-06-01 01:48:04.219 UTC [152] ERROR:  duplicate key value violates unique constraint "event_invites_email_event_id_b283d3f5_uniq"
+55  : ┆ ┆ [7m8s] | 2026-06-01 01:48:04.219 UTC [152] DETAIL:  Key (email, event_id)=(duplicate@example.com, 4982a7a6-76d5-4370-8a62-01fb35fbfbbd) already exists.
+55  : ┆ ┆ [7m8s] | 2026-06-01 01:48:04.219 UTC [152] STATEMENT:  INSERT INTO "event_invites" ("id", "event_id", "email", "invite_code", "invited_by_id", "status", "created_at", "expires_at", "last_sent_at", "send_count", "accepted_at", "declined_at", "user_id", "guest_name", "plus_one_count", "dietary_restrictions", "notes", "custom_message") VALUES ('0855e9cb-1177-4fbb-9cf5-6d2db662519d'::uuid, '4982a7a6-76d5-4370-8a62-01fb35fbfbbd'::uuid, 'duplicate@example.com', 'UyWDd-8sdHLWcxTnPlTfRg', 914, 'PENDING', '2026-06-01T01:48:04.219767+00:00'::timestamptz, '2026-06-08T01:48:04.219515+00:00'::timestamptz, NULL, 0, NULL, NULL, NULL, '', 0, '', '', '')
+65  : ┆ ┆ Container.withExec DONE [6m30s]
