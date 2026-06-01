@@ -1,0 +1,122 @@
+Is there a way we can better snapshot the startup for make dagger-ci so we don't have to pay such a high startup cost on all of the migrations? 106 : ┆ ┆ [1m9s] |   Applying users.0039_backfill_meals_enabled_default_true... OK
+106 : ┆ ┆ [1m9s] |   Applying users.0040_familyfeaturesettings_agent_enabled... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0001_initial... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0002_auto_20150616_2121... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0003_taggeditem_add_unique_index... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0004_alter_taggeditem_content_type_alter_taggeditem_tag... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0005_auto_20220424_2025... OK
+106 : ┆ ┆ [1m9s] |   Applying taggit.0006_rename_taggeditem_content_type_object_id_taggit_tagg_content_8fc721_idx... OK
+106 : ┆ ┆ [1m11s] |   Applying events.0001_initial... OK
+106 : ┆ ┆ [1m11s] |   Applying events.0002_add_missing_event_fields... OK
+106 : ┆ ┆ [1m11s] |   Applying events.0003_eventdraft... OK
+106 : ┆ ┆ [1m11s] |   Applying events.0004_alter_eventdraft_screenshot... OK
+106 : ┆ ┆ [1m12s] |   Applying events.0005_eventinvite... OK
+106 : ┆ ┆ [1m12s] |   Applying events.0006_remove_eventinvite_event_invit_email_2ede9e_idx_and_more... OK
+106 : ┆ ┆ [1m12s] |   Applying events.0007_alter_event_visibility... OK
+106 : ┆ ┆ [1m12s] |   Applying events.0008_add_media_api_fields... OK
+106 : ┆ ┆ [1m12s] |   Applying events.0009_convert_image_to_photo... OK
+106 : ┆ ┆ [1m13s] |   Applying events.0010_add_weekend_summary... OK
+106 : ┆ ┆ [1m13s] |   Applying events.0011_weekendsummary_events_week_family__c5d7a9_idx... OK
+106 : ┆ ┆ [1m13s] |   Applying events.0012_alter_event_id_alter_eventdraft_id_and_more... OK
+106 : ┆ ┆ [1m14s] |   Applying events.0013_event_tags_eventmedia_legacy_tags_and_more... OK
+106 : ┆ ┆ [1m15s] |   Applying events.0014_uuid_tagging_support... OK
+106 : ┆ ┆ [1m16s] |   Applying events.0015_alter_uuidtaggeditem_content_type_and_more... OK
+106 : ┆ ┆ [1m16s] |   Applying events.0013_event_latitude_event_longitude... Also I got an error. Can we update to dagger 0.21.3 and then run it with the ci mode flag or whatever so it doesn't print out that info? 2  : family-schedule-ci:test
+15  : ┆ FamilyScheduleCi.test DONE [2m36s]
+12  : family-schedule-ci:test DONE [7m17s]
+
+
+19:37:08 ERR cleanup failed msg="close dagger session" err="shutdown: do shutdown: Post \"http://dagger/shutdown\": http2: frame too large" duration=3.588579708s
+
+A new release of dagger is available: v0.20.6 → v0.21.3
+To upgrade, see https://docs.dagger.io/install
+https://github.com/dagger/dagger/releases/tag/v0.21.3
+Error: Post "http://dagger/query": command [docker exec -i dagger-engine-v0.20.6 buildctl dial-stdio] has exited with exit status 137, make sure the URL is valid, and Docker 18.09 or later is installed on the remote host: stderr=
+cleanup failed: "close dagger session": shutdown: do shutdown: Post "http://dagger/shutdown": http2: frame too large
+make: *** [dagger-ci] Error 1
+
+---
+
+<task-notification>
+<task-id>bu7iuysc0</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/bu7iuysc0.output</output-file>
+<status>completed</status>
+<summary>Background command "Install dagger 0.21.3 and load module functions" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+if things need to change in .docker / dagger.json you can do that
+
+---
+
+<task-notification>
+<task-id>b3yx4bmw6</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/b3yx4bmw6.output</output-file>
+<status>completed</status>
+<summary>Background command "Run test stage under 0.21.3 with nomigrations" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bai1g0gil</task-id>
+<tool-use-id>toolu_01CWKj8LoSGvGyDutVnb4gEG</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/bai1g0gil.output</output-file>
+<status>completed</status>
+<summary>Background command "Re-run test stage with pgvector, capture true exit" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bari1grsl</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/bari1grsl.output</output-file>
+<status>completed</status>
+<summary>Background command "Run the 9 failing tests locally" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bt1q0myx1</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/bt1q0myx1.output</output-file>
+<status>completed</status>
+<summary>Background command "Run subset locally WITH --migrations to compare" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+fix the 9 failing tests if everything else looks good
+
+---
+
+<task-notification>
+<task-id>bljwym970</task-id>
+<tool-use-id>toolu_018WpBC1KS7s1MhUbWKidu9Q</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/bljwym970.output</output-file>
+<status>completed</status>
+<summary>Background command "Run calendars + groceries full suites" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+is there configuration options to run a max parallel for failfast?
+
+---
+
+yes do a middle ground, it seems like we can't do all of them, unless there's some other way to manage memory? So take the win we can
+
+---
+
+<task-notification>
+<task-id>b9x92myxm</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/69d52b12-a7a7-44ed-b281-17c36d36e225/tasks/b9x92myxm.output</output-file>
+<status>completed</status>
+<summary>Background command "Run full batched CI as capstone" completed (exit code 0)</summary>
+</task-notification>
