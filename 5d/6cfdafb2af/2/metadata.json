@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "5d6cfdafb2af",
+  "session_id": "6c28f8d9-f846-4c64-bc7e-c144fba8f543",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-01T02:11:09.071857Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    ".claude/skills/ci-pipeline/SKILL.md",
+    ".dagger/README.md",
+    ".github/workflows/ci.yml",
+    "Makefile",
+    "README.md",
+    "flake.lock",
+    "flake.nix",
+    "scripts/run-dagger-ci.sh",
+    "scripts/run-host-dev.sh"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "ba1bad3710a3",
+  "token_usage": {
+    "input_tokens": 62254,
+    "cache_creation_tokens": 1436148,
+    "cache_read_tokens": 55928995,
+    "output_tokens": 213450,
+    "api_call_count": 220
+  },
+  "session_metrics": {
+    "turn_count": 15
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-01T02:11:08.27405Z",
+    "agent_lines": 87,
+    "human_added": 193,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 280,
+    "agent_percentage": 31.071428571428573
+  }
+}

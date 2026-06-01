@@ -3,7 +3,7 @@
   "checkpoint_id": "5d6cfdafb2af",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 16,
+  "checkpoints_count": 19,
   "files_touched": [
     ".claude/skills/ci-pipeline/SKILL.md",
     ".dagger/README.md",
@@ -36,13 +36,19 @@
       "transcript": "/5d/6cfdafb2af/1/full.jsonl",
       "content_hash": "/5d/6cfdafb2af/1/content_hash.txt",
       "prompt": "/5d/6cfdafb2af/1/prompt.txt"
+    },
+    {
+      "metadata": "/5d/6cfdafb2af/2/metadata.json",
+      "transcript": "/5d/6cfdafb2af/2/full.jsonl",
+      "content_hash": "/5d/6cfdafb2af/2/content_hash.txt",
+      "prompt": "/5d/6cfdafb2af/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 74907,
-    "cache_creation_tokens": 929424,
-    "cache_read_tokens": 28894310,
-    "output_tokens": 175223,
-    "api_call_count": 180
+    "input_tokens": 137161,
+    "cache_creation_tokens": 2365572,
+    "cache_read_tokens": 84823305,
+    "output_tokens": 388673,
+    "api_call_count": 400
   }
 }
