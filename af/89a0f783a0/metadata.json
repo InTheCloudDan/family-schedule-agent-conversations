@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "af89a0f783a0",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".secrets.baseline",
+    "THREAT_MODEL.md",
+    "VULN-FINDINGS.json",
+    "VULN-FINDINGS.md",
+    "mobile/api.py",
+    "mobile/tests/test_security_group_6.py",
+    "regions/presentation.py",
+    "regions/tests/test_event_presentation.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/af/89a0f783a0/0/metadata.json",
+      "transcript": "/af/89a0f783a0/0/full.jsonl",
+      "content_hash": "/af/89a0f783a0/0/content_hash.txt",
+      "prompt": "/af/89a0f783a0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 20437,
+    "cache_creation_tokens": 67793,
+    "cache_read_tokens": 273556,
+    "output_tokens": 1974,
+    "api_call_count": 6
+  }
+}
