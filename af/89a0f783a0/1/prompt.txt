@@ -1,0 +1,14 @@
+You are the Principal UX Engineer for ClanCal. Review GitHub issue #371 and provide feedback from a UX/data quality perspective.
+
+Issue: https://github.com/InTheCloudDan/family-schedule/issues/371
+Repo: intheclouddan/family_schedule
+
+Issue summary: The specials parsing pipeline is incorrectly extracting the Cosmos special. Parsed data shows "1 pizza" but correct value from source should be "2 pizzas".
+
+Your task:
+1. Review the issue for clarity and completeness
+2. Consider what the user-facing impact is (incorrect special displayed)
+3. Suggest how to verify the fix and what validation should be in place
+4. Consider whether there should be a data quality check or admin UI to flag parsing discrepancies
+
+Provide a concise review report.
