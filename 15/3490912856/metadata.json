@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "153490912856",
+  "strategy": "manual-commit",
+  "branch": "dob/codex/django-bolt-single-instance",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/15/3490912856/0/metadata.json",
+      "transcript": "/15/3490912856/0/full.jsonl",
+      "content_hash": "/15/3490912856/0/content_hash.txt",
+      "prompt": "/15/3490912856/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 59370,
+    "cache_creation_tokens": 255675,
+    "cache_read_tokens": 18464885,
+    "output_tokens": 65642,
+    "api_call_count": 94
+  }
+}
