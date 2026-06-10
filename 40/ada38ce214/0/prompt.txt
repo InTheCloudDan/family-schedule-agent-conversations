@@ -1,0 +1,16 @@
+Review REGION_INGest_AUDIT_2026-06.md and come up with a plan to fix
+
+---
+
+continue
+
+---
+
+is there any manual steps/cleanup I need to run after I push the web-backend changes forward?
+
+---
+
+wtf am I doing a manual migration on 
+  1. Migrate (new last_ingested_at column, migration trips/0033):
+  python3 manage.py migrate trips
+  Then restart the app per your usual deploy step. this should all be in the codebase or there will be drift in the future
