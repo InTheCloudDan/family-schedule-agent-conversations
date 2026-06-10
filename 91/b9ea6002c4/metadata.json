@@ -1,0 +1,34 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "91b9ea6002c4",
+  "strategy": "manual-commit",
+  "branch": "dob/codex/django-bolt-single-instance",
+  "checkpoints_count": 4,
+  "files_touched": [
+    ".secrets.baseline",
+    "calendars/tests/test_provider_sync_completion.py",
+    "calendars/views/day_view.py",
+    "family_scheduler/context_processors.py",
+    "households/serializers.py",
+    "households/tests/test_serializers.py",
+    "households/tests/test_vehicles.py",
+    "households/tests/test_views.py",
+    "households/views.py",
+    "trips/tests/test_region_api_views.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/91/b9ea6002c4/0/metadata.json",
+      "transcript": "/91/b9ea6002c4/0/full.jsonl",
+      "content_hash": "/91/b9ea6002c4/0/content_hash.txt",
+      "prompt": "/91/b9ea6002c4/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 7304,
+    "cache_creation_tokens": 41511,
+    "cache_read_tokens": 6440553,
+    "output_tokens": 20598,
+    "api_call_count": 31
+  }
+}

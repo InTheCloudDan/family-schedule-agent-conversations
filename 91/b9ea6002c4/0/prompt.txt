@@ -1,0 +1,139 @@
+fix the 8 other failures so everything can be run in CI, but fix the root cause if needed not just tests
+
+---
+
+<task-notification>
+<task-id>a3494240032d54b1f</task-id>
+<tool-use-id>toolu_01Kv4i8T5Tfar5e6PiSUT9fv</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend--worktrees-django-bolt-single-instance/945190ad-5f50-4b98-bce1-9efa95bcc1bc/tasks/a3494240032d54b1f.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix trips occurrences 400 regressions" completed</summary>
+<result>Done. Only `trips/tests/test_region_api_views.py` was changed by me (the `calendars/` diffs belong to the other agent).
+
+## Findings
+
+**Exact 400 body:** `{"error": "end_date cannot be earlier than start_date."}` — returned from `/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/trips/views/region_api_views.py:447-451`.
+
+**Root cause:** Date drift, not a code regression. The `occurrences` view defaults the window from the trip but clamps the start to today:
+- `region_api_views.py:408` — `start_date = start_date or max(trip_start_date, today)`
+- `region_api_views.py:409` — `end_date = end_date or trip_end_date`
+
+The test fixture trip is hardcoded `2026-06-01` to `2026-06-07`. The container's `timezone.localdate()` (America/New_York) is now past `2026-06-07`, so the default window becomes `start=today &gt; end=2026-06-07`, hitting the end-before-start guard. These tests started failing on 2026-06-08 — which is exactly why main CI went red with the same tests, independent of this branch's django-bolt work. This matches the known CI timezone/date-flaky test pattern in this repo.
+
+**Code-vs-test decision: test fix.** The clamp-to-today behavior was introduced deliberately on main in commit `69a5e9cd` ("fix telemetry and calendar") — long before this branch — and is itself covered by dedicated contract tests in the same file (`test_occurrences_by_trip_excludes_past_events`, `test_occurrences_explicit_past_start_date_is_respected`), which patch `trips.views.region_api_views.timezone.localdate`. The "defaults to trip window" contract still holds for non-past trips; the failing tests just assumed the wall clock was before the fixture's trip window. No view/serializer code, auth, or family-scoping was touched (SecureEventManager paths untouched; semgrep custom rules pass).
+
+**Fix:** In both failing tests, wrapped the GET in the file's established pattern — `patch("trips.views.region_api_views.timezone")` with `mock_tz.localdate.return_value = date(2026, 5, 20)` (mid-month anchor per timezone-safety guidance, before the trip start so `max(trip_start, today)` resolves to the trip start) and `make_aware`/`is_naive` passed through. All hardcoded occurrence-date assertions (Tuesday 2026-06-02 recurrence, 06-03..06-05 multiday expansion) now hold permanently.
+
+**Changed locations:**
+- `/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/trips/tests/test_region_api_views.py:230-237` (first test, frozen-today patch)
+- `/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/trips/tests/test_region_api_views.py:355-363` (second test, frozen-today patch)
+
+**Test output tail** (`docker compose -p clancal-codex-830-edcabfa6 ... -e DB_NAME=family_scheduler_trips ... pytest -q trips/tests/test_region_api_views.py --create-db`, plus a re-run after ruff-format):
+
+```
+======================== 10 passed, 1 warning in 3.06s =========================
+```
+
+Pre-commit (`SKIP=django-check,django-check-migrations pre-commit run --files trips/tests/test_region_api_views.py`): all hooks pass (ruff format reformatted one call on first run; clean on re-run; mypy, bandit, semgrep custom rules, detect-secrets all Passed). Nothing committed, per instructions.</result>
+<usage><subagent_tokens>61612</subagent_tokens><tool_uses>27</tool_uses><duration_ms>341596</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a4092e19de643d98f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend--worktrees-django-bolt-single-instance/945190ad-5f50-4b98-bce1-9efa95bcc1bc/tasks/a4092e19de643d98f.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix ICS FakeResponse iter_content failure" completed</summary>
+<result>Done. Summary below.
+
+## Local-vs-CI explanation (with evidence)
+
+It is not test-order pollution and not env/settings — it's a **code-version skew**. CI runs against origin/main (or the merge with it), where commit `0c70eead` ("Fix triaged security findings: SSRF, IDOR, XSS, auth bypass, DoS, secrets", landed Jun 9 21:48 EDT) rewrote the ICS fetch path. Verified: `git merge-base --is-ancestor 0c70eead HEAD` → **NOT an ancestor**; this worktree forked at `8073bd4a`, one commit earlier.
+
+- On main, `calendars/tasks.py` now fetches with `_request_with_redirect_guard(..., stream=True)` and reads the body via `read_bounded_ics_body(response)` (new in `calendars/utils/ics_metadata.py`), which calls `response.iter_content(chunk_size=65536)` and then `raw_ics.decode(response.encoding or "utf-8", ...)` — a deliberate 5MB decoded-size cap against gzip/decompression bombs.
+- The test's `FakeResponse` double had only `status_code/text/headers/content/raise_for_status` — no `iter_content`, no `encoding`. The `AttributeError` is swallowed by the broad `except Exception` in `sync_calendar`, producing exactly the CI message: `Failed sync for calendar N: Unexpected error fetching ICS URL: 'FakeResponse' object has no attribute 'iter_content'`.
+- Locally this worktree's `tasks.py` still uses `response.text` (pre-0c70eead), so the test passes regardless of suite ordering.
+
+## Root cause
+
+Main commit `0c70eead` changed production ICS fetching to a streaming bounded reader but did not update the `FakeResponse` test double in `calendars/tests/test_provider_sync_completion.py`. The production streaming/cap behavior is intentional and correct — the fix belongs in the test double.
+
+## Fix
+
+`/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/calendars/tests/test_provider_sync_completion.py`:
+- line 1: added `from collections.abc import Iterator`
+- lines 71-106: `FakeResponse` now faithfully implements the requests.Response protocol surface: `iter_content(chunk_size)` (chunked-bytes generator, handles `chunk_size=None` like requests), `encoding = "utf-8"`, `close()`, and context-manager `__enter__`/`__exit__`, plus a docstring explaining the streaming contract.
+
+No production code changed (`calendars/tasks.py` untouched — main's streaming path is the intended behavior and merges in cleanly).
+
+## Verification
+
+1. **Main's exact code path against the new fake** (executed origin/main's `read_bounded_ics_body` source in-container against the real `FakeResponse` class):
+```
+OK: main read_bounded_ics_body + decode round-trips, 241 bytes
+OK: oversize body raises IcsBodyTooLargeError
+OK: oversized Content-Length rejected up front
+OK: iter_content(chunk_size=None) yields whole body
+```
+The size-cap protections still trip correctly against the fake.
+
+2. **Target test** (DB_NAME=family_scheduler_ics): `1 passed, 1 warning in 3.33s`
+
+3. **Full calendars suite, twice, varied order** (split into two pytest invocations per pass because the shared web container hit its 1GiB cgroup limit — other agents' processes, e.g. a 585MB `manage.py migrate --fake`, caused several exit-137 SIGKILLs; identical results once retried):
+- Run 1 (fixed order): chunk A `3 failed, 105 passed`, chunk B (includes target file) `66 passed`
+- Run 2 (reversed files + pytest-randomly shuffle): chunk B `66 passed`, chunk A `3 failed, 105 passed`
+- The 3 failures are identical both runs and are all `assertNumQueries` budget mismatches in `calendars/tests/test_external_calendar_api.py` (`test_external_calendar_list_query_optimization` 17!=15, `test_internal_calendar_detail_filters_associations_to_requester_families` 15!=11, `test_internal_calendar_list_query_optimization`). They reproduce standalone in runs that never import my edited module, and only test files are uncommitted in `calendars/` — so they're pre-existing on committed code and belong to the query-count workstream the other agent owns. `test_web_view_instrumentation.py` was excluded per instructions (other agent editing it).
+
+4. **Pre-commit**: `SKIP=django-check,django-check-migrations pre-commit run --files calendars/tests/test_provider_sync_completion.py` — all hooks Passed (ruff, ruff format, mypy, bandit, semgrep, detect-secrets, etc.).
+
+Nothing committed, per instructions. Files of other agents (`households/*`, `trips/*`, `test_web_view_instrumentation.py`, `.tmp_bisect_693a/`) were not touched.</result>
+<usage><subagent_tokens>79268</subagent_tokens><tool_uses>38</tool_uses><duration_ms>727108</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>abac940c223a52b00</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend--worktrees-django-bolt-single-instance/945190ad-5f50-4b98-bce1-9efa95bcc1bc/tasks/abac940c223a52b00.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix households upload 400 regressions" completed</summary>
+<result>All done. Nothing committed; calendars/ and trips/ untouched (their modifications in `git status` belong to the other agents).
+
+## Root cause per test
+
+All 4 failures were introduced by main commit **bed69f3a** ("security: apply 18 static-review IDOR/auth/crypto/XSS fixes"), with the URL machinery from **98bed056** (`extract_object_key`/`parse_household_object_key`).
+
+**1. `test_vehicles.py::TestMultiPhotoVINCapture::test_parse_photo_accepts_photo_urls_array` + `test_parse_photo_backwards_compat_single_photo_url`** — F-021 added `_validate_photo_url_ownership` to `/api/vehicles/parse_photo/`. It requires the URL to contain the configured bucket (`extract_object_key`, the line-264 log), follow the `households/{type}/{uuid}/...` layout, and resolve to a resource the caller's family owns. Tests sent `https://s3.example.com/photo1.jpg` → 400.
+
+**2. `test_views.py::ApplianceViewSetTest::test_upload_photo_creates_appliance_photo`** — same F-013 gate on `/api/appliances/{pk}/upload_photo/`; test sent `https://example.com/photo.jpg` → 400.
+
+**3. `test_serializers.py::ConsumableSerializerTest::test_consumable_create_serializer_with_m2m_relationships`** — different root cause: F-018 added `ConsumableCreateUpdateSerializer.validate()` scoping `appliance_ids`/`maintenance_task_ids` to the consumable's household, which on create must come from the payload. The test passed household only via `serializer.save(household=...)` (which runs after validation) → "Cannot resolve household to scope appliances".
+
+## What I fixed — both code AND tests
+
+**Code (genuine bug in the hardening):** the F-013/F-021 gates rejected URLs the app itself generates. The mobile scan flows (`VehiclePhotoParseScreen.tsx:122`, `AppliancePhotoParseScreen.tsx:107`) upload with `resource_id="temp"`, and `HouseholdUploadViewSet.presigned_url` (views.py:1759-1788) mints a **random UUID** for the key before the vehicle/appliance row exists — so `parse_photo` and create-with-`photo_urls` always 404'd on those keys, breaking production VIN/appliance scanning. Fix: keys whose embedded resource row does not exist ("unclaimed" temp uploads) are now allowed — these URLs end in a server-generated uuid4 filename so they're unguessable capabilities — while URLs keyed to an **existing** foreign-family resource (the discoverable IDOR case the fix targeted) still return 403, and non-bucket/malformed keys still 400. The strict by-URL delete path is unchanged.
+
+- `households/views.py:267-285, 300-310` — `_validate_photo_url_ownership`: 404 from `_validate_resource_access` → allow; 400/403 propagate.
+- `households/serializers.py:55-65, 117-121` — `_user_owns_s3_url`: `ObjectDoesNotExist` → True (same semantics, documented).
+
+**Tests (exercise the real contract, keep security pinned):**
+- `households/tests/test_vehicles.py:20-52` — `_bucket_url`/`_temp_vehicle_photo_url` helpers (settings-derived endpoint+bucket, same pattern as `test_security_group4.py`); the two failing tests now use real temp-flow URLs (lines ~620-740); added negatives: `test_parse_photo_rejects_foreign_family_vehicle_url` (403, vision service not called) and `test_parse_photo_rejects_non_storage_host_url` (400).
+- `households/tests/test_views.py:35-46, 300-415` — upload_photo test uses a URL keyed to the caller's own appliance; added `test_upload_photo_accepts_temp_upload_key` (200), `test_upload_photo_rejects_foreign_family_url` (403), `test_upload_photo_rejects_non_storage_host_url` (400).
+- `households/tests/test_serializers.py:561-630` — m2m test now includes `"household"` in the payload (matching the real API where `ConsumableViewSet.perform_create` requires it); added `test_consumable_create_serializer_rejects_cross_household_m2m` pinning F-018.
+- `.secrets.baseline` — line-number refresh by detect-secrets hook (staged, as the hook requires).
+
+## Verification
+
+Full households suite (note: had to use `docker compose run --rm --no-deps` in a dedicated container — exec'ing into the shared 1GiB `web-1` kept getting OOMKilled, `Restarts=20`, because parallel agents' pytest runs share that cgroup; not a test failure):
+
+```
+======================= 264 passed, 1 warning in 52.54s ========================
+PYTEST_EXIT=0
+```
+
+Pre-commit (`SKIP=django-check,django-check-migrations`) on all 5 changed files + baseline: all hooks pass (ruff, ruff format, mypy, bandit, semgrep custom rules, detect-secrets — 0 failures).</result>
+<usage><subagent_tokens>137474</subagent_tokens><tool_uses>88</tool_uses><duration_ms>1211953</duration_ms></usage>
+</task-notification>
