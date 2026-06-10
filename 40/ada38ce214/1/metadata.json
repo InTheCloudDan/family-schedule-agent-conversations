@@ -1,9 +1,11 @@
 {
   "cli_version": "0.5.1",
   "checkpoint_id": "40ada38ce214",
+  "session_id": "fc79098c-a9df-447d-b881-2e726d070b3d",
   "strategy": "manual-commit",
+  "created_at": "2026-06-10T16:29:18.390708Z",
   "branch": "main",
-  "checkpoints_count": 8,
+  "checkpoints_count": 2,
   "files_touched": [
     "REGION_INGEST_AUDIT_2026-06.md",
     "THREAT_MODEL.md",
@@ -32,25 +34,26 @@
     "trip_intake/services.py",
     "trip_intake/tests/test_intake_apply.py"
   ],
-  "sessions": [
-    {
-      "metadata": "/40/ada38ce214/0/metadata.json",
-      "transcript": "/40/ada38ce214/0/full.jsonl",
-      "content_hash": "/40/ada38ce214/0/content_hash.txt",
-      "prompt": "/40/ada38ce214/0/prompt.txt"
-    },
-    {
-      "metadata": "/40/ada38ce214/1/metadata.json",
-      "transcript": "/40/ada38ce214/1/full.jsonl",
-      "content_hash": "/40/ada38ce214/1/content_hash.txt",
-      "prompt": "/40/ada38ce214/1/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5[1m]",
+  "turn_id": "d2162a828cfc",
   "token_usage": {
-    "input_tokens": 117931,
-    "cache_creation_tokens": 1449778,
-    "cache_read_tokens": 80554071,
-    "output_tokens": 203484,
-    "api_call_count": 275
+    "input_tokens": 22001,
+    "cache_creation_tokens": 81139,
+    "cache_read_tokens": 1099326,
+    "output_tokens": 5942,
+    "api_call_count": 18
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T16:29:18.269559Z",
+    "agent_lines": 1903,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1903,
+    "agent_percentage": 100
   }
 }
