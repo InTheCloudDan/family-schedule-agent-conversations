@@ -137,3 +137,48 @@ PYTEST_EXIT=0
 Pre-commit (`SKIP=django-check,django-check-migrations`) on all 5 changed files + baseline: all hooks pass (ruff, ruff format, mypy, bandit, semgrep custom rules, detect-secrets — 0 failures).</result>
 <usage><subagent_tokens>137474</subagent_tokens><tool_uses>88</tool_uses><duration_ms>1211953</duration_ms></usage>
 </task-notification>
+
+---
+
+<task-notification>
+<task-id>a85538f1847a45d0e</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend--worktrees-django-bolt-single-instance/945190ad-5f50-4b98-bce1-9efa95bcc1bc/tasks/a85538f1847a45d0e.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix calendar query budget regression" completed</summary>
+<result>## Root cause
+
+The budget test failures were two stacked regressions, neither in the test itself:
+
+1. **Day view N+1 on `event.family_group` (6 extra queries).** `templates/calendars/day.html:462-463` renders `{% if event.family_group %}…{{ event.family_group.name }}` per event, but the day view's event query (`calendars/views/day_view.py`) only select_related'd `creator`, `creator__profile`, `internal_calendar` (set in commit `8cf249af` "Optimize calendar and event read paths"). With the fixture's 6 events that is 6 identical `SELECT … FROM users_familygroup WHERE id = …` queries at render time.
+
+2. **`family_feature_settings` context processor fan-out (+4-6 queries on every authenticated page).** `family_scheduler/context_processors.py` re-derived the user's family data through three independent helpers per render: `users.feature_gate._get_user_primary_family_settings` (membership fallback query), `users.utils.get_user_immediate_family` (membership query + a per-family `FamilyGroupType.objects.get` N+1 at `users/utils.py:574-576`), an `is_admin` EXISTS query, and a navbar `family_memberships.first()` + `.family` fallback. This grew incrementally via the Clancy-web/family-agent commits (`b4800091`, `cc380826`, `9491d42f`) after the budgets were set; an archive-checkout of `693a3b01` showed all three views already +2 over budget then, with day gaining +4 more since (verified by capturing `CaptureQueriesContext` SQL and `connection.execute_wrapper` stack traces at both revisions).
+
+Side finding (not fixed, worth knowing): the fixture's `viewer_profile.primary_family` is silently reverted to NULL before the request — `users/models.py:728-735` `save_user_profile` re-saves the *stale cached* profile from the User instance whenever `User.save()` fires (here via `force_login`'s `last_login` update), so the context processor always took its worst-case fallback paths. The consolidation makes both paths cheap, so I left the fixture and that signal alone.
+
+## Fix
+
+- `/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/calendars/views/day_view.py:265-269` — added `"family_group"` to the events `select_related` (comment explains the day.html badge dependency). No access-control change; the same SecureEventManager-scoped queryset is used.
+- `/Users/danobrien/code/family-schedule-app/web-backend/.worktrees/django-bolt-single-instance/family_scheduler/context_processors.py:204-336` — `family_feature_settings` now does one `FamilyMembership` fetch with `select_related("family", "family__feature_settings")` (line 213) plus one bulk `FamilyGroupType` fetch (line 222), and derives settings resolution (mirrors `_get_user_primary_family_settings`, line ~240), immediate-family resolution (`_resolve_immediate_family`, line 283, mirrors `get_user_immediate_family` including the missing-group-type backward-compat branch), `is_admin` (line 309, from the already-active-filtered memberships), and the navbar primary family (line 331, with the legacy any-membership fallback query preserved for users with zero active memberships). Rare paths (primary family outside active memberships, immediate family != settings family) keep their original queries. The shared helpers in `users/feature_gate.py` / `users/utils.py` were not modified.
+
+Budgets were NOT raised. Query counts: day 48→38 (budget 42), week 38→34 (36), month 44→40 (44).
+
+## Verification
+
+- `calendars/tests/test_web_view_instrumentation.py` full module, fresh DB: **6 passed** (`exit=0`, `46 passed` when combined with `users/tests/test_feature_settings.py`).
+- `calendars/tests/ -k "view"`: **26 passed, 154 deselected**.
+- Full `calendars/tests/` (excluding the other agent's `test_provider_sync_completion.py`) run in chunks due to 1GiB container OOM kills (exit 137) from concurrent agent runs: all chunks passed except 3 failures in `calendars/tests/test_external_calendar_api.py` (`test_external_calendar_list_query_optimization`, `test_internal_calendar_detail_filters_associations_to_requester_families`, `test_internal_calendar_list_query_optimization`) — **confirmed pre-existing** by stashing my two files and re-running (same 3 failures; they are DRF API `assertNumQueries` budgets blown by extra `auth_group`/`familymembership` queries, unrelated to template rendering or day_view). Flagging these for whoever owns API budgets.
+- `users/tests/test_dashboard_views.py`: 7 passed (broader context-processor consumer).
+- `SKIP=django-check,django-check-migrations pre-commit run --files calendars/views/day_view.py family_scheduler/context_processors.py`: all hooks pass (ruff-format auto-fixed one wrap; re-run clean), including mypy and semgrep custom rules.
+
+Final test output tail:
+```
+COUNT calendars:day_view_with_date: 38 &lt;= 42
+COUNT calendars:week_view: 34 &lt;= 36
+COUNT calendars:calendar: 40 &lt;= 44
+======================== 46 passed, 1 warning in 8.97s =========================
+```
+
+Changed files (uncommitted, as instructed): `calendars/views/day_view.py`, `family_scheduler/context_processors.py`. The test file `calendars/tests/test_web_view_instrumentation.py` is back at HEAD (debug instrumentation removed); temp bisect dir `.tmp_bisect_693a` removed.</result>
+<usage><subagent_tokens>162618</subagent_tokens><tool_uses>108</tool_uses><duration_ms>1737845</duration_ms></usage>
+</task-notification>
