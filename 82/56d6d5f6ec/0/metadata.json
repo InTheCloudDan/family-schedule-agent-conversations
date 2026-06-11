@@ -1,0 +1,36 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "8256d6d5f6ec",
+  "session_id": "e61c464e-9598-4e9f-aa77-6fd5dae79757",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T12:38:23.412093Z",
+  "branch": "dob/codex/events-list-service-for-bolt",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "events/services/bolt_event_list.py",
+    "events/services/event_list.py",
+    "family_scheduler/tests/golden_contracts/test_bolt_events.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "0761cc43a22e",
+  "token_usage": {
+    "input_tokens": 85,
+    "cache_creation_tokens": 75156,
+    "cache_read_tokens": 4885457,
+    "output_tokens": 23090,
+    "api_call_count": 69
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T12:38:23.125667Z",
+    "agent_lines": 0,
+    "human_added": 520,
+    "human_modified": 443,
+    "human_removed": 0,
+    "total_committed": 523,
+    "agent_percentage": 0
+  }
+}
