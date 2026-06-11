@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "3507b35c32bb",
+  "session_id": "2159c37c-1b6b-40fa-aac9-3a0d40b2d2cf",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T11:33:58.791732Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "events/charter_utils.py",
+    "events/charter_views.py",
+    "events/management/commands/create_shadow_charter_page.py",
+    "events/tests/test_charter_captain_ops.py",
+    "regions/presentation.py",
+    "regions/templates/regions/specials_day.html",
+    "regions/tests/test_specials_views.py",
+    "static/css/regions.css",
+    "users/services/charter_captain_invite_service.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "706efe927405",
+  "token_usage": {
+    "input_tokens": 62929,
+    "cache_creation_tokens": 920451,
+    "cache_read_tokens": 82993117,
+    "output_tokens": 174536,
+    "api_call_count": 293
+  },
+  "session_metrics": {
+    "turn_count": 4
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T11:33:57.994171Z",
+    "agent_lines": 440,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 440,
+    "agent_percentage": 100
+  }
+}
