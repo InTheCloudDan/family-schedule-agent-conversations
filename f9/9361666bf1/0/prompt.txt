@@ -1,0 +1,1 @@
+The container is not coming up healthy, ssh to production 'ssh -J root@ns1000377.tail2142fe.ts.net -o StrictHostKeyChecking=no ubuntu@10.10.20.10' cd family_schedule and diagnose and fix
