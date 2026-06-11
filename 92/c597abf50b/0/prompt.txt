@@ -1,0 +1,39 @@
+/goal migrate all warning models from BigAutoField to UUIDAutoField, some examples, if you run precommit you will see all of the """users.FamilyMembership: (clancal.W001) Model 'FamilyMembership' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.FamilyRelationship: (clancal.W001) Model 'FamilyRelationship' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.ImmediateFamilyGroup: (clancal.W001) Model 'ImmediateFamilyGroup' uses UUIDField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.MetaFamilyGroup: (clancal.W001) Model 'MetaFamilyGroup' uses UUIDField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.MetaFamilyMembership: (clancal.W001) Model 'MetaFamilyMembership' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.OnboardingProgress: (clancal.W001) Model 'OnboardingProgress' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.PendingMetaFamilyMembership: (clancal.W001) Model 'PendingMetaFamilyMembership' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.Pet: (clancal.W001) Model 'Pet' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)
+users.UserProfile: (clancal.W001) Model 'UserProfile' uses BigAutoField for its primary key instead of UUIDAutoField.
+        HINT: Replace the primary key with: id = UUIDAutoField(primary_key=True)"""
+
+---
+
+<task-notification>
+<task-id>b1yi6jj0p</task-id>
+<summary>Monitor event: "all test batch summaries"</summary>
+<event>BATCH2:
+ERROR calendars/tests/test_import_visibility_policy.py::test_import_visibility_policy_api_preview_and_apply
+== 1 failed, 905 passed, 6 skipped, 9 warnings, 3 errors in 350.59s (0:05:50) ==</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>b1yi6jj0p</task-id>
+<tool-use-id>toolu_01WPU9cdujbuK1K3hc9eaGZb</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-danobrien-code-family-schedule-app-web-backend/2159c37c-1b6b-40fa-aac9-3a0d40b2d2cf/tasks/b1yi6jj0p.output</output-file>
+<status>completed</status>
+<summary>Monitor "all test batch summaries" stream ended</summary>
+</task-notification>
