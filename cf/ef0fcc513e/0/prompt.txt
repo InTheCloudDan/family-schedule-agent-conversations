@@ -1,0 +1,1 @@
+will this still support our normal deployments going forward 'DEPLOY_AFTER_PUSH=1 ./scripts/build-and-push-image.sh' and what about in DR situation are all migrations correctly applied via code?
