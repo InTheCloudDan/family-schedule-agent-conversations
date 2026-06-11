@@ -3,7 +3,7 @@
   "checkpoint_id": "3507b35c32bb",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 5,
   "files_touched": [
     "events/charter_utils.py",
     "events/charter_views.py",
@@ -21,13 +21,19 @@
       "transcript": "/35/07b35c32bb/0/full.jsonl",
       "content_hash": "/35/07b35c32bb/0/content_hash.txt",
       "prompt": "/35/07b35c32bb/0/prompt.txt"
+    },
+    {
+      "metadata": "/35/07b35c32bb/1/metadata.json",
+      "transcript": "/35/07b35c32bb/1/full.jsonl",
+      "content_hash": "/35/07b35c32bb/1/content_hash.txt",
+      "prompt": "/35/07b35c32bb/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 62929,
-    "cache_creation_tokens": 920451,
-    "cache_read_tokens": 82993117,
-    "output_tokens": 174536,
-    "api_call_count": 293
+    "input_tokens": 62981,
+    "cache_creation_tokens": 1021726,
+    "cache_read_tokens": 86537285,
+    "output_tokens": 200659,
+    "api_call_count": 340
   }
 }
