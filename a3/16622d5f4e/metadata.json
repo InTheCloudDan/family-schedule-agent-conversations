@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.5.1",
+  "checkpoint_id": "a316622d5f4e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "core/migrations/0001_bigint_to_uuid_cast.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a3/16622d5f4e/0/metadata.json",
+      "transcript": "/a3/16622d5f4e/0/full.jsonl",
+      "content_hash": "/a3/16622d5f4e/0/content_hash.txt",
+      "prompt": "/a3/16622d5f4e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 20915,
+    "cache_creation_tokens": 89809,
+    "cache_read_tokens": 1433335,
+    "output_tokens": 16260,
+    "api_call_count": 19
+  }
+}

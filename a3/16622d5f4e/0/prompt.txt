@@ -1,0 +1,165 @@
+Fix --- med out waiting for a healthy replacement web container.
+NAME                     IMAGE                                        COMMAND                  SERVICE   CREATED         STATUS                         PORTS
+family_schedule-web-74   intheclouddan/family_schedule:7d4513e5d354   "/bin/bash /app/dock…"   web       10 hours ago    Up 10 hours (healthy)          8000/tcp
+family_schedule-web-75   intheclouddan/family_schedule:c87f33c3028f   "/bin/bash /app/dock…"   web       3 minutes ago   Restarting (1) 3 seconds ago
+web-75  |     self.fetch_command(subcommand).run_from_argv(self.argv)
+web-75  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 420, in run_from_argv
+web-75  |     self.execute(*args, **cmd_options)
+web-75  |     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 464, in execute
+web-75  |     output = self.handle(*args, **options)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/base.py", line 111, in wrapper
+web-75  |     res = handle_func(*args, **kwargs)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/core/management/commands/migrate.py", line 354, in handle
+web-75  |     post_migrate_state = executor.migrate(
+web-75  |         targets,
+web-75  |     ...<3 lines>...
+web-75  |         fake_initial=fake_initial,
+web-75  |     )
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/executor.py", line 137, in migrate
+web-75  |     state = self._migrate_all_forwards(
+web-75  |         state, plan, full_plan, fake=fake, fake_initial=fake_initial
+web-75  |     )
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/executor.py", line 169, in _migrate_all_forwards
+web-75  |     state = self.apply_migration(
+web-75  |         state, migration, fake=fake, fake_initial=fake_initial
+web-75  |     )
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/executor.py", line 257, in apply_migration
+web-75  |     state = migration.apply(state, schema_editor)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/migration.py", line 132, in apply
+web-75  |     operation.database_forwards(
+web-75  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+web-75  |         self.app_label, schema_editor, old_state, project_state
+web-75  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |     )
+web-75  |     ^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/operations/special.py", line 110, in database_forwards
+web-75  |     self._run_sql(schema_editor, self.sql)
+web-75  |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/migrations/operations/special.py", line 137, in _run_sql
+web-75  |     schema_editor.execute(statement, params=None)
+web-75  |     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/postgresql/schema.py", line 45, in execute
+web-75  |     return super().execute(sql, params)
+web-75  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/base/schema.py", line 205, in execute
+web-75  |     cursor.execute(sql, params)
+web-75  |     ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/sentry_sdk/utils.py", line 1841, in runner
+web-75  |     return sentry_patched_function(*args, **kwargs)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/sentry_sdk/integrations/django/__init__.py", line 645, in execute
+web-75  |     result = real_execute(self, sql, params)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 79, in execute
+web-75  |     return self._execute_with_wrappers(
+web-75  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+web-75  |         sql, params, many=False, executor=self._execute
+web-75  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |     )
+web-75  |     ^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+web-75  |     return executor(sql, params, many, context)
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 100, in _execute
+web-75  |     with self.db.wrap_database_errors:
+web-75  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/utils.py", line 94, in __exit__
+web-75  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django/db/backends/utils.py", line 103, in _execute
+web-75  |     return self.cursor.execute(sql)
+web-75  |            ~~~~~~~~~~~~~~~~~~~^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/django_prometheus/db/common.py", line 69, in execute
+web-75  |     return super().execute(*args, **kwargs)
+web-75  |            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/opentelemetry/instrumentation/psycopg2/__init__.py", line 325, in execute
+web-75  |     return _cursor_tracer.traced_execution(
+web-75  |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+web-75  |         self, super().execute, *args, **kwargs
+web-75  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+web-75  |     )
+web-75  |     ^
+web-75  |   File "/opt/venv/lib/python3.14/site-packages/opentelemetry/instrumentation/dbapi/__init__.py", line 742, in traced_execution
+web-75  |     return query_method(*args, **kwargs)
+web-75  | django.db.utils.ProgrammingError: must be owner of type bigint or type uuid
+web-75  |
+web-75  |   Applying core.0001_bigint_to_uuid_cast...Migration failed. Exiting.
+web-74  | 2026-06-11 07:10:07,144 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:10:08,120 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:11:07,136 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:11:08,117 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:12:07,134 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:12:08,117 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:13:07,136 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:13:08,120 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:14:07,138 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:14:08,119 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:15:07,139 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:15:08,121 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:16:07,138 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:16:08,121 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:17:07,139 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:17:08,123 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:18:07,141 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:18:08,124 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:19:07,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:19:08,125 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:20:07,140 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:20:08,128 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:21:07,141 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:21:08,126 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:22:07,151 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:22:08,124 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:23:07,142 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:23:08,127 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:24:07,143 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:24:08,131 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:25:07,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:25:08,129 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:26:07,142 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | WARNING 2026-06-11 07:26:07,557 log request_id=- Not Found: /explore/outer-banks-nc/events/2026-07-23/summer-concert-series/
+web-74  | 2026-06-11 07:26:07,557 - django.request - WARNING - Not Found: /explore/outer-banks-nc/events/2026-07-23/summer-concert-series/
+web-74  | 2026-06-11 07:26:08,127 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:27:07,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:27:08,128 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:28:07,150 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:28:08,131 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:29:07,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:29:08,130 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:30:07,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:30:08,132 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:31:07,148 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:31:08,132 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:32:07,149 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:32:08,133 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:33:07,149 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:33:08,136 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:34:07,150 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:34:08,137 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:35:07,151 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:35:08,136 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:36:07,152 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:36:08,136 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:37:07,155 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:37:08,137 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:38:07,151 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:38:08,137 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:39:07,158 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:39:08,137 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | WARNING 2026-06-11 07:39:53,502 log request_id=- Not Found: /robots.txt
+web-74  | 2026-06-11 07:39:53,502 - django.request - WARNING - Not Found: /robots.txt
+web-74  | 2026-06-11 07:40:07,154 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:40:08,139 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:41:07,156 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:41:08,139 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:42:07,156 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:42:08,141 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:43:07,161 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:43:08,141 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:44:07,162 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:44:08,144 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:45:07,162 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:45:08,145 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:46:07,160 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:46:08,146 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:47:07,165 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+web-74  | 2026-06-11 07:47:08,146 - inbound_email.views - INFO - inbound_email.alias_snapshot_polled
+Connection to 10.10.20.10 closed.
